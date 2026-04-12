@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
 # -------------------------------------------------------
-# add-file.sh — add a new PMP study file to the dashboard
+# add-file.sh — add PMP study files to the dashboard
 #
-# Usage:
-#   ./add-file.sh "/c/Users/nikki/OneDrive/PMP/mynotes.pdf"
+# Single file:
+#   ./add-file.sh "/c/Users/nikki/OneDrive/PMP/notes.pdf"
+#
+# Multiple files:
+#   ./add-file.sh file1.pdf file2.pptx file3.xlsx
+#
+# Entire folder (all files inside, any depth):
+#   ./add-file.sh --dir "/c/Users/nikki/OneDrive/PMP/pmiitest"
 #
 # What it does:
-#   1. Copies the file into files/ (preserving subfolders)
-#   2. Stages it with git add
-#   3. Prints the ALL_FILES entry to paste into index.html
+#   1. Copies file(s) into files/ (preserving subfolders)
+#   2. Stages them with git add
+#   3. Prints ALL_FILES entries to paste into index.html
 #   4. Gives you the one-liner to commit and push
 # -------------------------------------------------------
 
@@ -21,68 +27,101 @@ FILES_DIR="$REPO_DIR/files"
 # ── Argument check ──────────────────────────────────────
 if [ -z "$1" ]; then
   echo ""
-  echo "Usage: ./add-file.sh <path-to-file>"
-  echo ""
-  echo "Examples:"
-  echo "  ./add-file.sh \"/c/Users/nikki/OneDrive/PMP/new-study-guide.pdf\""
-  echo "  ./add-file.sh \"/c/Users/nikki/OneDrive/PMP/pmiitest/new-exercise.pdf\""
+  echo "Usage:"
+  echo "  ./add-file.sh file.pdf                         # single file"
+  echo "  ./add-file.sh file1.pdf file2.pptx file3.xlsx  # multiple files"
+  echo "  ./add-file.sh --dir \"/path/to/folder\"          # entire folder"
   exit 1
 fi
 
-SRC="$1"
-
-if [ ! -f "$SRC" ]; then
-  echo ""
-  echo "❌  File not found: $SRC"
-  exit 1
-fi
-
-# ── Resolve relative path from PMP root ─────────────────
-if [[ "$SRC" == "$PMP_ROOT/"* ]]; then
-  REL="${SRC#$PMP_ROOT/}"
+# ── Collect source files ────────────────────────────────
+SOURCES=()
+if [ "$1" = "--dir" ]; then
+  DIR="$2"
+  if [ ! -d "$DIR" ]; then
+    echo "❌  Directory not found: $DIR"
+    exit 1
+  fi
+  while IFS= read -r f; do
+    SOURCES+=("$f")
+  done < <(find "$DIR" -type f)
 else
-  REL="$(basename "$SRC")"
-  echo "ℹ️  File is outside OneDrive/PMP — placing in files/ root."
+  for arg in "$@"; do
+    SOURCES+=("$arg")
+  done
 fi
 
-DEST="$FILES_DIR/$REL"
-DEST_DIR="$(dirname "$DEST")"
+if [ ${#SOURCES[@]} -eq 0 ]; then
+  echo "❌  No files found."
+  exit 1
+fi
 
-# ── Copy ────────────────────────────────────────────────
-mkdir -p "$DEST_DIR"
-cp "$SRC" "$DEST"
+# ── Icon helper ─────────────────────────────────────────
+get_icon() {
+  case "${1,,}" in
+    pdf)       echo "📄" ;;
+    pptx|ppt)  echo "📊" ;;
+    xlsx|xls)  echo "📋" ;;
+    docx|doc)  echo "📝" ;;
+    epub)      echo "📗" ;;
+    *)         echo "📁" ;;
+  esac
+}
+
+# ── Process each file ───────────────────────────────────
+ENTRIES=()
+FILENAMES=()
+SKIPPED=0
+
 echo ""
-echo "✅  Copied  →  files/$REL"
+for SRC in "${SOURCES[@]}"; do
+  if [ ! -f "$SRC" ]; then
+    echo "⚠️   Skipping (not found): $SRC"
+    ((SKIPPED++)) || true
+    continue
+  fi
 
-# ── Git stage ───────────────────────────────────────────
-git -C "$REPO_DIR" add "files/$REL"
-echo "✅  Staged in git"
+  if [[ "$SRC" == "$PMP_ROOT/"* ]]; then
+    REL="${SRC#$PMP_ROOT/}"
+  else
+    REL="$(basename "$SRC")"
+  fi
 
-# ── Pick icon by extension ──────────────────────────────
-EXT="${SRC##*.}"
-case "${EXT,,}" in
-  pdf)       ICON="📄" ;;
-  pptx|ppt)  ICON="📊" ;;
-  xlsx|xls)  ICON="📋" ;;
-  docx|doc)  ICON="📝" ;;
-  epub)      ICON="📗" ;;
-  *)         ICON="📁" ;;
-esac
+  DEST="$FILES_DIR/$REL"
+  mkdir -p "$(dirname "$DEST")"
+  cp "$SRC" "$DEST"
+  git -C "$REPO_DIR" add "files/$REL"
+  echo "✅  files/$REL"
 
-FILENAME="$(basename "$SRC")"
-NAME="${FILENAME%.*}"
+  FILENAME="$(basename "$SRC")"
+  EXT="${FILENAME##*.}"
+  NAME="${FILENAME%.*}"
+  ICON="$(get_icon "$EXT")"
+  ENTRIES+=("  { icon:\"$ICON\", name:\"$NAME\", desc:\"\", pri:\"MED\", rel:\"$REL\" },")
+  FILENAMES+=("$FILENAME")
+done
 
-# ── Print ALL_FILES entry ────────────────────────────────
+COPIED=${#ENTRIES[@]}
+echo ""
+echo "Copied $COPIED file(s)$([ $SKIPPED -gt 0 ] && echo ", skipped $SKIPPED" || echo "")"
+
+# ── Print ALL_FILES entries ──────────────────────────────
 echo ""
 echo "────────────────────────────────────────────────────────"
-echo " Add this line to ALL_FILES in index.html (~line 1307):"
+echo " Paste these into ALL_FILES in index.html (~line 1307):"
 echo "────────────────────────────────────────────────────────"
 echo ""
-echo "  { icon:\"$ICON\", name:\"$NAME\", desc:\"\", pri:\"MED\", rel:\"$REL\" },"
+for entry in "${ENTRIES[@]}"; do
+  echo "$entry"
+done
 echo ""
 echo "────────────────────────────────────────────────────────"
 echo " Then commit and push:"
 echo "────────────────────────────────────────────────────────"
 echo ""
-echo "  git add index.html && git commit -m \"feat: add $FILENAME\" && git push"
+if [ $COPIED -eq 1 ]; then
+  echo "  git add index.html && git commit -m \"feat: add ${FILENAMES[0]}\" && git push"
+else
+  echo "  git add index.html && git commit -m \"feat: add $COPIED PMP study files\" && git push"
+fi
 echo ""
