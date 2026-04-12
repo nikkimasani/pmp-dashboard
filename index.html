@@ -461,6 +461,7 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',system-ui,sans-
 .notes-search{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;padding:10px 14px;outline:none;margin-bottom:16px;transition:border-color .18s}
 .notes-search:focus{border-color:rgba(124,107,250,.5)}
 .note-badge{display:inline-block;font-size:9px;font-weight:800;background:rgba(124,107,250,.15);color:var(--accent);border:1px solid rgba(124,107,250,.3);border-radius:100px;padding:1px 7px;margin-left:4px;vertical-align:middle}
+.bdg-red{background:rgba(255,71,87,.12);color:var(--a3);border:1px solid rgba(255,71,87,.25)}
 
 /* ===== UI REFRESH v2 — Excitement + Clarity ===== */
 
@@ -718,6 +719,55 @@ body::before{content:'';position:fixed;inset:0;
   border-width:2px}
 
 /* ===== END UI REFRESH ===== */
+
+/* ===== CALM OVERRIDE — reduce visual density ===== */
+
+/* A: Single accent — strip decorative dual-color gradients */
+.logo-badge{background:var(--accent) !important;box-shadow:none !important}
+.logo-t{background:none !important;-webkit-text-fill-color:var(--text) !important;color:var(--text) !important}
+.cd-num{background:none !important;-webkit-text-fill-color:var(--accent) !important;color:var(--accent) !important;filter:none !important}
+.sp-fill{background:var(--accent) !important}
+.ni.active::before{background:var(--accent) !important}
+.btn-p{background:var(--accent) !important;box-shadow:none !important}
+.btn-p:hover{background:rgba(124,107,250,.88) !important;box-shadow:none !important;transform:none !important}
+.step-num{background:var(--accent) !important;box-shadow:none !important}
+.r-score{background:var(--accent) !important;-webkit-background-clip:text !important;background-clip:text !important;filter:none !important}
+.sh-hero-title{background:none !important;-webkit-text-fill-color:var(--text) !important;color:var(--text) !important}
+
+/* B: Remove card & element shadows — borders alone provide separation */
+.card,.card-s{box-shadow:none !important;border-color:rgba(30,37,64,.7)}
+.step-item{box-shadow:none !important}
+.focus-card{box-shadow:none !important;border-color:rgba(124,107,250,.22) !important}
+.term-card:hover{box-shadow:none !important}
+#p-learn>div:nth-child(2){box-shadow:none !important}
+
+/* C: Remove emoji icons from nav — let labels speak */
+.ni-ico{display:none !important}
+.ni{gap:0 !important}
+
+/* D: More breathing room in content panels */
+.panel{padding:44px 52px !important}
+
+/* E: Strip ambient glow noise */
+body::before{background:radial-gradient(ellipse 70% 60% at 12% 50%,rgba(124,107,250,.025) 0%,transparent 65%) !important}
+.sb{box-shadow:none !important;border-right:1px solid var(--border) !important}
+.ni.active{box-shadow:none !important}
+.sc-tab.active{text-shadow:none !important}
+.lv-tab.active{text-shadow:none !important}
+.term-n{text-shadow:none !important}
+.quiz-big{filter:none !important}
+.sh-hero-icon{filter:none !important}
+.sh-hero::before{display:none !important}
+
+/* G: Sharper active vs. inactive nav contrast */
+.ni{color:rgba(120,128,168,.42) !important}
+.ni:hover{color:var(--t2) !important}
+.ni.active{color:var(--text) !important;font-weight:700 !important}
+
+/* H: Unified, readable section labels */
+.ct{color:var(--t2) !important}
+
+/* ===== END CALM OVERRIDE ===== */
 </style>
 </head>
 <body>
@@ -745,12 +795,16 @@ body::before{content:'';position:fixed;inset:0;
     <div class="ni" onclick="nav('plan',this)"><span class="ni-ico">📚</span><span>Study Plan</span></div>
     <div class="ni" onclick="nav('group',this)"><span class="ni-ico">🤝</span><span>Study Group</span></div>
     <div class="ni" onclick="nav('files',this)"><span class="ni-ico">📁</span><span>Your Files</span></div>
-    <div class="nav-lbl">Tools</div>
-    <div class="ni" onclick="nav('notes',this)"><span class="ni-ico">📝</span><span>My Notes</span></div>
-    <div class="ni" onclick="nav('study',this)"><span class="ni-ico">📖</span><span>Study Center</span></div>
-    <div class="ni" onclick="nav('flash',this)"><span class="ni-ico">🃏</span><span>Flashcards</span></div>
-    <div class="ni" onclick="nav('progress',this)"><span class="ni-ico">📊</span><span>Progress</span></div>
-    <div class="ni" onclick="nav('weak',this)"><span class="ni-ico">🎯</span><span>Weak Areas</span></div>
+    <div class="nav-lbl" onclick="toggleToolsNav()" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none">
+      <span>Tools</span><span id="tools-nav-arrow" style="font-size:9px;opacity:.5;transition:transform .22s">▸</span>
+    </div>
+    <div id="tools-nav" style="overflow:hidden;max-height:0;transition:max-height .28s cubic-bezier(.16,1,.3,1)">
+      <div class="ni" onclick="nav('notes',this)"><span class="ni-ico">📝</span><span>My Notes</span></div>
+      <div class="ni" onclick="nav('study',this)"><span class="ni-ico">📖</span><span>Study Center</span></div>
+      <div class="ni" onclick="nav('flash',this)"><span class="ni-ico">🃏</span><span>Flashcards</span></div>
+      <div class="ni" onclick="nav('progress',this)"><span class="ni-ico">📊</span><span>Progress</span></div>
+      <div class="ni" onclick="nav('weak',this)"><span class="ni-ico">🎯</span><span>Weak Areas</span></div>
+    </div>
   </div>
   <div class="sb-prog">
     <div class="sp-lbl">Overall Progress: <span id="prog-pct">0%</span></div>
@@ -1145,19 +1199,47 @@ body::before{content:'';position:fixed;inset:0;
         <div class="ph-sub">Notes saved per Ramdayal module · Auto-saves as you type · Export to sync across devices</div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-s" onclick="openOneNote()">🔗 Open OneNote</button>
         <button class="btn btn-green" onclick="exportNotes()">⬇ Export Notes</button>
         <label class="btn btn-s" style="cursor:pointer">⬆ Import Notes<input type="file" accept=".json" style="display:none" onchange="importNotesFromFile(this)"></label>
         <button class="btn btn-s" onclick="clearAllNotes()">🗑 Clear All</button>
       </div>
     </div>
   </div>
-  <!-- GitHub hosting tip -->
-  <div style="background:linear-gradient(135deg,rgba(0,229,184,.07),rgba(124,107,250,.05));border:1px solid rgba(0,229,184,.25);border-radius:var(--r);padding:14px 18px;margin-bottom:20px;display:flex;align-items:flex-start;gap:14px">
-    <div style="font-size:24px;flex-shrink:0">🌐</div>
-    <div style="flex:1">
-      <div style="font-size:12px;font-weight:800;color:var(--a2);margin-bottom:4px">Access on any device — Host on GitHub Pages (free)</div>
-      <div style="font-size:12px;color:var(--t2);line-height:1.6">Push this file to a public GitHub repo → enable Pages → get a permanent URL. Use <strong style="color:var(--text)">Export Notes</strong> on one device and <strong style="color:var(--text)">Import Notes</strong> on another to keep notes in sync.</div>
-      <button class="btn btn-s btn-sm" style="margin-top:8px" onclick="showGithubModal()">📖 GitHub Pages Setup Guide →</button>
+  <!-- Gist Sync Card -->
+  <div id="gist-sync-card" style="background:linear-gradient(135deg,rgba(0,229,184,.07),rgba(124,107,250,.05));border:1px solid rgba(0,229,184,.25);border-radius:var(--r);padding:14px 18px;margin-bottom:20px">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <div style="font-size:22px;flex-shrink:0">☁️</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:800;color:var(--a2);margin-bottom:3px;display:flex;align-items:center;gap:8px">
+          GitHub Gist Sync
+          <span id="gist-status-badge" class="bdg bdg-gray">Not connected</span>
+        </div>
+        <div id="gist-status-msg" style="font-size:12px;color:var(--t2)">Connect a GitHub Gist to sync notes across all your devices automatically.</div>
+      </div>
+      <div id="gist-action-btns" style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap">
+        <button class="btn btn-s btn-sm" onclick="toggleGistSetup()">⚙ Connect Gist</button>
+      </div>
+    </div>
+    <!-- Inline setup form -->
+    <div id="gist-setup-form" style="display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+        <div>
+          <label style="font-size:11px;color:var(--t2);font-weight:700;display:block;margin-bottom:4px">GitHub Personal Access Token</label>
+          <input id="gist-pat-input" type="password" class="fi" placeholder="ghp_xxxx… (gist scope required)" style="font-size:12px;padding:7px 10px;width:100%">
+          <div style="font-size:10px;color:var(--t3);margin-top:3px">github.com → Settings → Developer settings → Tokens (classic) → check <strong>gist</strong></div>
+        </div>
+        <div>
+          <label style="font-size:11px;color:var(--t2);font-weight:700;display:block;margin-bottom:4px">Gist ID <span style="color:var(--t3);font-weight:500">(leave blank to create new)</span></label>
+          <input id="gist-id-input" type="text" class="fi" placeholder="a1b2c3… or leave blank" style="font-size:12px;padding:7px 10px;width:100%">
+          <div style="font-size:10px;color:var(--t3);margin-top:3px">From gist.github.com — the long ID in the URL after your username</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <button class="btn btn-p btn-sm" onclick="connectGist()">✓ Connect &amp; Sync</button>
+        <button class="btn btn-s btn-sm" onclick="toggleGistSetup()">Cancel</button>
+        <span id="gist-connect-msg" style="font-size:11px;color:var(--t2)"></span>
+      </div>
     </div>
   </div>
   <input class="notes-search" id="notes-search-input" placeholder="🔍 Search your notes across all modules..." oninput="filterNotesPanel(this.value)">
@@ -3866,12 +3948,26 @@ const APP_STEPS = ["Your Info","Education","Project 1","Project 2","Review & Gen
 // ============================================================
 // NAVIGATION
 // ============================================================
+const TOOLS_TABS = ['notes','study','flash','progress','weak'];
+
+function toggleToolsNav(forceOpen) {
+  const nav = document.getElementById('tools-nav');
+  const arrow = document.getElementById('tools-nav-arrow');
+  if (!nav) return;
+  const isOpen = nav.style.maxHeight && nav.style.maxHeight !== '0px';
+  const open = forceOpen !== undefined ? forceOpen : !isOpen;
+  nav.style.maxHeight = open ? '300px' : '0px';
+  if (arrow) arrow.style.transform = open ? 'rotate(90deg)' : '';
+}
+
 function nav(id, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.ni').forEach(n => n.classList.remove('active'));
   document.getElementById('p-' + id).classList.add('active');
   if (el) el.classList.add('active');
   window.scrollTo(0,0);
+  if (TOOLS_TABS.includes(id)) toggleToolsNav(true);
+  if (id === 'notes') { buildGistStatus(); gistFetch(false); }
 }
 
 // ============================================================
@@ -3984,6 +4080,13 @@ async function connectPMPFolder() {
 }
 
 async function openFromDir(relPath) {
+  // Try hosted static file first — works on any device, no folder connection needed
+  const hosted = '/files/' + relPath.split('/').map(p => encodeURIComponent(p)).join('/');
+  try {
+    const probe = await fetch(hosted, { method: 'HEAD' });
+    if (probe.ok) { window.open(hosted, '_blank'); return; }
+  } catch(e) {}
+
   if (!pmpDirHandle) {
     // Navigate to Files tab and flash the connect button
     const ni = document.querySelectorAll('.ni');
@@ -7003,6 +7106,7 @@ function saveModuleNote(num, text) {
   // Refresh notes panel if open and notes badge on module header
   const notesPanel = document.getElementById('p-notes');
   if (notesPanel && notesPanel.classList.contains('active')) buildNotesPanel();
+  gistAutoSync();
 }
 
 function loadGeneralNote() {
@@ -7014,6 +7118,7 @@ function saveGeneralNote(text) {
   localStorage.setItem('general_notes', JSON.stringify({ text, lastSaved: new Date().toISOString() }));
   const ind = document.getElementById('note-ind-general');
   if (ind) { ind.textContent = 'Saved ✓'; ind.className = 'note-save-indicator saved'; setTimeout(() => { if (ind) { ind.textContent = 'auto-saves as you type'; ind.className = 'note-save-indicator'; } }, 2000); }
+  gistAutoSync();
 }
 
 function queueNoteSave(num, el) {
@@ -7157,6 +7262,187 @@ function showGithubModal() {
 function closeGithubModal() {
   const m = document.getElementById('github-modal');
   if (m) m.style.display = 'none';
+}
+
+// ============================================================
+// GIST SYNC
+// ============================================================
+const GIST_FILE = 'pmp-notes.json';
+let _gistPushTimer = null;
+
+function gistGetCreds() {
+  return { token: localStorage.getItem('gist_token') || '', id: localStorage.getItem('gist_id') || '' };
+}
+
+function buildGistStatus() {
+  const { token, id } = gistGetCreds();
+  const badge = document.getElementById('gist-status-badge');
+  const msg   = document.getElementById('gist-status-msg');
+  const btns  = document.getElementById('gist-action-btns');
+  if (!badge) return;
+  if (token && id) {
+    const lastSync = localStorage.getItem('gist_last_sync');
+    const syncStr  = lastSync ? new Date(lastSync).toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : 'never';
+    badge.className   = 'bdg bdg-green';
+    badge.textContent = 'Connected';
+    msg.innerHTML     = `<span style="color:var(--green)">✓</span> Syncing to Gist <code style="color:var(--t2);font-size:10px">${id.slice(0,8)}…</code> · Last sync: ${syncStr}`;
+    btns.innerHTML    = `<button class="btn btn-green btn-sm" onclick="gistFetch(true)">↻ Sync Now</button><button class="btn btn-s btn-sm" onclick="toggleGistSetup()">⚙ Settings</button><button class="btn btn-s btn-sm" style="color:var(--a3)" onclick="disconnectGist()">Disconnect</button>`;
+  } else {
+    badge.className   = 'bdg bdg-gray';
+    badge.textContent = 'Not connected';
+    msg.textContent   = 'Connect a GitHub Gist to sync notes across all your devices automatically.';
+    btns.innerHTML    = `<button class="btn btn-s btn-sm" onclick="toggleGistSetup()">⚙ Connect Gist</button>`;
+  }
+}
+
+function toggleGistSetup() {
+  const form = document.getElementById('gist-setup-form');
+  if (!form) return;
+  if (form.style.display === 'none') {
+    const { token, id } = gistGetCreds();
+    form.style.display = 'block';
+    if (token) document.getElementById('gist-pat-input').value = token;
+    if (id)    document.getElementById('gist-id-input').value  = id;
+  } else {
+    form.style.display = 'none';
+  }
+}
+
+async function connectGist() {
+  const token  = document.getElementById('gist-pat-input').value.trim();
+  const gistId = document.getElementById('gist-id-input').value.trim();
+  const msgEl  = document.getElementById('gist-connect-msg');
+  if (!token) { msgEl.textContent = 'Token is required.'; msgEl.style.color = 'var(--a3)'; return; }
+  msgEl.textContent = 'Connecting…'; msgEl.style.color = 'var(--a4)';
+  try {
+    let resolvedId = gistId;
+    if (!resolvedId) {
+      const res = await fetch('https://api.github.com/gists', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ description:'PMP Dashboard Notes', public:false, files:{ [GIST_FILE]:{ content: JSON.stringify({version:1,modules:{},general:{}},null,2) } } })
+      });
+      if (!res.ok) throw new Error('Could not create Gist (' + res.status + '). Check your token has the gist scope.');
+      resolvedId = (await res.json()).id;
+    } else {
+      const res = await fetch('https://api.github.com/gists/' + resolvedId, { headers:{ 'Authorization':'Bearer '+token } });
+      if (!res.ok) throw new Error('Gist not found or no access (' + res.status + '). Double-check the Gist ID.');
+    }
+    localStorage.setItem('gist_token', token);
+    localStorage.setItem('gist_id', resolvedId);
+    document.getElementById('gist-setup-form').style.display = 'none';
+    buildGistStatus();
+    await gistFetch(true);
+    showToast('Gist connected! Notes will sync automatically.');
+  } catch(err) {
+    msgEl.textContent = err.message;
+    msgEl.style.color = 'var(--a3)';
+  }
+}
+
+function disconnectGist() {
+  if (!confirm('Disconnect Gist sync? Your local notes are unaffected — nothing is deleted.')) return;
+  localStorage.removeItem('gist_token');
+  localStorage.removeItem('gist_id');
+  localStorage.removeItem('gist_last_sync');
+  buildGistStatus();
+  showToast('Gist disconnected. Notes remain local.');
+}
+
+async function gistFetch(manual = false) {
+  const { token, id } = gistGetCreds();
+  if (!token || !id) return;
+  const badge = document.getElementById('gist-status-badge');
+  if (badge) { badge.textContent = 'Syncing…'; badge.className = 'bdg bdg-gold'; }
+  try {
+    const res = await fetch('https://api.github.com/gists/' + id, { headers:{ 'Authorization':'Bearer '+token } });
+    if (!res.ok) throw new Error('Fetch failed (' + res.status + ')');
+    const gistData    = await res.json();
+    const fileContent = gistData.files[GIST_FILE] && gistData.files[GIST_FILE].content;
+    if (!fileContent) { await gistPush(); return; }
+    const remote  = JSON.parse(fileContent);
+    let changed   = false;
+    if (remote.modules) {
+      Object.entries(remote.modules).forEach(([num, entry]) => {
+        try {
+          const local = JSON.parse(localStorage.getItem('module_notes_' + num) || '{}');
+          if (!local.lastSaved || (entry.lastSaved && new Date(entry.lastSaved) > new Date(local.lastSaved))) {
+            localStorage.setItem('module_notes_' + num, JSON.stringify({ text: entry.text, lastSaved: entry.lastSaved }));
+            changed = true;
+          }
+        } catch(e) {}
+      });
+    }
+    if (remote.general && remote.general.text) {
+      try {
+        const local = JSON.parse(localStorage.getItem('general_notes') || '{}');
+        if (!local.lastSaved || (remote.general.lastSaved && new Date(remote.general.lastSaved) > new Date(local.lastSaved))) {
+          localStorage.setItem('general_notes', JSON.stringify({ text: remote.general.text, lastSaved: remote.general.lastSaved }));
+          changed = true;
+        }
+      } catch(e) {}
+    }
+    await gistPush();
+    if (changed) { buildNotesPanel(); if (typeof buildVideoLibrary === 'function') buildVideoLibrary(); }
+    if (manual) showToast('Notes synced!');
+  } catch(err) {
+    if (badge) { badge.textContent = 'Sync error'; badge.className = 'bdg bdg-red'; }
+    if (manual) showToast('Sync failed: ' + err.message);
+  }
+}
+
+async function gistPush() {
+  const { token, id } = gistGetCreds();
+  if (!token || !id) return;
+  const data = { version:1, exported: new Date().toISOString(), modules:{}, general:{} };
+  if (typeof RAMDAYAL_MODULES !== 'undefined') {
+    RAMDAYAL_MODULES.forEach(m => {
+      try {
+        const raw = localStorage.getItem('module_notes_' + m.num);
+        if (raw) { const p = JSON.parse(raw); if (p.text && p.text.trim()) data.modules[m.num] = { title:m.title, text:p.text, lastSaved:p.lastSaved || new Date().toISOString() }; }
+      } catch(e) {}
+    });
+  }
+  try {
+    const raw = localStorage.getItem('general_notes');
+    if (raw) { const p = JSON.parse(raw); if (p.text && p.text.trim()) data.general = { text:p.text, lastSaved:p.lastSaved || new Date().toISOString() }; }
+  } catch(e) {}
+  const res = await fetch('https://api.github.com/gists/' + id, {
+    method: 'PATCH',
+    headers: { 'Authorization':'Bearer '+token, 'Content-Type':'application/json' },
+    body: JSON.stringify({ files:{ [GIST_FILE]:{ content: JSON.stringify(data, null, 2) } } })
+  });
+  if (!res.ok) throw new Error('Push failed (' + res.status + ')');
+  localStorage.setItem('gist_last_sync', new Date().toISOString());
+  buildGistStatus();
+}
+
+function gistAutoSync() {
+  const { token, id } = gistGetCreds();
+  if (!token || !id) return;
+  clearTimeout(_gistPushTimer);
+  _gistPushTimer = setTimeout(() => gistPush().catch(() => {}), 3000);
+}
+
+// ============================================================
+// ONENOTE LAUNCHER
+// ============================================================
+function openOneNote() {
+  let url = localStorage.getItem('onenote_url');
+  if (!url) {
+    url = prompt('Paste your OneNote Online URL:\n(e.g. https://onedrive.live.com/... or https://onenote.com/...)');
+    if (!url || !url.trim()) return;
+    if (!url.trim().startsWith('http')) { showToast('Please enter a valid URL starting with https://'); return; }
+    localStorage.setItem('onenote_url', url.trim());
+  }
+  const sw = window.screen.width, sh = window.screen.height;
+  const w  = Math.round(sw * 0.45), l = Math.round(sw * 0.55);
+  window.open(url, 'onenote_panel', `width=${w},height=${sh},left=${l},top=0,resizable=yes`);
+}
+
+function changeOneNoteUrl() {
+  localStorage.removeItem('onenote_url');
+  openOneNote();
 }
 
 // ============================================================
