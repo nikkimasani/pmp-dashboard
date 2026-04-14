@@ -3968,6 +3968,57 @@ function buildLearn() {
 // ============================================================
 let pmpDirHandle = null;
 
+// ============================================================
+// ONEDRIVE DIRECT LINK MODE
+// ============================================================
+let onedriveSharingUrl = load('onedriveSharingUrl', null);
+
+function connectOneDrive() {
+  const url = prompt(
+    'Paste your OneDrive PMP folder sharing URL below.\n\n' +
+    'How to get it:\n' +
+    '1. Open OneDrive in your browser\n' +
+    '2. Right-click your PMP folder → Share\n' +
+    '3. Set to "Anyone with the link can view"\n' +
+    '4. Click Copy link and paste it here'
+  );
+  if (!url) return;
+  const trimmed = url.trim();
+  if (!trimmed.startsWith('http')) { showToast('Invalid URL — paste the full OneDrive sharing link.'); return; }
+  onedriveSharingUrl = trimmed;
+  save('onedriveSharingUrl', trimmed);
+  showToast('OneDrive connected! Files will now stream from your cloud folder.');
+  buildFiles();
+  buildStartHere();
+}
+
+function disconnectOneDrive() {
+  onedriveSharingUrl = null;
+  save('onedriveSharingUrl', null);
+  buildFiles();
+  buildStartHere();
+}
+
+function encodeOneDriveShareId(url) {
+  return 'u!' + btoa(url).replace(/=+$/, '').replace(/\//g, '_').replace(/\+/g, '-');
+}
+
+async function getOneDriveDownloadUrl(relPath) {
+  if (!onedriveSharingUrl) return null;
+  const shareId = encodeOneDriveShareId(onedriveSharingUrl);
+  const encodedPath = relPath.split('/').map(p => encodeURIComponent(p)).join('/');
+  const apiUrl = `https://api.onedrive.com/v1.0/shares/${shareId}/root:/${encodedPath}`;
+  try {
+    const res = await fetch(apiUrl, { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    return data['@content.downloadUrl'] || null;
+  } catch(e) {
+    console.error('OneDrive fetch error:', e);
+    return null;
+  }
+}
+
 async function connectPMPFolder() {
   if (!window.showDirectoryPicker) {
     showToast('Use Chrome or Edge for one-click file access.');
@@ -3984,7 +4035,7 @@ async function connectPMPFolder() {
 }
 
 async function openFromDir(relPath) {
-  if (!pmpDirHandle) {
+  if (!pmpDirHandle && !onedriveSharingUrl) {
     // Navigate to Files tab and flash the connect button
     const ni = document.querySelectorAll('.ni');
     nav('files', ni[ni.length - 1]);
@@ -4000,6 +4051,29 @@ async function openFromDir(relPath) {
     }, 100);
     return;
   }
+  // OneDrive mode
+  if (!pmpDirHandle && onedriveSharingUrl) {
+    showToast('Fetching from OneDrive…');
+    const downloadUrl = await getOneDriveDownloadUrl(relPath);
+    if (!downloadUrl) {
+      showToast('Could not fetch "' + relPath.split('/').pop() + '" from OneDrive. Check the folder is shared and the file path matches.');
+      return;
+    }
+    const ext = relPath.split('.').pop().toLowerCase();
+    if (ext === 'pdf') {
+      window.open(downloadUrl, '_blank');
+    } else {
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      a.download = relPath.split('/').pop();
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('File downloading — check your Downloads folder.');
+    }
+    return;
+  }
+  // Local folder mode
   try {
     const parts = relPath.split('/');
     let dir = pmpDirHandle;
@@ -4041,21 +4115,29 @@ function buildFiles() {
   const container = document.getElementById('files-list');
   if (!container) return;
 
-  if (!pmpDirHandle) {
+  if (!pmpDirHandle && !onedriveSharingUrl) {
     const supported = !!window.showDirectoryPicker;
     container.innerHTML = `
       <div style="text-align:center;padding:52px 24px">
         <div style="font-size:52px;margin-bottom:16px">📁</div>
         <div style="font-size:20px;font-weight:800;margin-bottom:8px">Connect Your PMP Folder</div>
         <div style="font-size:13px;color:var(--t2);margin-bottom:28px;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.7">
-          Click the button below → navigate to your <strong style="color:var(--text)">OneDrive → PMP</strong> folder → click <strong style="color:var(--text)">Select Folder</strong>.<br>
-          After that, every file opens in <strong style="color:var(--a2)">one click</strong>. No copying, no paths.
+          Choose how to connect your files. Both options give you one-click access to every file.
         </div>
-        ${supported
-          ? `<button class="btn btn-p" style="font-size:15px;padding:13px 32px;margin-bottom:16px" onclick="connectPMPFolder()">Connect My PMP Folder →</button>
-             <div style="font-size:11px;color:var(--t3)">Works in Chrome and Edge · Your files stay on your device</div>`
-          : `<div class="tip-box" style="max-width:420px;margin:0 auto 16px"><div class="tip-t">Browser Required</div><div class="tip-b">Open this dashboard in <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong> to enable one-click file access.</div></div>`
-        }
+        <div style="display:flex;flex-direction:column;gap:12px;max-width:420px;margin:0 auto 24px">
+          <div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;text-align:left">
+            <div style="font-size:13px;font-weight:800;margin-bottom:4px">☁️ OneDrive Link <span style="background:rgba(46,213,115,.15);color:var(--green);font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;margin-left:6px">Recommended</span></div>
+            <div style="font-size:12px;color:var(--t2);margin-bottom:12px;line-height:1.6">Files stream from your OneDrive — works on any computer, no local copy needed.</div>
+            <button class="btn btn-p" style="width:100%;justify-content:center" onclick="connectOneDrive()">Connect via OneDrive Link →</button>
+          </div>
+          ${supported ? `
+          <div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;text-align:left">
+            <div style="font-size:13px;font-weight:800;margin-bottom:4px">💻 Local Folder</div>
+            <div style="font-size:12px;color:var(--t2);margin-bottom:12px;line-height:1.6">Pick your PMP folder directly from this computer. Fastest option if files are synced locally.</div>
+            <button class="btn btn-s" style="width:100%;justify-content:center" onclick="connectPMPFolder()">Connect Local Folder →</button>
+          </div>` : `
+          <div class="tip-box" style="text-align:left"><div class="tip-t">Local Folder Unavailable</div><div class="tip-b">Use <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong> for local folder access, or use the OneDrive link option above.</div></div>`}
+        </div>
       </div>`;
     return;
   }
@@ -4088,10 +4170,17 @@ function buildFiles() {
     </div>`;
   }).join('');
 
+  const connectedLabel = pmpDirHandle
+    ? `✓ Connected: ${pmpDirHandle.name}`
+    : `☁️ Connected via OneDrive`;
+  const disconnectFn = pmpDirHandle
+    ? `pmpDirHandle=null;buildFiles();buildStartHere()`
+    : `disconnectOneDrive()`;
+
   container.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(46,213,115,.07);border:1px solid rgba(46,213,115,.25);border-radius:var(--rs);margin-bottom:14px">
-      <div style="font-size:13px;color:var(--green);font-weight:700">✓ Connected: <span style="color:var(--text)">${pmpDirHandle.name}</span></div>
-      <button class="btn btn-s btn-sm" onclick="pmpDirHandle=null;buildFiles()">Disconnect</button>
+      <div style="font-size:13px;color:var(--green);font-weight:700">${connectedLabel}</div>
+      <button class="btn btn-s btn-sm" onclick="${disconnectFn}">Disconnect</button>
     </div>
     ${fileCards}`;
 }
@@ -4957,21 +5046,24 @@ function buildStartHere() {
   if (!el) return;
   const supported = !!window.showDirectoryPicker;
 
-  if (!pmpDirHandle) {
+  if (!pmpDirHandle && !onedriveSharingUrl) {
     // PRE-SETUP: hero connect card
     el.innerHTML = `
       <div class="sh-hero">
         <div class="sh-hero-icon">📁</div>
         <div class="sh-hero-title">Connect Your PMP Folder</div>
         <div class="sh-hero-sub">
-          One click. All 44 files and local course videos — open instantly.<br>
-          Navigate to <strong>OneDrive → PMP</strong> to unlock your entire study library.
+          Choose how to connect — both give you one-click access to all 44 files and videos.
         </div>
-        ${supported
-          ? `<button class="btn btn-p sh-hero-btn" onclick="connectPMPFolder()">Connect My PMP Folder →</button>
-             <div class="sh-hero-note">Works in Chrome and Edge · Your files stay on your device</div>`
-          : `<div class="tip-box" style="max-width:440px;margin:0 auto 16px"><div class="tip-t">Browser Required</div><div class="tip-b">Open this dashboard in <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong> to enable one-click file access.</div></div>`
-        }
+        <div style="display:flex;flex-direction:column;gap:10px;max-width:420px;margin:0 auto 18px;text-align:left">
+          <button class="btn btn-p sh-hero-btn" style="margin-bottom:0;width:100%;justify-content:center" onclick="connectOneDrive()">☁️ Connect via OneDrive Link →</button>
+          <div class="sh-hero-note" style="margin-bottom:4px">Files stream from your OneDrive — works on any computer</div>
+          ${supported
+            ? `<button class="btn btn-s sh-hero-btn" style="margin-bottom:0;width:100%;justify-content:center" onclick="connectPMPFolder()">💻 Connect Local Folder →</button>
+               <div class="sh-hero-note">Fastest if files are synced to this computer</div>`
+            : ''
+          }
+        </div>
       </div>
 
       <div style="max-width:700px;margin:0 auto;padding:0 24px 32px">
@@ -5051,10 +5143,10 @@ function buildStartHere() {
     // POST-SETUP: compact daily view
     el.innerHTML = `
       <div class="sh-connected-bar">
-        <div style="font-size:13px;font-weight:700;color:var(--green)">✓ Folder Connected: <span style="color:var(--text)">${pmpDirHandle.name}</span></div>
+        <div style="font-size:13px;font-weight:700;color:var(--green)">${pmpDirHandle ? '✓ Folder Connected: <span style="color:var(--text)">' + pmpDirHandle.name + '</span>' : '☁️ Connected via OneDrive'}</div>
         <div style="display:flex;gap:8px">
           <button class="btn btn-s btn-sm" onclick="goToTab('files')">Browse Files →</button>
-          <button class="btn btn-s btn-sm" onclick="pmpDirHandle=null;buildStartHere();buildFiles()">Disconnect</button>
+          <button class="btn btn-s btn-sm" onclick="${pmpDirHandle ? 'pmpDirHandle=null;buildStartHere();buildFiles()' : 'disconnectOneDrive()'}">Disconnect</button>
         </div>
       </div>
 
@@ -5197,7 +5289,7 @@ function buildSHPduCallout() {
 // PDF IN-BROWSER VIEWER
 // ============================================================
 async function openPdfInModal(relPath, title) {
-  if (!pmpDirHandle) {
+  if (!pmpDirHandle && !onedriveSharingUrl) {
     showToast('Connect your PMP folder first to view files in-browser.');
     return;
   }
@@ -5208,6 +5300,19 @@ async function openPdfInModal(relPath, title) {
   titleEl.textContent = title || relPath.split('/').pop();
   iframe.src = 'about:blank';
   modal.classList.add('open');
+  // OneDrive mode
+  if (!pmpDirHandle && onedriveSharingUrl) {
+    try {
+      const downloadUrl = await getOneDriveDownloadUrl(relPath);
+      if (!downloadUrl) throw new Error('Could not get download URL from OneDrive.');
+      iframe.src = downloadUrl;
+    } catch(e) {
+      iframe.src = 'about:blank';
+      titleEl.textContent = '⚠ Could not load from OneDrive: ' + e.message;
+    }
+    return;
+  }
+  // Local folder mode
   try {
     const parts = relPath.split('/');
     let dir = pmpDirHandle;
@@ -5262,7 +5367,7 @@ function showAppTab(tab) {
 // VIDEO MODAL
 // ============================================================
 async function openVideoInModal(relPath, title) {
-  if (!pmpDirHandle) {
+  if (!pmpDirHandle && !onedriveSharingUrl) {
     showToast('Connect your PMP folder first (Your Files tab) to watch videos.');
     return;
   }
@@ -5273,6 +5378,21 @@ async function openVideoInModal(relPath, title) {
   titleEl.textContent = title || relPath.split('/').pop();
   player.src = '';
   modal.classList.add('open');
+  // OneDrive mode
+  if (!pmpDirHandle && onedriveSharingUrl) {
+    showToast('Loading from OneDrive…');
+    try {
+      const downloadUrl = await getOneDriveDownloadUrl(relPath);
+      if (!downloadUrl) throw new Error('Could not get download URL from OneDrive.');
+      player.src = downloadUrl;
+      player.play();
+    } catch(e) {
+      player.src = '';
+      titleEl.textContent = '⚠ Could not load from OneDrive: ' + (e.message || e);
+    }
+    return;
+  }
+  // Local folder mode
   try {
     const parts = relPath.split('/');
     let dir = pmpDirHandle;
