@@ -3993,9 +3993,10 @@ function connectOneDrive() {
   if (!trimmed.startsWith('http')) { showToast('Invalid URL — paste the full OneDrive sharing link.'); return; }
   onedriveSharingUrl = trimmed;
   save('onedriveSharingUrl', trimmed);
-  showToast('OneDrive connected! Files will now stream from your cloud folder.');
+  showToast('OneDrive connected! Scanning for video courses…');
   buildFiles();
   buildStartHere();
+  scanDynamicVideos();
 }
 
 function disconnectOneDrive() {
@@ -4060,13 +4061,21 @@ async function connectPMPFolder() {
 let dynamicCourses = null; // null=not scanned, []=scanned
 
 async function scanDynamicVideos() {
-  if (!pmpDirHandle) { dynamicCourses = null; buildMyCourses(); return; }
-  const VIDEO_EXTS = new Set(['mp4','mkv','avi','mov','webm','m4v']);
+  if (!pmpDirHandle && !onedriveSharingUrl) { dynamicCourses = null; buildMyCourses(); return; }
   const section = document.getElementById('my-courses-section');
   const list = document.getElementById('my-courses-list');
   if (section) section.style.display = 'block';
-  if (list) list.innerHTML = '<div style="font-size:12px;color:var(--t2);padding:16px 0">Scanning your folder for video courses…</div>';
+  if (list) list.innerHTML = '<div style="font-size:12px;color:var(--t2);padding:16px 0">Scanning for video courses…</div>';
 
+  if (pmpDirHandle) {
+    await scanLocalVideos();
+  } else {
+    await scanOneDriveVideos();
+  }
+}
+
+async function scanLocalVideos() {
+  const VIDEO_EXTS = new Set(['mp4','mkv','avi','mov','webm','m4v']);
   async function listVideos(dirHandle, basePath, depth) {
     const results = [];
     if (depth > 3) return results;
@@ -4083,7 +4092,6 @@ async function scanDynamicVideos() {
     } catch(e) {}
     return results;
   }
-
   const courses = [];
   try {
     for await (const [name, handle] of pmpDirHandle.entries()) {
@@ -4091,18 +4099,66 @@ async function scanDynamicVideos() {
       const videos = await listVideos(handle, name + '/', 1);
       if (videos.length > 0) courses.push({ folderName: name, videos });
     }
-  } catch(e) { console.error('Scan error:', e); }
-
+  } catch(e) { console.error('Local scan error:', e); }
   dynamicCourses = courses;
   buildMyCourses();
   showToast('Found ' + courses.length + ' video course' + (courses.length === 1 ? '' : 's') + '!');
+}
+
+async function scanOneDriveVideos() {
+  const VIDEO_EXTS = new Set(['mp4','mkv','avi','mov','webm','m4v']);
+  const shareId = encodeOneDriveShareId(onedriveSharingUrl);
+
+  async function odListChildren(path) {
+    const url = path
+      ? `https://graph.microsoft.com/v1.0/shares/${shareId}/root:/${path.split('/').map(encodeURIComponent).join('/')}:/children?$select=name,folder,file&$top=200`
+      : `https://graph.microsoft.com/v1.0/shares/${shareId}/root/children?$select=name,folder,file&$top=200`;
+    try {
+      const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data.value || [];
+    } catch(e) { return null; }
+  }
+
+  const rootItems = await odListChildren(null);
+  if (!rootItems) {
+    dynamicCourses = [];
+    buildMyCourses();
+    showToast('Could not scan OneDrive. Make sure the folder is shared with "Anyone with the link can view".');
+    return;
+  }
+
+  const folders = rootItems.filter(i => i.folder);
+  const courseResults = await Promise.all(folders.map(async folder => {
+    const children = await odListChildren(folder.name);
+    if (!children) return null;
+    const videos = children
+      .filter(c => c.file && VIDEO_EXTS.has(c.name.split('.').pop().toLowerCase()))
+      .map(c => ({ name: c.name, path: folder.name + '/' + c.name }));
+    // Also scan one level deeper for courses with section subfolders
+    const subFolders = children.filter(c => c.folder);
+    for (const sub of subFolders) {
+      const subChildren = await odListChildren(folder.name + '/' + sub.name);
+      if (!subChildren) continue;
+      subChildren
+        .filter(c => c.file && VIDEO_EXTS.has(c.name.split('.').pop().toLowerCase()))
+        .forEach(c => videos.push({ name: c.name, path: folder.name + '/' + sub.name + '/' + c.name }));
+    }
+    return videos.length > 0 ? { folderName: folder.name, videos } : null;
+  }));
+
+  dynamicCourses = courseResults.filter(Boolean);
+  buildMyCourses();
+  if (dynamicCourses.length > 0) showToast('Found ' + dynamicCourses.length + ' video courses!');
+  else showToast('No video files found. Check the folder is shared with "Anyone with the link can view".');
 }
 
 function buildMyCourses() {
   const section = document.getElementById('my-courses-section');
   const list = document.getElementById('my-courses-list');
   if (!section || !list) return;
-  if (!pmpDirHandle || !dynamicCourses) { section.style.display = 'none'; return; }
+  if ((!pmpDirHandle && !onedriveSharingUrl) || !dynamicCourses) { section.style.display = 'none'; return; }
   section.style.display = 'block';
   if (dynamicCourses.length === 0) {
     list.innerHTML = '<div style="font-size:12px;color:var(--t2);padding:12px 0">No video files found in this folder. Make sure you selected your PMP root folder.</div>';
