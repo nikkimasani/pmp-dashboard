@@ -7465,6 +7465,8 @@ document.addEventListener('DOMContentLoaded', () => {
   buildWeakAreas();
   buildNotesPanel();
   updateProgress();
+  // Auto-scan if a connection was already saved from a previous session
+  if (onedriveSharingUrl || pmpDirHandle) scanDynamicVideos();
 });
 </script>
 </body>
