@@ -471,7 +471,7 @@ body::before{content:'';position:fixed;inset:0;
              radial-gradient(ellipse 40% 60% at 70% 85%,rgba(124,107,250,.03) 0%,transparent 60%);
   pointer-events:none;z-index:0}
 .sb{z-index:100;position:fixed}
-.main{position:relative;z-index:1}
+.main{position:relative}
 
 /* Sidebar deep polish */
 .sb{background:linear-gradient(180deg,#060818 0%,#0a0e20 60%,#080c1c 100%);
@@ -822,6 +822,12 @@ body::before{content:'';position:fixed;inset:0;
   </div>
   <div id="phillips-local" style="display:none">
     <div id="phillips-sections"></div>
+  </div>
+
+  <!-- DYNAMIC VIDEO COURSES FROM CONNECTED FOLDER -->
+  <div id="my-courses-section" style="display:none;margin-top:24px">
+    <div class="sh">📁 My Video Courses — From Connected Folder</div>
+    <div id="my-courses-list"></div>
   </div>
 
   <div class="sh" style="margin-top:20px">🟥 Free YouTube Courses — Watch Online</div>
@@ -3995,6 +4001,8 @@ function connectOneDrive() {
 function disconnectOneDrive() {
   onedriveSharingUrl = null;
   save('onedriveSharingUrl', null);
+  dynamicCourses = null;
+  buildMyCourses();
   buildFiles();
   buildStartHere();
 }
@@ -4037,12 +4045,95 @@ async function connectPMPFolder() {
   }
   try {
     pmpDirHandle = await window.showDirectoryPicker({ mode: 'read' });
-    showToast('Connected: ' + pmpDirHandle.name + ' — all files now open in one click!');
+    showToast('Connected: ' + pmpDirHandle.name + ' — scanning for videos…');
     buildFiles();
     buildStartHere();
+    scanDynamicVideos();
   } catch(e) {
     if (e.name !== 'AbortError') showToast('Error connecting: ' + e.message);
   }
+}
+
+// ============================================================
+// DYNAMIC VIDEO SCANNER
+// ============================================================
+let dynamicCourses = null; // null=not scanned, []=scanned
+
+async function scanDynamicVideos() {
+  if (!pmpDirHandle) { dynamicCourses = null; buildMyCourses(); return; }
+  const VIDEO_EXTS = new Set(['mp4','mkv','avi','mov','webm','m4v']);
+  const section = document.getElementById('my-courses-section');
+  const list = document.getElementById('my-courses-list');
+  if (section) section.style.display = 'block';
+  if (list) list.innerHTML = '<div style="font-size:12px;color:var(--t2);padding:16px 0">Scanning your folder for video courses…</div>';
+
+  async function listVideos(dirHandle, basePath, depth) {
+    const results = [];
+    if (depth > 3) return results;
+    try {
+      for await (const [name, handle] of dirHandle.entries()) {
+        if (handle.kind === 'file') {
+          const ext = name.split('.').pop().toLowerCase();
+          if (VIDEO_EXTS.has(ext)) results.push({ name, path: basePath + name });
+        } else if (handle.kind === 'directory' && depth < 3) {
+          const sub = await listVideos(handle, basePath + name + '/', depth + 1);
+          results.push(...sub);
+        }
+      }
+    } catch(e) {}
+    return results;
+  }
+
+  const courses = [];
+  try {
+    for await (const [name, handle] of pmpDirHandle.entries()) {
+      if (handle.kind !== 'directory') continue;
+      const videos = await listVideos(handle, name + '/', 1);
+      if (videos.length > 0) courses.push({ folderName: name, videos });
+    }
+  } catch(e) { console.error('Scan error:', e); }
+
+  dynamicCourses = courses;
+  buildMyCourses();
+  showToast('Found ' + courses.length + ' video course' + (courses.length === 1 ? '' : 's') + '!');
+}
+
+function buildMyCourses() {
+  const section = document.getElementById('my-courses-section');
+  const list = document.getElementById('my-courses-list');
+  if (!section || !list) return;
+  if (!pmpDirHandle || !dynamicCourses) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  if (dynamicCourses.length === 0) {
+    list.innerHTML = '<div style="font-size:12px;color:var(--t2);padding:12px 0">No video files found in this folder. Make sure you selected your PMP root folder.</div>';
+    return;
+  }
+  list.innerHTML = dynamicCourses.map((course, ci) => {
+    const id = 'dc-' + ci;
+    const cleanName = course.folderName.replace(/^\[.*?\]\s*/,'').replace(/^Udemy\s*-\s*/i,'');
+    return `
+    <div style="background:var(--s1);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:var(--rs);margin-bottom:8px;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer" onclick="const b=document.getElementById('${id}');b.style.display=b.style.display==='none'?'block':'none'">
+        <div style="font-size:18px">🎬</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700">${cleanName}</div>
+          <div style="font-size:11px;color:var(--t2)">${course.videos.length} video${course.videos.length===1?'':'s'}</div>
+        </div>
+        <span style="font-size:11px;color:var(--t3)">▶</span>
+      </div>
+      <div id="${id}" style="display:none;border-top:1px solid var(--border);padding:0 16px 12px">
+        ${course.videos.map(v => {
+          const title = v.name.replace(/\.mp4$/i,'').replace(/^\d+\.\s*/,'');
+          const safeP = v.path.replace(/'/g,"\\'");
+          const safeT = title.replace(/'/g,"\\'");
+          return `<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--t2)">
+            <span style="flex:1">${title}</span>
+            <button class="btn btn-p btn-sm" onclick="openVideoInModal('${safeP}','${safeT}')">▶ Watch</button>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
 }
 
 async function openFromDir(relPath) {
@@ -4185,7 +4276,7 @@ function buildFiles() {
     ? `✓ Connected: ${pmpDirHandle.name}`
     : `☁️ Connected via OneDrive`;
   const disconnectFn = pmpDirHandle
-    ? `pmpDirHandle=null;buildFiles();buildStartHere()`
+    ? `pmpDirHandle=null;dynamicCourses=null;buildMyCourses();buildFiles();buildStartHere()`
     : `disconnectOneDrive()`;
 
   container.innerHTML = `
@@ -5157,7 +5248,7 @@ function buildStartHere() {
         <div style="font-size:13px;font-weight:700;color:var(--green)">${pmpDirHandle ? '✓ Folder Connected: <span style="color:var(--text)">' + pmpDirHandle.name + '</span>' : '☁️ Connected via OneDrive'}</div>
         <div style="display:flex;gap:8px">
           <button class="btn btn-s btn-sm" onclick="goToTab('files')">Browse Files →</button>
-          <button class="btn btn-s btn-sm" onclick="${pmpDirHandle ? 'pmpDirHandle=null;buildStartHere();buildFiles()' : 'disconnectOneDrive()'}">Disconnect</button>
+          <button class="btn btn-s btn-sm" onclick="${pmpDirHandle ? 'pmpDirHandle=null;dynamicCourses=null;buildMyCourses();buildStartHere();buildFiles()' : 'disconnectOneDrive()'}">Disconnect</button>
         </div>
       </div>
 
