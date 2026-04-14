@@ -4007,12 +4007,23 @@ async function getOneDriveDownloadUrl(relPath) {
   if (!onedriveSharingUrl) return null;
   const shareId = encodeOneDriveShareId(onedriveSharingUrl);
   const encodedPath = relPath.split('/').map(p => encodeURIComponent(p)).join('/');
-  const apiUrl = `https://api.onedrive.com/v1.0/shares/${shareId}/root:/${encodedPath}`;
+  // Try Graph API first — returns proper streaming URLs for video
   try {
-    const res = await fetch(apiUrl, { headers: { 'Accept': 'application/json' } });
+    const graphUrl = `https://graph.microsoft.com/v1.0/shares/${shareId}/root:/${encodedPath}?$select=id,name,@microsoft.graph.downloadUrl`;
+    const res = await fetch(graphUrl, { headers: { 'Accept': 'application/json' } });
+    if (res.ok) {
+      const data = await res.json();
+      const url = data['@microsoft.graph.downloadUrl'] || data['@content.downloadUrl'];
+      if (url) return url;
+    }
+  } catch(e) { console.warn('Graph API attempt failed, trying legacy:', e); }
+  // Fallback to legacy OneDrive API
+  try {
+    const legacyUrl = `https://api.onedrive.com/v1.0/shares/${shareId}/root:/${encodedPath}`;
+    const res = await fetch(legacyUrl, { headers: { 'Accept': 'application/json' } });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
-    return data['@content.downloadUrl'] || null;
+    return data['@content.downloadUrl'] || data['@microsoft.graph.downloadUrl'] || null;
   } catch(e) {
     console.error('OneDrive fetch error:', e);
     return null;
@@ -5383,12 +5394,18 @@ async function openVideoInModal(relPath, title) {
     showToast('Loading from OneDrive…');
     try {
       const downloadUrl = await getOneDriveDownloadUrl(relPath);
-      if (!downloadUrl) throw new Error('Could not get download URL from OneDrive.');
+      if (!downloadUrl) throw new Error('Could not get download URL from OneDrive. Make sure your folder is shared with "Anyone with the link can view".');
+      player.onerror = null;
+      player.onerror = () => {
+        player.onerror = null;
+        player.src = '';
+        titleEl.innerHTML = '⚠ Could not stream inline. <a href="' + downloadUrl + '" target="_blank" style="color:var(--accent);text-decoration:underline">Click here to open in new tab →</a>';
+      };
       player.src = downloadUrl;
-      player.play();
+      player.play().catch(() => {});
     } catch(e) {
       player.src = '';
-      titleEl.textContent = '⚠ Could not load from OneDrive: ' + (e.message || e);
+      titleEl.textContent = '⚠ ' + (e.message || e);
     }
     return;
   }
