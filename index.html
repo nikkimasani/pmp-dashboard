@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PMP Base Camp</title>
+<title>PMP Boot Camp</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -778,7 +778,116 @@ body>.sb{z-index:10}
 .brief-day{font-size:10px;color:var(--a2);font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
 .brief-quote{font-size:13px;color:var(--text);line-height:1.65;font-style:italic;margin-bottom:6px}
 .brief-attr{font-size:11px;color:var(--t2)}
-/* ===== END BASE CAMP ENHANCEMENTS ===== */
+/* ===== END BOOT CAMP ENHANCEMENTS ===== */
+
+/* ===== REDESIGN: CSS FOUNDATION ===== */
+
+/* Step 2 — Sidebar progress bar */
+.sb-prog-wrap{padding:0 18px 14px;border-bottom:1px solid var(--border)}
+.sb-prog-lbl{display:flex;justify-content:space-between;font-size:9px;color:var(--t2);font-weight:600;margin-bottom:5px;text-transform:uppercase;letter-spacing:.8px}
+.sb-prog-bar{height:5px;background:var(--s3);border-radius:100px;overflow:hidden}
+.sb-prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--a2));border-radius:100px;transition:width .6s ease}
+
+/* Step 3 — Zone nav labels */
+.nav-zone{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;padding:10px 10px 5px;display:flex;align-items:center;gap:5px}
+.nav-zone-train{color:#2ed573}
+.nav-zone-progress{color:#3d9eff}
+.nav-zone-study{color:#a55eea}
+.ni-badge{font-size:9px;font-weight:700;margin-left:auto;padding:1px 6px;border-radius:4px}
+.ni-badge-green{color:var(--green);background:rgba(46,213,115,.1)}
+.ni-badge-orange{color:var(--a4);background:rgba(255,165,2,.1)}
+.ni-badge-red{color:var(--red);background:rgba(255,71,87,.1)}
+.ni-badge-accent{color:var(--accent);background:rgba(124,107,250,.12);border:1px solid rgba(124,107,250,.2)}
+
+/* Step 4 — Start Here stats cards */
+.sh-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.sh-stat{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:16px;text-align:center;transition:border-color .2s}
+.sh-stat:hover{border-color:rgba(124,107,250,.35)}
+.sh-stat-val{font-size:28px;font-weight:900;letter-spacing:-1px;line-height:1}
+.sh-stat-lbl{font-size:8px;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-top:5px}
+.sh-stat-sub{font-size:9px;font-weight:700;margin-top:6px}
+.sh-stat-bar{height:3px;background:var(--s3);border-radius:100px;overflow:hidden;margin-top:8px}
+.sh-stat-bar-fill{height:100%;border-radius:100px}
+
+/* Step 5 — Coach briefing card */
+.coach-card{background:linear-gradient(135deg,rgba(255,165,2,.08),rgba(255,71,87,.04));border:1px solid rgba(255,165,2,.25);border-radius:14px;padding:18px 20px;margin-bottom:18px;position:relative;overflow:hidden}
+.coach-card::after{content:'🏅';position:absolute;top:-15px;right:-5px;font-size:64px;opacity:.06;pointer-events:none}
+.coach-ico{width:36px;height:36px;background:linear-gradient(135deg,#ffa502,#ff6b35);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.coach-lbl{font-size:9px;color:var(--a4);font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.coach-msg{font-size:13px;color:rgba(236,237,250,.88);line-height:1.65;font-style:italic}
+
+/* Step 6 — Today's Training task cards */
+.training-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.training-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--t2)}
+.training-count{font-size:10px;color:var(--t2)}
+.task-card{border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .18s;margin-bottom:8px}
+.task-card:hover{transform:translateX(3px)}
+.task-card.done{opacity:.55}
+.task-card.done .task-title{text-decoration:line-through}
+.task-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;border-width:2px;border-style:solid}
+.task-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
+.task-sub{font-size:11px;color:var(--t2)}
+.task-btn{border-radius:8px;padding:6px 14px;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer;border:1px solid;background:transparent;font-family:'Outfit',sans-serif;transition:all .18s}
+.task-change{font-size:10px;color:var(--t3);cursor:pointer;background:none;border:none;font-family:'Outfit',sans-serif;padding:0;margin-top:4px}
+.task-change:hover{color:var(--t2)}
+.task-card-watch{background:rgba(46,213,115,.06);border:1px solid rgba(46,213,115,.2)}
+.task-card-drill{background:rgba(124,107,250,.06);border:1px solid rgba(124,107,250,.2)}
+.task-card-review{background:rgba(61,158,255,.06);border:1px solid rgba(61,158,255,.2)}
+
+/* Step 7 — Readiness bar + greeting */
+.sh-greeting{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.sh-greeting-name{font-size:22px;font-weight:900;letter-spacing:-.5px}
+.sh-greeting-date{font-size:11px;color:var(--t2);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.sh-streak-card{background:rgba(255,165,2,.08);border:1px solid rgba(255,165,2,.25);border-radius:10px;padding:8px 14px;text-align:right;flex-shrink:0}
+.sh-streak-val{font-size:24px;font-weight:900;color:var(--a4);line-height:1}
+.sh-streak-lbl{font-size:8px;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.readiness-bar-wrap{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-top:0}
+.readiness-lbl{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:1px}
+.readiness-note{font-size:10px;color:var(--t2);margin-top:8px}
+
+/* Step 8 — Celebration components */
+/* Tier 1 — Win toast */
+.win-toast{position:fixed;bottom:24px;right:24px;background:var(--s2);border:1px solid rgba(46,213,115,.35);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,.4);z-index:3000;transform:translateX(120%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);max-width:300px}
+.win-toast.show{transform:translateX(0)}
+.win-toast-ico{font-size:22px;flex-shrink:0}
+.win-toast-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.win-toast-sub{font-size:11px;color:var(--t2)}
+.win-toast-xp{width:28px;height:28px;background:rgba(46,213,115,.12);border:1px solid rgba(46,213,115,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--green);font-size:10px;font-weight:800;flex-shrink:0}
+/* Tier 2 — PR banner */
+.pr-banner{background:linear-gradient(135deg,rgba(255,165,2,.15),rgba(255,71,87,.08));border:1px solid rgba(255,165,2,.4);border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:16px;margin-bottom:16px;position:relative;overflow:hidden}
+.pr-banner::after{content:'🏆';position:absolute;top:-15px;right:-5px;font-size:80px;opacity:.07;pointer-events:none}
+.pr-banner-ico{font-size:36px;flex-shrink:0}
+.pr-banner-label{font-size:11px;font-weight:800;color:var(--a4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px}
+.pr-banner-score{font-size:17px;font-weight:900;color:var(--text);margin-bottom:4px}
+.pr-banner-delta{font-size:12px;color:var(--t2)}
+/* Tier 3 — Big modal */
+.celebration-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:4000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.celebration-overlay.show{opacity:1;pointer-events:all}
+.celebration-modal{background:var(--s2);border:1px solid rgba(46,213,115,.3);border-radius:16px;padding:28px 24px;text-align:center;max-width:320px;width:90%;box-shadow:0 0 60px rgba(46,213,115,.12)}
+.celebration-title{font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.celebration-name{font-size:18px;font-weight:900;color:var(--text);margin-bottom:6px}
+.celebration-desc{font-size:12px;color:var(--t2);margin-bottom:16px}
+.celebration-badge-pill{font-size:11px;font-weight:700;color:var(--green);background:rgba(46,213,115,.08);border:1px solid rgba(46,213,115,.2);border-radius:8px;padding:8px 14px;margin-bottom:16px;display:inline-block}
+/* Badge gallery */
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:20px}
+.badge-card{border-radius:12px;padding:14px;text-align:center;border-width:2px;border-style:solid;transition:all .2s}
+.badge-card-earned{background:rgba(46,213,115,.08);border-color:rgba(46,213,115,.4)}
+.badge-card-reach{background:rgba(255,165,2,.06);border-color:rgba(255,165,2,.35)}
+.badge-card-locked{background:rgba(255,255,255,.02);border-color:rgba(255,255,255,.08);opacity:.55}
+.badge-card-ico{font-size:28px;margin-bottom:6px}
+.badge-card-locked .badge-card-ico{filter:grayscale(1)}
+.badge-card-status{font-size:10px;font-weight:800;text-transform:uppercase;margin-bottom:2px}
+.badge-card-name{font-size:11px;font-weight:700;color:var(--text)}
+.badge-card-desc{font-size:9px;color:var(--t2);margin-top:3px}
+.badge-reach-bar{background:rgba(255,255,255,.05);border-radius:100px;height:3px;overflow:hidden;margin-top:6px}
+.badge-reach-fill{height:100%;background:var(--a4);border-radius:100px}
+/* XP level card */
+.xp-card{background:var(--s1);border:1px solid rgba(165,94,234,.25);border-radius:14px;padding:16px 18px;margin-bottom:20px}
+.xp-avatar{width:44px;height:44px;background:linear-gradient(135deg,#a55eea,#7c6bfa);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.xp-bar-wrap{background:rgba(255,255,255,.05);border-radius:100px;height:6px;overflow:hidden;margin:6px 0}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,#a55eea,#7c6bfa);border-radius:100px;transition:width .6s ease}
+
+/* ===== END REDESIGN CSS FOUNDATION ===== */
 </style>
 </head>
 <body>
@@ -788,7 +897,7 @@ body>.sb{z-index:10}
 <nav class="sb">
   <div class="sb-logo">
     <div class="logo-badge">PMP</div>
-    <div class="logo-t">Base Camp</div>
+    <div class="logo-t">Boot Camp</div>
     <div class="logo-s">PMI Project Management Professional</div>
   </div>
   <div class="sb-cd">
