@@ -4053,16 +4053,23 @@ async function getOneDriveDownloadUrl(relPath) {
   const fullPath = OD_FOLDER + '/' + relPath;
   const encodedPath = fullPath.split('/').map(encodeURIComponent).join('/');
   const authHeader = { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' };
+  console.log('[OD] Fetching item path:', fullPath, '| encoded:', encodedPath);
   // Primary: get DriveItem — @microsoft.graph.downloadUrl is auto-included for files
   try {
     const res = await fetch(
       `https://graph.microsoft.com/v1.0/me/drive/root:/${encodedPath}`,
       { headers: authHeader }
     );
+    console.log('[OD] Item response status:', res.status);
     if (res.ok) {
       const data = await res.json();
+      console.log('[OD] Item keys:', Object.keys(data));
       const url = data['@microsoft.graph.downloadUrl'] || data['@content.downloadUrl'];
       if (url) return url;
+      console.warn('[OD] No downloadUrl in response');
+    } else {
+      const errText = await res.text();
+      console.error('[OD] Item error body:', errText);
     }
   } catch(e) { console.error('getOneDriveDownloadUrl item error:', e); }
   // Fallback: content redirect — returns pre-signed streaming URL
@@ -4071,6 +4078,7 @@ async function getOneDriveDownloadUrl(relPath) {
       `https://graph.microsoft.com/v1.0/me/drive/root:/${encodedPath}:/content`,
       { headers: { 'Authorization': 'Bearer ' + token }, redirect: 'follow' }
     );
+    console.log('[OD] Content redirect status:', res.status, 'url:', res.url);
     if (res.ok || res.redirected) return res.url;
   } catch(e) { console.error('getOneDriveDownloadUrl content error:', e); }
   return null;
