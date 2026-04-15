@@ -4065,6 +4065,7 @@ async function getOneDriveDownloadUrl(relPath) {
       const data = await res.json();
       console.log('[OD] Item keys:', Object.keys(data));
       const url = data['@microsoft.graph.downloadUrl'] || data['@content.downloadUrl'];
+      console.log('[OD] downloadUrl value type:', typeof url, '| truthy:', !!url, '| preview:', url ? String(url).substring(0,60) : 'NONE');
       if (url) return url;
       console.warn('[OD] No downloadUrl in response');
     } else {
@@ -5593,6 +5594,7 @@ async function openVideoInModal(relPath, title) {
     showToast('Loading from OneDrive…');
     try {
       const downloadUrl = await getOneDriveDownloadUrl(relPath);
+      console.log('[OD modal] downloadUrl result:', downloadUrl ? 'GOT URL' : 'NULL', downloadUrl ? String(downloadUrl).substring(0,60) : '');
       if (!downloadUrl) throw new Error('Could not get download URL from OneDrive.');
       player.onerror = null;
       player.onerror = () => {
