@@ -6,38 +6,50 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A personal PMP exam study dashboard. Single-file app (`index.html`, ~7,200 lines). No build step, no npm, no server required.
 
+**Live:** https://pmp-dashboard-one.vercel.app  
+**Branch:** `main` → Vercel auto-deploys on push (~30 seconds)
+
 ## Running Locally
 
 Open `index.html` directly in Chrome or Edge. No dev server needed.
 
 ## File Layout
 
-Everything lives in `index.html`:
+Everything lives in `index.html` in this order:
 1. `<style>` block — all CSS
 2. HTML body — all UI
 3. `<script>` block — all JavaScript
 
-Use **Ctrl+F** to search for section names, function names, or IDs. Sections are marked with comments — search for `===` or a section keyword to jump to the right area.
+`msal-browser.min.js` is bundled locally (not CDN) — required for the OneDrive Sign In / MSAL OAuth feature.
+
+Use **Ctrl+F** to search by section name, function name, or element ID. Sections are delimited with `===` banner comments.
 
 ## Data Storage
 
-All state lives in browser `localStorage` — no backend, no sync across devices:
+All state lives in browser `localStorage` — no backend, no cross-device sync:
 - Quiz scores and history
 - Study plan progress
-- Any user settings
+- User settings and OneDrive credentials
 
-Clearing browser data clears all progress.
+## OneDrive / MSAL Integration (in progress)
+
+The Video Library tab connects to a personal OneDrive folder to browse and stream PMP study videos. MSAL.js is loaded from the local `msal-browser.min.js`.
+
+**Current blocker:** New `1drv.ms/f/c/...` sharing links require OAuth — anonymous Graph API calls return 401. See `SESSION_NOTES.md` for the full context and two fix paths:
+- **Path A (quick):** Change Watch/Open buttons to open the sharing URL in a new tab instead of streaming inline — works today, code-only change.
+- **Path B (proper):** Full MSAL OAuth via M365 Developer Program — enables in-app streaming.
+
+Key functions related to OneDrive:
+- `scanDynamicVideos()` — scans OneDrive subfolders for video files
+- `buildMyCourses()` — renders all courses dynamically in the Video Library tab
+- OneDrive folder link + credentials stored in `localStorage` (set by user in UI, not hardcoded)
 
 ## Deploying
 
-No git repo is set up yet. Two options:
+```bash
+git add index.html
+git commit -m "describe change"
+git push
+```
 
-**Netlify Drop (fastest):** Drag `index.html` onto https://app.netlify.com/drop — live in ~10 seconds.
-
-**GitHub Pages (permanent URL):**
-1. Create repo `pmp-dashboard` at https://github.com/new (Public)
-2. Upload `index.html`
-3. Settings → Pages → Deploy from branch → `main` / root
-4. URL: `https://nikkimasani.github.io/pmp-dashboard`
-
-See `HOW_TO_DEPLOY.txt` for step-by-step instructions.
+Vercel auto-deploys on push. No manual step needed.
