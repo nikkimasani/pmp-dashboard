@@ -5940,7 +5940,7 @@ function buildStartHere() {
     <div class="sh-greeting">
       <div>
         <div class="sh-greeting-date">${dayName.toUpperCase()} · ${daysLeft !== '—' ? 'DAY ' + dayCount + ' OF ' + (dayCount + daysLeft - 1) : ''}</div>
-        <div class="sh-greeting-name">Good morning, Nikki 👊</div>
+        <div class="sh-greeting-name">${(()=>{const h=new Date().getHours();const g=h<12?'Good morning':h<17?'Good afternoon':h<21?'Good evening':'Good night';const n=window._profileName||'Nikki';return g+', '+n+' 👊';})()}</div>
       </div>
       <div class="sh-streak-card">
         <div class="sh-streak-val">${streak}🔥</div>
@@ -8805,6 +8805,7 @@ async function onAuthReady(user) {
   document.getElementById('profile-setup').style.display = 'none';
   const { data: profile } = await sbClient.from('pmp_profiles').select('*').eq('id', user.id).single();
   if (!profile) { document.getElementById('profile-setup').style.display = 'flex'; return; }
+  window._profileName = profile.name;
   if (ADMIN_EMAILS.includes(user.email) || profile.role === 'admin') {
     const el = document.getElementById('admin-nav-item');
     if (el) el.style.display = 'flex';
