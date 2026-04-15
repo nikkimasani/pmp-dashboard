@@ -4084,6 +4084,7 @@ function nav(id, el) {
   document.getElementById('p-' + id).classList.add('active');
   if (el) el.classList.add('active');
   window.scrollTo(0,0);
+  if (id === 'today') buildStartHere();
 }
 
 // ============================================================
@@ -5707,216 +5708,220 @@ function goToTab(id) {
 function buildStartHere() {
   const el = document.getElementById('starthere-content');
   if (!el) return;
-  const supported = !!window.showDirectoryPicker;
 
-  if (!pmpDirHandle && !oneDriveToken) {
-    // PRE-SETUP: hero connect card
-    el.innerHTML = `
-      <div class="sh-hero">
-        <div class="sh-hero-icon">📁</div>
-        <div class="sh-hero-title">Connect Your PMP Folder</div>
-        <div class="sh-hero-sub">
-          Choose how to connect — both give you one-click access to all 44 files and videos.
-        </div>
-        <div style="display:flex;flex-direction:column;gap:10px;max-width:420px;margin:0 auto 18px;text-align:left">
-          <button class="btn btn-p sh-hero-btn" style="margin-bottom:0;width:100%;justify-content:center" onclick="connectOneDrive()">☁️ Sign in with Microsoft →</button>
-          <div class="sh-hero-note" style="margin-bottom:4px">Files stream from your OneDrive — works on any computer</div>
-          ${supported
-            ? `<button class="btn btn-s sh-hero-btn" style="margin-bottom:0;width:100%;justify-content:center" onclick="connectPMPFolder()">💻 Connect Local Folder →</button>
-               <div class="sh-hero-note">Fastest if files are synced to this computer</div>`
-            : ''
-          }
-        </div>
-      </div>
+  const planDone = load('planDone', {});
+  const donePct = Math.round(Object.values(planDone).filter(Boolean).length / 8 * 100);
+  const qh = load('quizHistory', {total:0,correct:0});
+  const qAvg = qh.total > 0 ? Math.round(qh.correct / qh.total * 100) : 0;
+  const streak = getStreak();
+  const achievements = getAchievements();
+  const earnedCount = achievements.earnedBadges.length;
+  const inReachCount = BADGES.filter(b => !achievements.earnedBadges.includes(b.id) && getBadgeProgress(b) > 0.5).length;
 
-      <div style="max-width:700px;margin:0 auto;padding:0 24px 32px">
-        <div class="sh" style="margin-top:0">Quick Access — Study Tools</div>
-        <div class="sh-actions-grid">
-          <a class="btn btn-p" style="justify-content:center;padding:12px" href="https://www.udemy.com/share/101WOC3@4Qdx8gX253Xd9f4d9pbxCVVLgUs8uMuNLSyMUFVh4jNbpmSOXymwScpqKxAxmYzd/" target="_blank">📚 Ramdayal on Udemy</a>
-          <button class="btn btn-s" style="justify-content:center;padding:12px" onclick="goToTab('lessons')">🎓 Lessons</button>
-          <button class="btn btn-s" style="justify-content:center;padding:12px" onclick="goToTab('quiz')">🧠 Practice Quiz</button>
-          <button class="btn btn-s" style="justify-content:center;padding:12px" onclick="goToTab('flash')">🃏 Flashcards</button>
-          <button class="btn btn-s" style="justify-content:center;padding:12px" onclick="goToTab('plan')">📚 Study Plan</button>
-          <button class="btn btn-s" style="justify-content:center;padding:12px" onclick="goToTab('weak')">🎯 Weak Areas</button>
-        </div>
-
-        <div class="sh-section">
-          <div class="sh-toggle" onclick="const c=this.nextElementSibling;c.classList.toggle('open');this.querySelector('.sh-toggle-ico').classList.toggle('open')">
-            <span>📋 Your Study Roadmap (9 Weeks)</span><span class="sh-toggle-ico">▶</span>
-          </div>
-          <div class="sh-collapsible">
-            <div class="card-s" style="margin-top:4px">
-              <div class="info-row" style="cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--accent);font-weight:700">Week 1</span><span class="info-v">Ramdayal Mod 1–3: Mindset, Framework, Agile Intro →</span></div>
-              <div class="info-row" style="cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--blue);font-weight:700">Week 2</span><span class="info-v">Ramdayal Mod 4: People Domain (42% of exam) →</span></div>
-              <div class="info-row" style="cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--purple);font-weight:700">Week 3</span><span class="info-v">Ramdayal Mod 5: Scope, Schedule, Cost & EVM →</span></div>
-              <div class="info-row" style="cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--green);font-weight:700">Week 4</span><span class="info-v">Ramdayal Mod 5 cont.: Risk, Quality, Procurement →</span></div>
-              <div class="info-row" style="cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--a4);font-weight:700">Week 5</span><span class="info-v">Ramdayal Mod 7: Business Environment Domain →</span></div>
-              <div class="info-row" style="cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--a2);font-weight:700">Week 6–7</span><span class="info-v">Ramdayal Mod 3+6: Agile Deep Dive (50% of exam) →</span></div>
-              <div class="info-row" style="cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--red);font-weight:700">Week 8</span><span class="info-v">Ramdayal Mod 8: Full Mock Exams + 200 practice Qs →</span></div>
-              <div class="info-row" style="border-bottom:none;cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--green);font-weight:700">Week 9</span><span class="info-v">Weak area blitz + 180Q simulator + exam readiness ✓</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="sh-section">
-          <div class="sh-toggle" onclick="const c=this.nextElementSibling;c.classList.toggle('open');this.querySelector('.sh-toggle-ico').classList.toggle('open')">
-            <span>🧠 PMI Mindset Cheat Sheet</span><span class="sh-toggle-ico">▶</span>
-          </div>
-          <div class="sh-collapsible">
-            <div class="mindset-pair" style="margin-top:4px">
-              <div class="mc">
-                <div class="mc-h" style="color:var(--green)">✅ PMI LOVES</div>
-                <div class="mc-item"><em>Communicate first.</em> When in doubt, the PM communicates with stakeholders.</div>
-                <div class="mc-item"><em>Engage stakeholders early.</em> Never surprise them. Proactive over reactive.</div>
-                <div class="mc-item"><em>Follow the process.</em> Even under pressure — update registers, use change control.</div>
-                <div class="mc-item"><em>Servant leadership (agile).</em> PM serves the team, removes impediments.</div>
-                <div class="mc-item"><em>Root cause first.</em> Understand WHY before acting.</div>
-              </div>
-              <div class="mc">
-                <div class="mc-h" style="color:var(--red)">❌ PMI HATES</div>
-                <div class="mc-item"><em>Escalating too quickly.</em> Handle it yourself first. Escalate as a last resort.</div>
-                <div class="mc-item"><em>Gold plating.</em> Adding features beyond scope is wrong — even if "helpful."</div>
-                <div class="mc-item"><em>Skipping documentation.</em> In a crisis, document first.</div>
-                <div class="mc-item"><em>Commanding agile teams.</em> Scrum teams self-organize. Don't assign tasks.</div>
-                <div class="mc-item"><em>Scope without change request.</em> Never cut or add scope informally.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="sh-section">
-          <div class="sh-toggle" onclick="const c=this.nextElementSibling;c.classList.toggle('open');this.querySelector('.sh-toggle-ico').classList.toggle('open')">
-            <span>📊 Exam Quick Facts</span><span class="sh-toggle-ico">▶</span>
-          </div>
-          <div class="sh-collapsible">
-            <div class="card-s" style="margin-top:4px">
-              <div class="info-row"><span class="info-k">Questions</span><span class="info-v">180 total (175 scored + 5 unscored pretest)</span></div>
-              <div class="info-row"><span class="info-k">Time</span><span class="info-v" style="color:var(--a2)">230 min + optional onboarding tutorial</span></div>
-              <div class="info-row"><span class="info-k">Format</span><span class="info-v">~50% Predictive + ~50% Agile/Hybrid</span></div>
-              <div class="info-row"><span class="info-k">Breaks</span><span class="info-v">2 × 10-min (after Q60 &amp; Q120 — no going back once taken)</span></div>
-              <div class="info-row"><span class="info-k">Attempts</span><span class="info-v">3 attempts in 1-year eligibility window</span></div>
-              <div class="info-row"><span class="info-k">Fee (Member)</span><span class="info-v" style="color:var(--a2)">$425</span></div>
-              <div class="info-row" style="border-bottom:none"><span class="info-k">Fee (Full Price)</span><span class="info-v">$675</span></div>
-            </div>
-          </div>
-        </div>
-      </div>`;
-
-  } else {
-    // POST-SETUP: compact daily view
-    el.innerHTML = `
-      <div class="sh-connected-bar">
-        <div style="font-size:13px;font-weight:700;color:var(--green)">${pmpDirHandle ? '✓ Folder Connected: <span style="color:var(--text)">' + pmpDirHandle.name + '</span>' : '☁️ Connected via OneDrive'}</div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-s btn-sm" onclick="goToTab('files')">Browse Files →</button>
-          <button class="btn btn-s btn-sm" onclick="${pmpDirHandle ? 'pmpDirHandle=null;dynamicCourses=null;buildMyCourses();buildStartHere();buildFiles()' : 'disconnectOneDrive()'}">Disconnect</button>
-        </div>
-      </div>
-
-      ${buildDailyBriefHTML()}
-      <div id="readiness-container" style="margin-bottom:16px"></div>
-      ${buildTrailMap()}
-      <div class="ph"><div class="ph-title">Start Here</div><div class="ph-sub">Everything you need to summit the PMP — staged, sequenced, and ready to execute</div></div>
-
-      <div class="sh-actions-grid">
-        <a class="btn btn-p" style="justify-content:center;padding:14px 10px" href="https://www.udemy.com/share/101WOC3@4Qdx8gX253Xd9f4d9pbxCVVLgUs8uMuNLSyMUFVh4jNbpmSOXymwScpqKxAxmYzd/" target="_blank">📚 Ramdayal — Udemy</a>
-        <button class="btn btn-p" style="justify-content:center;padding:14px 10px" onclick="goToTab('lessons')">🎓 Lessons</button>
-        <button class="btn btn-p" style="justify-content:center;padding:14px 10px" onclick="goToTab('quiz')">🧠 Practice Quiz</button>
-        <button class="btn btn-p" style="justify-content:center;padding:14px 10px" onclick="goToTab('flash')">🃏 Flashcards</button>
-        <button class="btn btn-p" style="justify-content:center;padding:14px 10px" onclick="goToTab('plan')">📚 Study Plan</button>
-        <button class="btn btn-green" style="justify-content:center;padding:14px 10px" onclick="openFromDir('pmiitest/PMTraining PMP Course Quick Reference Guide MikeI.pdf')">📄 Quick Reference</button>
-        <button class="btn btn-s" style="justify-content:center;padding:14px 10px" onclick="goToTab('weak')">🎯 Weak Areas</button>
-        <button class="btn btn-s" style="justify-content:center;padding:14px 10px" onclick="goToTab('progress')">📊 Progress</button>
-      </div>
-
-      <!-- Ramdayal PDU Course Progress — prominent callout -->
-      <div id="sh-pdu-callout" style="margin-bottom:20px"></div>
-
-      <div class="sh">Today's Study Checklist</div>
-      <div id="daily-checklist-inner" style="margin-bottom:20px"></div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-        <div>
-          <div class="sh-section">
-            <div class="sh-toggle" onclick="const c=this.nextElementSibling;c.classList.toggle('open');this.querySelector('.sh-toggle-ico').classList.toggle('open')">
-              <span>📚 5-Resource Stack (In Order)</span><span class="sh-toggle-ico">▶</span>
-            </div>
-            <div class="sh-collapsible">
-              <div class="step-item" style="margin-top:8px">
-                <div class="step-num">1</div>
-                <div><div class="step-t">PMP Mindset Course — Day 1</div><div class="step-d">Reprogram how you think before studying content.</div>
-                  <button class="btn btn-p btn-sm" style="margin-top:6px" onclick="goToTab('learn')">Videos →</button></div>
-              </div>
-              <div class="step-item">
-                <div class="step-num">2</div>
-                <div><div class="step-t">PMTraining Quick Reference — Day 1</div><div class="step-d">30-min read. Map of all PMP processes.</div>
-                  <button class="btn btn-green btn-sm" style="margin-top:6px" onclick="openFromDir('pmiitest/PMTraining PMP Course Quick Reference Guide MikeI.pdf')">Open PDF →</button></div>
-              </div>
-              <div class="step-item">
-                <div class="step-num">3</div>
-                <div><div class="step-t">Ramdayal — PMP Exam Prep (Udemy, 35 PDUs)</div><div class="step-d">Primary course. Follow modules in order. 35 contact hours.</div>
-                  <button class="btn btn-p btn-sm" style="margin-top:6px" onclick="goToTab('learn')">Video Library →</button></div>
-              </div>
-              <div class="step-item">
-                <div class="step-num">4</div>
-                <div><div class="step-t">Joseph Phillips — 32 Sections (Local)</div><div class="step-d">Secondary course available locally. Use as reinforcement.</div>
-                  <button class="btn btn-green btn-sm" style="margin-top:6px" onclick="goToTab('learn')">Browse Local →</button></div>
-              </div>
-              <div class="step-item">
-                <div class="step-num done">5</div>
-                <div><div class="step-t">Practice Quiz — 20 Qs/day from Week 2</div><div class="step-d">Review every wrong answer. Know the WHY.</div>
-                  <button class="btn btn-p btn-sm" style="margin-top:6px" onclick="goToTab('quiz')">Quiz →</button></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="sh-section">
-            <div class="sh-toggle" onclick="const c=this.nextElementSibling;c.classList.toggle('open');this.querySelector('.sh-toggle-ico').classList.toggle('open')">
-              <span>🗓️ Week-by-Week Focus</span><span class="sh-toggle-ico">▶</span>
-            </div>
-            <div class="sh-collapsible">
-              <div class="card-s" style="margin-top:8px">
-                <div class="info-row" style="cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--accent);font-weight:700">Wk 1</span><span class="info-v">Ramdayal Mod 1–3: Framework + Agile Intro</span></div>
-                <div class="info-row" style="cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--blue);font-weight:700">Wk 2</span><span class="info-v">Ramdayal Mod 4: People Domain (42%)</span></div>
-                <div class="info-row" style="cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--purple);font-weight:700">Wk 3</span><span class="info-v">Ramdayal Mod 5: Scope, Schedule, Cost + EVM</span></div>
-                <div class="info-row" style="cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--green);font-weight:700">Wk 4</span><span class="info-v">Ramdayal Mod 5: Risk, Quality, Procurement</span></div>
-                <div class="info-row" style="cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--a4);font-weight:700">Wk 5</span><span class="info-v">Ramdayal Mod 7: Business Environment (8%)</span></div>
-                <div class="info-row" style="cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--a2);font-weight:700">Wk 6–7</span><span class="info-v">Ramdayal Mod 3+6: Agile Deep Dive (50%)</span></div>
-                <div class="info-row" style="cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--red);font-weight:700">Wk 8</span><span class="info-v">Ramdayal Mod 8: Mock Exams + 200 practice Qs</span></div>
-                <div class="info-row" style="border-bottom:none;cursor:pointer" onclick="goToTab('plan')"><span class="info-k" style="color:var(--green);font-weight:700">Wk 9</span><span class="info-v">180Q simulator + weak area blitz ✓</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="sh-section">
-            <div class="sh-toggle" onclick="const c=this.nextElementSibling;c.classList.toggle('open');this.querySelector('.sh-toggle-ico').classList.toggle('open')">
-              <span>🧠 PMI Mindset Quick Reference</span><span class="sh-toggle-ico">▶</span>
-            </div>
-            <div class="sh-collapsible">
-              <div class="mindset-pair" style="margin-top:8px">
-                <div class="mc">
-                  <div class="mc-h" style="color:var(--green)">✅ PMI LOVES</div>
-                  <div class="mc-item"><em>Communicate first.</em></div>
-                  <div class="mc-item"><em>Root cause before acting.</em></div>
-                  <div class="mc-item"><em>Follow the process always.</em></div>
-                  <div class="mc-item"><em>Servant leadership in agile.</em></div>
-                </div>
-                <div class="mc">
-                  <div class="mc-h" style="color:var(--red)">❌ PMI HATES</div>
-                  <div class="mc-item"><em>Escalating too quickly.</em></div>
-                  <div class="mc-item"><em>Gold plating the scope.</em></div>
-                  <div class="mc-item"><em>Skipping documentation.</em></div>
-                  <div class="mc-item"><em>Commanding agile teams.</em></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>`;
-
-    // Build daily checklist in the inner container
-    setTimeout(() => { buildDailyChecklistInner(); buildSHPduCallout(); }, 0);
+  // Exam date / days left
+  const examDateStr = load('examDate');
+  let daysLeft = '—';
+  let onPace = true;
+  if (examDateStr) {
+    const diff = Math.ceil((new Date(examDateStr) - new Date()) / 86400000);
+    daysLeft = Math.max(0, diff);
+    onPace = donePct >= Math.round((1 - diff / 90) * 100) - 10;
   }
+
+  // Quiz delta vs 7 days ago
+  const qHistory7 = load('quizHistory7d', []);
+  const avgDelta = qHistory7.length >= 2 ? qAvg - qHistory7[0] : null;
+
+  // Day counter
+  const startDate = load('studyStartDate');
+  let dayCount = '—';
+  if (startDate) {
+    dayCount = Math.ceil((new Date() - new Date(startDate)) / 86400000) + 1;
+  } else if (examDateStr) {
+    save('studyStartDate', new Date().toISOString());
+    dayCount = 1;
+  }
+
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const dayName = days[new Date().getDay()];
+
+  const coach = generateCoachBriefing(qAvg, avgDelta, daysLeft, streak);
+  const tasks = getDailyTraining();
+
+  el.innerHTML = `
+    <div class="ph">
+      <div class="ph-title">Start Here</div>
+      <div class="ph-sub">Your daily training hub — built from your data, updated every day.</div>
+    </div>
+
+    <!-- GREETING -->
+    <div class="sh-greeting">
+      <div>
+        <div class="sh-greeting-date">${dayName.toUpperCase()} · ${daysLeft !== '—' ? 'DAY ' + dayCount + ' OF ' + (dayCount + daysLeft - 1) : ''}</div>
+        <div class="sh-greeting-name">Good morning, Nikki 👊</div>
+      </div>
+      <div class="sh-streak-card">
+        <div class="sh-streak-val">${streak}🔥</div>
+        <div class="sh-streak-lbl">Day Streak</div>
+      </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="sh-stats">
+      <div class="sh-stat">
+        <div class="sh-stat-val" style="color:var(--accent)">${donePct}%</div>
+        <div class="sh-stat-lbl">Course Done</div>
+        <div class="sh-stat-bar"><div class="sh-stat-bar-fill" style="width:${donePct}%;background:var(--accent)"></div></div>
+      </div>
+      <div class="sh-stat">
+        <div class="sh-stat-val" style="color:var(--green)">${qAvg > 0 ? qAvg + '%' : '—'}</div>
+        <div class="sh-stat-lbl">Quiz Avg</div>
+        ${avgDelta !== null ? `<div class="sh-stat-sub" style="color:${avgDelta >= 0 ? 'var(--green)' : 'var(--red)'}">
+          ${avgDelta >= 0 ? '↑' : '↓'} ${Math.abs(avgDelta)}pts this week</div>` : ''}
+      </div>
+      <div class="sh-stat">
+        <div class="sh-stat-val" style="color:var(--blue)">${daysLeft}</div>
+        <div class="sh-stat-lbl">Days Left</div>
+        <div class="sh-stat-sub" style="color:${onPace ? 'var(--green)' : 'var(--a4)'}">
+          ${daysLeft === '—' ? '' : (onPace ? 'On pace ✓' : 'Behind ⚠️')}</div>
+      </div>
+      <div class="sh-stat">
+        <div class="sh-stat-val" style="color:var(--purple)">${earnedCount}</div>
+        <div class="sh-stat-lbl">Badges Earned</div>
+        ${inReachCount > 0 ? `<div class="sh-stat-sub" style="color:var(--a4)">${inReachCount} in reach 🏅</div>` : ''}
+      </div>
+    </div>
+
+    <!-- COACH BRIEFING -->
+    <div class="coach-card">
+      <div style="display:flex;gap:14px;align-items:flex-start">
+        <div class="coach-ico">💬</div>
+        <div>
+          <div class="coach-lbl">Coach's Briefing · Today</div>
+          <div class="coach-msg">"${coach}"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TODAY'S TRAINING -->
+    <div style="margin-bottom:18px">
+      <div class="training-hdr">
+        <div class="training-lbl">⚡ Today's Training</div>
+        <div class="training-count" id="training-count">0 of 3 complete</div>
+      </div>
+      ${renderTaskCard(tasks[0], 0)}
+      ${renderTaskCard(tasks[1], 1)}
+      ${renderTaskCard(tasks[2], 2)}
+    </div>
+
+    <!-- EXAM READINESS -->
+    <div class="readiness-bar-wrap">
+      <div class="readiness-lbl">
+        <span>Exam Readiness</span>
+        <span style="color:${donePct >= 70 ? 'var(--green)' : 'var(--a4)'}">${donePct}% · ${donePct >= 70 ? 'On Track' : 'Building'}</span>
+      </div>
+      <div class="sp-bar"><div class="sp-fill" style="width:${donePct}%"></div></div>
+      <div class="readiness-note">${qAvg > 0 && qAvg < 70 ? 'Quiz average below passing threshold — focus on practice questions' : donePct < 100 ? Math.round((1 - donePct/100) * 8) + ' study plan section(s) remaining' : 'All sections complete — keep drilling practice questions!'}</div>
+    </div>
+  `;
+  updateTaskCount();
+}
+
+function renderTaskCard(task, idx) {
+  if (!task) return '';
+  const configs = [
+    { cls:'task-card-watch',  icoCls:'rgba(46,213,115,.12)',  icoBdr:'rgba(46,213,115,.35)',  btnColor:'var(--green)',  btnBdr:'rgba(46,213,115,.3)' },
+    { cls:'task-card-drill',  icoCls:'rgba(124,107,250,.12)', icoBdr:'rgba(124,107,250,.35)', btnColor:'var(--accent)', btnBdr:'rgba(124,107,250,.3)' },
+    { cls:'task-card-review', icoCls:'rgba(61,158,255,.12)',  icoBdr:'rgba(61,158,255,.35)',  btnColor:'var(--blue)',   btnBdr:'rgba(61,158,255,.3)' }
+  ];
+  const c = configs[idx];
+  const done = load('dailyDone_' + getTodayKey(), {})[idx];
+  return `
+    <div class="task-card ${c.cls} ${done ? 'done' : ''}" id="task-card-${idx}">
+      <div class="task-ico" style="background:${c.icoCls};border-color:${c.icoBdr}">${task.ico}</div>
+      <div style="flex:1">
+        <div class="task-title">${task.title}</div>
+        <div class="task-sub">${task.sub}</div>
+        <button class="task-change" onclick="swapTask(${idx})">↻ Change Task</button>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+        <button class="task-btn" style="color:${c.btnColor};border-color:${c.btnBdr}"
+          onclick="startTask(${idx})">${done ? '✓ Done' : 'START →'}</button>
+      </div>
+    </div>`;
+}
+
+function getTodayKey() {
+  return new Date().toISOString().slice(0,10);
+}
+
+function updateTaskCount() {
+  const done = load('dailyDone_' + getTodayKey(), {});
+  const count = Object.values(done).filter(Boolean).length;
+  const el = document.getElementById('training-count');
+  if (el) el.textContent = count + ' of 3 complete';
+  if (count === 3) {
+    awardXP(25, 'All 3 training tasks complete!');
+    showWinToast('🏋️ Training Complete!', 'All 3 tasks done for today', 25);
+  }
+}
+
+function startTask(idx) {
+  const tasks = getDailyTraining();
+  const task = tasks[idx];
+  if (!task) return;
+  // Mark done
+  const key = 'dailyDone_' + getTodayKey();
+  const done = load(key, {});
+  if (!done[idx]) {
+    done[idx] = true;
+    save(key, done);
+    awardXP(25, task.title);
+    showWinToast('✅ Task Complete!', task.title, 25);
+    // Refresh card
+    const card = document.getElementById('task-card-' + idx);
+    if (card) { card.classList.add('done'); card.querySelector('.task-btn').textContent = '✓ Done'; }
+    updateTaskCount();
+  }
+  // Navigate
+  if (task.nav) nav(task.nav, document.querySelector('.ni[onclick*="' + task.nav + '"]'));
+}
+
+function swapTask(idx) {
+  const overrides = load('taskOverrides_' + getTodayKey(), {});
+  overrides[idx] = (overrides[idx] || 0) + 1;
+  save('taskOverrides_' + getTodayKey(), overrides);
+  buildStartHere();
+}
+
+function getBadgeProgress(badge) {
+  if (badge.cat === 'streak') {
+    return Math.min(1, getStreak() / badge.trigger);
+  }
+  if (badge.cat === 'perf') {
+    const a = getAchievements();
+    if (badge.trigger === 'mock80') return 0;
+    const best = Math.max(0, ...Object.values(a.bestScores));
+    return Math.min(1, best / badge.trigger);
+  }
+  if (badge.cat === 'domain') {
+    const planDone = load('planDone', {});
+    const done = Object.keys(planDone).filter(k => planDone[k] && k.toLowerCase().includes(badge.trigger));
+    return done.length > 0 ? 1 : 0;
+  }
+  return 0;
+}
+
+function generateCoachBriefing(a, b, c, d) {
+  return 'Today is a great day to study. Stay focused!';
+}
+
+function getDailyTraining() {
+  return [
+    {ico:'🎬', title:'Watch a video', sub:'Continue your study plan', nav:'learn'},
+    {ico:'🧠', title:'Practice quiz', sub:'Drill 20 questions', nav:'quiz'},
+    {ico:'🃏', title:'Flashcard review', sub:'Review 10 cards', nav:'flash'}
+  ];
 }
 
 function buildSHPduCallout() {
