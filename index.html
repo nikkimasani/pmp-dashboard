@@ -4170,7 +4170,7 @@ function awardXP(amount, reason) {
   a.xp += amount;
   saveAchievements(a);
   const newLevel = getLevelInfo(a.xp).current.level;
-  showWinToast('⚡ +' + amount + ' XP', reason);
+  showWinToast('⚡ +' + amount + ' XP', reason, amount);
   if (newLevel > prevLevel) {
     const info = getLevelInfo(a.xp);
     showCelebrationModal('Level Up!', 'Level ' + info.current.level + ' — ' + info.current.title, 'You reached a new rank 🎖️');
@@ -4181,10 +4181,10 @@ function awardXP(amount, reason) {
 function unlockBadge(badgeId) {
   const a = getAchievements();
   if (a.earnedBadges.includes(badgeId)) return;
-  a.earnedBadges.push(badgeId);
-  saveAchievements(a);
   const badge = BADGES.find(b => b.id === badgeId);
   if (!badge) return;
+  a.earnedBadges.push(badgeId);
+  saveAchievements(a);
   awardXP(150, badge.name + ' badge earned');
   showCelebrationModal('Badge Unlocked! ' + badge.ico, badge.name, badge.desc);
 }
