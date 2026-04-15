@@ -4444,6 +4444,7 @@ const OD_SCOPES = ['Files.Read'];
 
 let msalInstance = null;
 let oneDriveToken = null;
+let currentVideoBlobUrl = null;
 
 async function initMsal() {
   if (typeof msal === 'undefined') return;
@@ -6248,13 +6249,22 @@ async function openVideoInModal(relPath, title) {
       const downloadUrl = await getOneDriveDownloadUrl(relPath);
       console.log('[OD modal] downloadUrl result:', downloadUrl ? 'GOT URL' : 'NULL', downloadUrl ? String(downloadUrl).substring(0,60) : '');
       if (!downloadUrl) throw new Error('Could not get download URL from OneDrive.');
+      titleEl.textContent = '⏳ Buffering video…';
+      const vidRes = await fetch(downloadUrl);
+      if (!vidRes.ok) throw new Error('Download failed: HTTP ' + vidRes.status);
+      const blob = await vidRes.blob();
+      if (currentVideoBlobUrl) URL.revokeObjectURL(currentVideoBlobUrl);
+      currentVideoBlobUrl = URL.createObjectURL(blob);
+      const blobUrl = currentVideoBlobUrl;
       player.onerror = null;
       player.onerror = () => {
         player.onerror = null;
         player.src = '';
-        titleEl.innerHTML = '⚠ Could not stream inline. <a href="' + downloadUrl + '" target="_blank" style="color:var(--accent);text-decoration:underline">Click here to open in new tab →</a>';
+        URL.revokeObjectURL(blobUrl);
+        titleEl.innerHTML = '⚠ Could not play video. <a href="' + downloadUrl + '" target="_blank" style="color:var(--accent);text-decoration:underline">Open in OneDrive →</a>';
       };
-      player.src = downloadUrl;
+      player.src = blobUrl;
+      titleEl.textContent = title || relPath.split('/').pop();
       player.play().catch(() => {});
     } catch(e) {
       player.src = '';
@@ -6286,6 +6296,7 @@ function closeVideoModal() {
   const player = document.getElementById('video-modal-player');
   if (modal) modal.classList.remove('open');
   if (player) { player.pause(); player.src = ''; }
+  if (currentVideoBlobUrl) { URL.revokeObjectURL(currentVideoBlobUrl); currentVideoBlobUrl = null; }
 }
 
 async function openFolderInExplorer(relPath) {
