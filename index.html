@@ -935,7 +935,7 @@ body>.sb{z-index:10}
   <div class="lp-inner">
     <div class="lp-badge">PMP Certification · 2026</div>
     <div class="lp-title">Boot<br><span class="lp-lime">Camp.</span></div>
-    <div class="lp-sub">34 days to make it official. Train like it matters.</div>
+    <div class="lp-sub" id="lp-sub">Make it official. Train like it matters.</div>
     <div class="lp-stats">
       <div class="lp-stat"><div class="lp-sv lime" id="lp-days">—</div><div class="lp-sl">Days Left</div></div>
       <div class="lp-stat"><div class="lp-sv" id="lp-score">—</div><div class="lp-sl">Readiness</div></div>
@@ -985,7 +985,7 @@ body>.sb{z-index:10}
     <div class="nav-zone nav-zone-study">📚 Study</div>
     <div class="ni" onclick="nav('plan',this)"><span class="ni-ico">🗓️</span><span>My Schedule</span><span class="ni-badge ni-badge-green" id="nb-plan">—</span></div>
     <div class="ni" onclick="nav('lessons',this)"><span class="ni-ico">🎓</span><span>Lessons</span></div>
-    <div class="ni" onclick="nav('study',this)"><span class="ni-ico">📝</span><span>Worksheets</span></div>
+    <div class="ni" onclick="nav('study',this)"><span class="ni-ico">📝</span><span>Drills</span></div>
     <div class="ni" onclick="nav('ref',this)"><span class="ni-ico">📐</span><span>Reference</span></div>
     <div class="ni" onclick="nav('group',this)"><span class="ni-ico">🔥</span><span>Hot Topics</span></div>
 
@@ -1325,7 +1325,7 @@ body>.sb{z-index:10}
 
 <!-- ===== STUDY CENTER ===== -->
 <div class="panel" id="p-study">
-  <div class="ph"><div class="ph-title">📝 Worksheets</div><div class="ph-sub">Formula sheets, worked exercises, and study notes from your PMP materials — all in one place</div></div>
+  <div class="ph"><div class="ph-title">📝 Drills</div><div class="ph-sub">Formula sheets, worked exercises, and study notes from your PMP materials — all in one place</div></div>
   <div class="tip-box" style="margin-bottom:16px">
     <div class="tip-t">💡 How to use</div>
     <div class="tip-b">Work through the formula tables, then try the practice exercises. Click <strong>Open File →</strong> buttons to view source PDFs in-browser (requires folder connection). Use the tabs to switch between topics.</div>
@@ -8653,6 +8653,8 @@ function buildHeatmap() {
         const days = Math.max(0,Math.ceil((new Date(examDate)-new Date())/(1000*60*60*24)));
         const el = document.getElementById('lp-days');
         if(el) el.textContent = days;
+        const sub = document.getElementById('lp-sub');
+        if(sub && days > 0) sub.textContent = days + ' days to make it official. Train like it matters.';
       }
       const scores = JSON.parse(localStorage.getItem('pmp_quiz_scores')||'[]');
       if(scores.length){
