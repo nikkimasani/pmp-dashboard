@@ -983,11 +983,11 @@ body>.sb{z-index:10}
     <div class="ni" onclick="nav('weak',this)"><span class="ni-ico">🎯</span><span>Weak Areas</span><span class="ni-badge ni-badge-red" id="nb-weak" style="display:none">0 ⚠️</span></div>
 
     <div class="nav-zone nav-zone-study">📚 Study</div>
-    <div class="ni" onclick="nav('plan',this)"><span class="ni-ico">📚</span><span>Study Plan</span><span class="ni-badge ni-badge-green" id="nb-plan">—</span></div>
+    <div class="ni" onclick="nav('plan',this)"><span class="ni-ico">🗓️</span><span>My Schedule</span><span class="ni-badge ni-badge-green" id="nb-plan">—</span></div>
     <div class="ni" onclick="nav('lessons',this)"><span class="ni-ico">🎓</span><span>Lessons</span></div>
-    <div class="ni" onclick="nav('study',this)"><span class="ni-ico">📖</span><span>Study Center</span></div>
+    <div class="ni" onclick="nav('study',this)"><span class="ni-ico">📝</span><span>Worksheets</span></div>
     <div class="ni" onclick="nav('ref',this)"><span class="ni-ico">📐</span><span>Reference</span></div>
-    <div class="ni" onclick="nav('group',this)"><span class="ni-ico">🤝</span><span>Study Group</span></div>
+    <div class="ni" onclick="nav('group',this)"><span class="ni-ico">🔥</span><span>Hot Topics</span></div>
 
     <div class="nav-zone" style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--t3);padding:10px 10px 4px">🗂️ Other</div>
     <div class="ni" onclick="nav('notes',this)"><span class="ni-ico">✍️</span><span>My Notes</span></div>
@@ -1265,7 +1265,7 @@ body>.sb{z-index:10}
 
 <!-- ===== STUDY PLAN ===== -->
 <div class="panel" id="p-plan">
-  <div class="ph"><div class="ph-title">Study Plan</div><div class="ph-sub">Section-by-section path to exam day. Complete each section, take the quiz, mark it done.</div></div>
+  <div class="ph"><div class="ph-title">🗓️ My Schedule</div><div class="ph-sub">Section-by-section path to exam day. Complete each section, take the quiz, mark it done.</div></div>
   <div id="plan-overall"></div>
   <div class="plan-grid" id="plan-list"></div>
 </div>
@@ -1273,7 +1273,7 @@ body>.sb{z-index:10}
 <!-- ===== FILES ===== -->
 <!-- ===== STUDY GROUP ===== -->
 <div class="panel" id="p-group">
-  <div class="ph"><div class="ph-title">Study Group Hub</div><div class="ph-sub">Deep session notes, hot topics, and group study resources — all built in</div></div>
+  <div class="ph"><div class="ph-title">🔥 Hot Topics</div><div class="ph-sub">High-yield exam favorites, session notes, and group study resources — all built in</div></div>
 
   <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
     <a class="btn btn-s btn-sm" href="https://difficult-rowboat-604.notion.site/PMI-PMP-Study-Group-5c0efbccf8ff463f9c493112ece97fc1" target="_blank">↗ Notion Page (backup)</a>
@@ -1325,7 +1325,7 @@ body>.sb{z-index:10}
 
 <!-- ===== STUDY CENTER ===== -->
 <div class="panel" id="p-study">
-  <div class="ph"><div class="ph-title">📖 Study Center</div><div class="ph-sub">Formula sheets, worked exercises, and study notes from your PMP materials — all in one place</div></div>
+  <div class="ph"><div class="ph-title">📝 Worksheets</div><div class="ph-sub">Formula sheets, worked exercises, and study notes from your PMP materials — all in one place</div></div>
   <div class="tip-box" style="margin-bottom:16px">
     <div class="tip-t">💡 How to use</div>
     <div class="tip-b">Work through the formula tables, then try the practice exercises. Click <strong>Open File →</strong> buttons to view source PDFs in-browser (requires folder connection). Use the tabs to switch between topics.</div>
@@ -5887,10 +5887,10 @@ function buildStartHere() {
       </div>
     </div>
 
-    <!-- TODAY'S WOD -->
+    <!-- DAILY DRILLS -->
     <div style="margin-bottom:18px">
       <div class="training-hdr">
-        <div class="training-lbl">⚡ TODAY'S WOD</div>
+        <div class="training-lbl">⚡ DAILY DRILLS</div>
         <div style="display:flex;align-items:center;gap:10px">
           <div class="training-count" id="training-count">0 of 3 complete</div>
           <button onclick="resetTodayTasks()" style="background:none;border:1px solid var(--border);color:var(--t2);font-size:10px;padding:2px 8px;border-radius:4px;cursor:pointer;font-family:'Bricolage Grotesque',sans-serif;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--t2)'">↺ Reset</button>
