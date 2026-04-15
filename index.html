@@ -4213,8 +4213,102 @@ function checkPersonalRecord(domainKey, pct) {
 }
 
 // Stubs — will be replaced in Tasks 3 and 4
-function showWinToast(title, sub, xpAmount) { /* implemented in Task 3 */ }
-function showCelebrationModal(title, name, desc, pill) { /* implemented in Task 3 */ }
+let _winToastTimer = null;
+function showWinToast(title, sub, xpAmount) {
+  const t = document.getElementById('win-toast');
+  const ico = document.getElementById('win-toast-ico');
+  const tEl = document.getElementById('win-toast-title');
+  const sEl = document.getElementById('win-toast-sub');
+  const xEl = document.getElementById('win-toast-xp');
+  if (!t) return;
+  tEl.textContent = title;
+  sEl.textContent = sub || '';
+  xEl.textContent = xpAmount ? '+' + xpAmount : '';
+  xEl.style.display = xpAmount ? '' : 'none';
+  t.classList.add('show');
+  clearTimeout(_winToastTimer);
+  _winToastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+const _celQueue = [];
+let _celActive = false;
+
+function showCelebrationModal(title, name, desc, pillText) {
+  _celQueue.push({ title, name, desc, pillText });
+  if (!_celActive) _showNextCelebration();
+}
+
+function _showNextCelebration() {
+  if (_celQueue.length === 0) { _celActive = false; return; }
+  _celActive = true;
+  const { title, name, desc, pillText } = _celQueue.shift();
+  document.getElementById('cel-title').textContent = title;
+  document.getElementById('cel-name').textContent = name;
+  document.getElementById('cel-desc').textContent = desc || '';
+  const pill = document.getElementById('cel-pill');
+  if (pillText) { pill.textContent = pillText; pill.style.display = ''; }
+  else { pill.style.display = 'none'; }
+  document.getElementById('celebration-overlay').classList.add('show');
+  launchConfetti();
+}
+
+function closeCelebration() {
+  document.getElementById('celebration-overlay').classList.remove('show');
+  // Show next queued celebration after a brief pause
+  setTimeout(_showNextCelebration, 300);
+}
+
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const colors = ['#7c6bfa','#00e5b8','#2ed573','#ffa502','#ff4757'];
+  const particles = Array.from({length:60}, () => ({
+    x: Math.random() * canvas.width,
+    y: -10,
+    r: 4 + Math.random() * 4,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    vx: (Math.random() - .5) * 4,
+    vy: 2 + Math.random() * 4,
+    alpha: 1,
+    rot: Math.random() * 360,
+    rotV: (Math.random() - .5) * 8
+  }));
+  let frame;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.vy += .1; p.alpha -= .012; p.rot += p.rotV;
+      if (p.alpha <= 0) return;
+      ctx.save(); ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color;
+      ctx.translate(p.x, p.y); ctx.rotate(p.rot * Math.PI/180);
+      ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r);
+      ctx.restore();
+    });
+    if (particles.some(p => p.alpha > 0)) frame = requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  cancelAnimationFrame(frame);
+  draw();
+}
+
+function showPRBanner(containerId, domain, newPct, prevPct) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const delta = newPct - prevPct;
+  const html = `<div class="pr-banner">
+    <div class="pr-banner-ico">🏆</div>
+    <div>
+      <div class="pr-banner-label">⚡ New Personal Record!</div>
+      <div class="pr-banner-score">${domain} — ${newPct}%</div>
+      <div class="pr-banner-delta">Previous best: ${prevPct}% &nbsp;·&nbsp; <span style="color:var(--green);font-weight:700">+${delta} points 📈</span></div>
+    </div>
+  </div>`;
+  container.insertAdjacentHTML('afterbegin', html);
+}
+
 function updateSidebarProgress() { /* implemented in Task 4 */ }
 
 // ============================================================
@@ -7927,41 +8021,7 @@ function updateStreakDisplay() {
   if (bar) { bar.classList.toggle('streak-hot', streak >= 3); }
 }
 
-// ============================================================
-// CONFETTI
-// ============================================================
-function launchConfetti() {
-  const canvas = document.createElement('canvas');
-  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99999';
-  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-  document.body.appendChild(canvas);
-  const ctx = canvas.getContext('2d');
-  const colors = ['#7c6bfa','#00e5b8','#ff4757','#ffa502','#2ed573','#3d9eff','#fff'];
-  const pieces = Array.from({length: 90}, () => ({
-    x: Math.random() * canvas.width, y: -15,
-    vx: (Math.random() - 0.5) * 7, vy: Math.random() * 4 + 2,
-    color: colors[Math.floor(Math.random() * colors.length)],
-    w: Math.random() * 10 + 5, h: Math.random() * 6 + 3,
-    rot: Math.random() * Math.PI * 2, vr: (Math.random() - 0.5) * 0.2
-  }));
-  let frame = 0;
-  function tick() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    let alive = false;
-    pieces.forEach(p => {
-      p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.rot += p.vr;
-      if (p.y < canvas.height + 20) alive = true;
-      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
-      ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, 1 - frame/150);
-      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-      ctx.restore();
-    });
-    frame++;
-    if (alive && frame < 160) requestAnimationFrame(tick);
-    else if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
-  }
-  tick();
-}
+// launchConfetti is defined in the celebration system (above)
 
 // ============================================================
 // SUMMIT READINESS SCORE (for Start Here)
@@ -8142,5 +8202,26 @@ function buildHeatmap() {
   </div>`;
 }
 </script>
+<!-- WIN TOAST -->
+<div id="win-toast" class="win-toast">
+  <div class="win-toast-ico" id="win-toast-ico">✅</div>
+  <div style="flex:1">
+    <div class="win-toast-title" id="win-toast-title">Task Complete!</div>
+    <div class="win-toast-sub" id="win-toast-sub"></div>
+  </div>
+  <div class="win-toast-xp" id="win-toast-xp">+XP</div>
+</div>
+<!-- CELEBRATION OVERLAY -->
+<div id="celebration-overlay" class="celebration-overlay" onclick="closeCelebration()">
+  <canvas id="confetti-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:4001"></canvas>
+  <div class="celebration-modal" onclick="event.stopPropagation()">
+    <div style="font-size:44px;margin-bottom:8px" id="cel-ico">🎉</div>
+    <div class="celebration-title" id="cel-title">Section Complete!</div>
+    <div class="celebration-name" id="cel-name"></div>
+    <div class="celebration-desc" id="cel-desc"></div>
+    <div class="celebration-badge-pill" id="cel-pill" style="display:none"></div>
+    <button class="btn btn-p" style="width:100%;justify-content:center" onclick="closeCelebration()">Keep Going →</button>
+  </div>
+</div>
 </body>
 </html>
