@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
 <script src="msal-browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 :root{
   --bg:#111111;--s1:#181818;--s2:#1E1E1E;--s3:#242424;--border:#2A2A2A;
@@ -897,6 +898,28 @@ body>.sb{z-index:10}
 
 /* ===== END REDESIGN CSS FOUNDATION ===== */
 
+/* ===== AUTH OVERLAY ===== */
+#auth-overlay{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;background:var(--bg)}
+#auth-overlay::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(200,255,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(200,255,0,.03) 1px,transparent 1px);background-size:60px 60px;animation:lp-gridPan 20s linear infinite}
+.auth-box{position:relative;z-index:1;background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:36px 40px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.6)}
+.auth-logo{display:inline-block;background:var(--accent);color:#000;font-weight:800;font-size:11px;padding:4px 10px;border-radius:4px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:20px}
+.auth-title{font-size:22px;font-weight:800;letter-spacing:-.3px;margin-bottom:4px}
+.auth-sub{font-size:13px;color:var(--t2);margin-bottom:24px}
+.auth-field{margin-bottom:14px}
+.auth-field label{display:block;font-size:11px;font-weight:700;color:var(--t2);letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
+.auth-field input{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;font-size:13px;color:var(--text);font-family:'Bricolage Grotesque',sans-serif;outline:none;transition:border-color .15s}
+.auth-field input:focus{border-color:rgba(200,255,0,.4)}
+.auth-err{font-size:12px;color:var(--red);margin-bottom:12px;min-height:16px}
+.auth-btn{width:100%;background:var(--accent);color:#000;border:none;border-radius:var(--rs);padding:11px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Bricolage Grotesque',sans-serif;transition:all .15s;margin-bottom:14px}
+.auth-btn:hover{background:#d4ff1a;box-shadow:0 0 20px rgba(200,255,0,.25)}
+.auth-toggle{font-size:12px;color:var(--t2);text-align:center}
+.auth-toggle a{color:var(--accent);cursor:pointer;font-weight:700;text-decoration:none}
+.auth-toggle a:hover{text-decoration:underline}
+#profile-setup{position:fixed;inset:0;z-index:2100;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center}
+.setup-box{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:32px 36px;width:100%;max-width:380px}
+.setup-title{font-size:18px;font-weight:800;margin-bottom:4px}
+.setup-sub{font-size:13px;color:var(--t2);margin-bottom:20px}
+
 /* ===== LANDING PAGE OVERLAY ===== */
 #lp-overlay{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);transition:opacity .6s ease,transform .6s cubic-bezier(.16,1,.3,1)}
 #lp-overlay.exit{opacity:0;transform:scale(1.04);pointer-events:none}
@@ -927,6 +950,44 @@ body>.sb{z-index:10}
 </style>
 </head>
 <body>
+
+<!-- ===== AUTH OVERLAY ===== -->
+<div id="auth-overlay" style="display:none">
+  <div class="auth-box">
+    <div class="auth-logo">PMP Boot Camp</div>
+    <div id="auth-login-view">
+      <div class="auth-title">Welcome back</div>
+      <div class="auth-sub">Sign in to your training account</div>
+      <div class="auth-field"><label>Email</label><input type="email" id="auth-email" placeholder="you@email.com" onkeydown="if(event.key==='Enter')doSignIn()"></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="auth-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doSignIn()"></div>
+      <div class="auth-err" id="auth-error"></div>
+      <button class="auth-btn" onclick="doSignIn()">Sign In →</button>
+      <div class="auth-toggle">No account? <a onclick="showAuthView('register')">Create one</a></div>
+    </div>
+    <div id="auth-register-view" style="display:none">
+      <div class="auth-title">Join Boot Camp</div>
+      <div class="auth-sub">Create your training account</div>
+      <div class="auth-field"><label>Your Name</label><input type="text" id="reg-name" placeholder="First name"></div>
+      <div class="auth-field"><label>Email</label><input type="email" id="reg-email" placeholder="you@email.com"></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="reg-password" placeholder="Min 6 characters" onkeydown="if(event.key==='Enter')doSignUp()"></div>
+      <div class="auth-err" id="reg-error"></div>
+      <button class="auth-btn" onclick="doSignUp()">Create Account →</button>
+      <div class="auth-toggle">Already have one? <a onclick="showAuthView('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PROFILE SETUP ===== -->
+<div id="profile-setup" style="display:none">
+  <div class="setup-box">
+    <div class="setup-title">One more thing 👋</div>
+    <div class="setup-sub">Tell us your name and when your exam is</div>
+    <div class="auth-field"><label>Your Name</label><input type="text" id="setup-name" placeholder="First name"></div>
+    <div class="auth-field"><label>Exam Date</label><input type="date" id="setup-exam-date"></div>
+    <div class="auth-err" id="setup-error"></div>
+    <button class="auth-btn" onclick="saveProfile()">Let's Go →</button>
+  </div>
+</div>
 
 <!-- ===== LANDING PAGE ===== -->
 <div id="lp-progress"></div>
@@ -993,6 +1054,7 @@ body>.sb{z-index:10}
     <div class="ni" onclick="nav('notes',this)"><span class="ni-ico">✍️</span><span>My Notes</span></div>
     <div class="ni" onclick="nav('apply',this)"><span class="ni-ico">📋</span><span>PMI Application</span></div>
     <div class="ni" onclick="nav('files',this)"><span class="ni-ico">📁</span><span>Your Files</span></div>
+    <div class="ni" id="admin-nav-item" onclick="nav('admin',this);loadAdminPanel()" style="display:none"><span class="ni-ico">🛡️</span><span>Admin</span></div>
   </div>
   <div class="sb-streak" id="sb-streak-bar">
     <div>
@@ -1343,6 +1405,20 @@ body>.sb{z-index:10}
     <div class="tip-b">Click <strong>Connect My PMP Folder</strong> below → navigate to your local PMP folder → click Select Folder. Every file gets an <strong>Open →</strong> button. Works in Chrome and Edge.</div>
   </div>
   <div id="files-list"></div>
+</div>
+
+<!-- ===== ADMIN PANEL ===== -->
+<div class="panel" id="p-admin">
+  <div class="ph">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div><div class="ph-title">🛡️ Admin Dashboard</div><div class="ph-sub">All study group members — progress, streaks, and scores synced in real time</div></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-s btn-sm" onclick="loadAdminPanel()">↺ Refresh</button>
+        <button class="btn btn-s btn-sm" onclick="doSignOut()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+  <div id="admin-users-table"><div style="color:var(--t2);font-size:13px;padding:20px 0">Loading users...</div></div>
 </div>
 
 <!-- ===== STUDY CENTER ===== -->
@@ -8652,6 +8728,176 @@ function buildHeatmap() {
     <button class="btn btn-p" style="width:100%;justify-content:center" onclick="closeCelebration()">Keep Going →</button>
   </div>
 </div>
+
+<script>
+// ===== SUPABASE AUTH =====
+const SB_URL = 'https://sajwrezhnzqlhskkbgwc.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhandyZXpobnpxbGhza2tiZ3djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5OTMyODAsImV4cCI6MjA5MDU2OTI4MH0.uqvU6vZsB3rI3QGYe8GYAoDbdcmubLwJBCRH2ECMyCM';
+const ADMIN_EMAILS = ['nikki.masani@quorumsoftware.com'];
+let sbClient = null, currentUser = null;
+
+async function initAuth() {
+  try {
+    sbClient = window.supabase.createClient(SB_URL, SB_KEY);
+    const { data: { session } } = await sbClient.auth.getSession();
+    if (session) { currentUser = session.user; await onAuthReady(session.user); }
+    else { showAuthOverlay(); }
+    sbClient.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN') { currentUser = session.user; await onAuthReady(session.user); }
+      else if (event === 'SIGNED_OUT') { currentUser = null; showAuthOverlay(); }
+    });
+  } catch(e) { console.warn('Auth init failed, running offline', e); }
+}
+
+function showAuthOverlay() {
+  const o = document.getElementById('auth-overlay');
+  if (o) o.style.display = 'flex';
+}
+function hideAuthOverlay() {
+  const o = document.getElementById('auth-overlay');
+  if (o) o.style.display = 'none';
+}
+function showAuthView(v) {
+  document.getElementById('auth-login-view').style.display = v === 'login' ? '' : 'none';
+  document.getElementById('auth-register-view').style.display = v === 'register' ? '' : 'none';
+  document.getElementById('auth-error').textContent = '';
+  document.getElementById('reg-error').textContent = '';
+}
+
+async function doSignIn() {
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const err = document.getElementById('auth-error');
+  err.textContent = '';
+  const btn = document.querySelector('#auth-login-view .auth-btn');
+  btn.textContent = 'Signing in...'; btn.disabled = true;
+  const { error } = await sbClient.auth.signInWithPassword({ email, password });
+  btn.textContent = 'Sign In →'; btn.disabled = false;
+  if (error) err.textContent = error.message;
+}
+
+async function doSignUp() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const err = document.getElementById('reg-error');
+  err.textContent = '';
+  if (!name) { err.textContent = 'Name is required.'; return; }
+  if (password.length < 6) { err.textContent = 'Password must be at least 6 characters.'; return; }
+  const btn = document.querySelector('#auth-register-view .auth-btn');
+  btn.textContent = 'Creating...'; btn.disabled = true;
+  const { data, error } = await sbClient.auth.signUp({ email, password });
+  btn.textContent = 'Create Account →'; btn.disabled = false;
+  if (error) { err.textContent = error.message; return; }
+  if (data.user) {
+    const role = ADMIN_EMAILS.includes(email) ? 'admin' : 'user';
+    await sbClient.from('pmp_profiles').insert({ id: data.user.id, name, role });
+  }
+}
+
+async function doSignOut() {
+  await sbClient.auth.signOut();
+  showAuthView('login');
+}
+
+async function onAuthReady(user) {
+  hideAuthOverlay();
+  document.getElementById('profile-setup').style.display = 'none';
+  const { data: profile } = await sbClient.from('pmp_profiles').select('*').eq('id', user.id).single();
+  if (!profile) { document.getElementById('profile-setup').style.display = 'flex'; return; }
+  if (ADMIN_EMAILS.includes(user.email) || profile.role === 'admin') {
+    const el = document.getElementById('admin-nav-item');
+    if (el) el.style.display = 'flex';
+  }
+  // Add sign out to sidebar footer
+  const footer = document.getElementById('site-footer');
+  if (footer) footer.innerHTML = `Designed by Nikki Masani &nbsp;·&nbsp; <a onclick="doSignOut()" style="color:var(--t2);cursor:pointer;text-decoration:underline">Sign out (${profile.name})</a>`;
+  // Pull stats from Supabase if localStorage is fresh (new device)
+  await pullStatsFromSupabase(user.id);
+  // Sync periodically
+  syncToSupabase();
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) syncToSupabase(); });
+  setInterval(syncToSupabase, 5 * 60 * 1000);
+}
+
+async function saveProfile() {
+  const name = document.getElementById('setup-name').value.trim();
+  const examDate = document.getElementById('setup-exam-date').value;
+  const err = document.getElementById('setup-error');
+  if (!name) { err.textContent = 'Name is required.'; return; }
+  const role = ADMIN_EMAILS.includes(currentUser.email) ? 'admin' : 'user';
+  const { error } = await sbClient.from('pmp_profiles').insert({ id: currentUser.id, name, role, exam_date: examDate || null });
+  if (error) { err.textContent = error.message; return; }
+  if (examDate) localStorage.setItem('pmp_exam_date', examDate);
+  document.getElementById('profile-setup').style.display = 'none';
+  await onAuthReady(currentUser);
+}
+
+async function syncToSupabase() {
+  if (!currentUser || !sbClient) return;
+  try {
+    await sbClient.from('pmp_user_stats').upsert({
+      user_id: currentUser.id,
+      streak: parseInt(localStorage.getItem('pmp_streak') || '0'),
+      xp: parseInt(localStorage.getItem('pmp_xp') || '0'),
+      overall_score: parseFloat(localStorage.getItem('pmp_overall_score') || '0'),
+      questions_done: parseInt(localStorage.getItem('pmp_questions_done') || '0'),
+      plan_pct: parseFloat(localStorage.getItem('pmp_plan_pct') || '0'),
+      last_synced: new Date().toISOString()
+    });
+  } catch(e) {}
+}
+
+async function pullStatsFromSupabase(userId) {
+  if (!sbClient) return;
+  try {
+    const { data } = await sbClient.from('pmp_user_stats').select('*').eq('user_id', userId).single();
+    if (data && !localStorage.getItem('pmp_xp') && data.xp) {
+      localStorage.setItem('pmp_streak', data.streak || 0);
+      localStorage.setItem('pmp_xp', data.xp || 0);
+    }
+  } catch(e) {}
+}
+
+async function loadAdminPanel() {
+  const container = document.getElementById('admin-users-table');
+  if (!container || !sbClient) return;
+  container.innerHTML = '<div style="color:var(--t2);font-size:13px;padding:20px 0">Loading...</div>';
+  const { data: profiles, error } = await sbClient.from('pmp_profiles').select('*, pmp_user_stats(*)');
+  if (error || !profiles) { container.innerHTML = '<div style="color:var(--red);font-size:13px">Could not load users. Make sure SQL tables are created.</div>'; return; }
+  if (!profiles.length) { container.innerHTML = '<div style="color:var(--t2);font-size:13px">No users yet.</div>'; return; }
+  container.innerHTML = `
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="border-bottom:2px solid var(--border);color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-size:10px;font-weight:700">
+        <th style="padding:10px 14px;text-align:left">Name</th>
+        <th style="padding:10px 14px;text-align:left">Role</th>
+        <th style="padding:10px 14px;text-align:right">Streak</th>
+        <th style="padding:10px 14px;text-align:right">XP</th>
+        <th style="padding:10px 14px;text-align:right">Score</th>
+        <th style="padding:10px 14px;text-align:right">Plan</th>
+        <th style="padding:10px 14px;text-align:right">Last Active</th>
+      </tr></thead>
+      <tbody>${profiles.map(p => {
+        const s = p.pmp_user_stats;
+        const last = s?.last_synced ? new Date(s.last_synced).toLocaleDateString() : '—';
+        const score = s?.overall_score || 0;
+        return `<tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:11px 14px;color:var(--text);font-weight:600">${p.name}</td>
+          <td style="padding:11px 14px"><span style="font-size:10px;padding:2px 8px;border-radius:3px;background:${p.role==='admin'?'rgba(200,255,0,.12)':'rgba(255,255,255,.05)'};color:${p.role==='admin'?'var(--accent)':'var(--t2)'};font-weight:700">${p.role}</span></td>
+          <td style="padding:11px 14px;text-align:right;color:var(--a4);font-weight:700">${s?.streak ?? '—'} 🔥</td>
+          <td style="padding:11px 14px;text-align:right;color:var(--accent);font-weight:700">${s?.xp ? s.xp.toLocaleString() : '—'}</td>
+          <td style="padding:11px 14px;text-align:right;font-weight:700;color:${score>=70?'var(--green)':score>0?'var(--red)':'var(--t2)'}">${score ? score+'%' : '—'}</td>
+          <td style="padding:11px 14px;text-align:right;color:var(--t2)">${s?.plan_pct ? s.plan_pct+'%' : '—'}</td>
+          <td style="padding:11px 14px;text-align:right;color:var(--t3);font-size:11px">${last}</td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div>`;
+}
+
+window.addEventListener('DOMContentLoaded', () => initAuth());
+// ===== END SUPABASE AUTH =====
+</script>
 
 <script>
 // ===== LANDING PAGE =====
