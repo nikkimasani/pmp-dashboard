@@ -5888,7 +5888,7 @@ function startTask(idx) {
     updateTaskCount();
   }
   // Navigate
-  if (task.nav) nav(task.nav, document.querySelector('.ni[onclick*="' + task.nav + '"]'));
+  if (task.nav) nav(task.nav, null);
 }
 
 function swapTask(idx) {
@@ -5916,7 +5916,7 @@ function getBadgeProgress(badge) {
   return 0;
 }
 
-function generateCoachBriefing(a, b, c, d) {
+function generateCoachBriefing(qAvg, avgDelta, daysLeft, streak) {
   return 'Today is a great day to study. Stay focused!';
 }
 
