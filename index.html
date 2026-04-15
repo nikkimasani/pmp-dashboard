@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@3/dist/msal-browser.min.js" crossorigin="anonymous"></script>
+<script src="https://alcdn.msauth.net/browser/3.19.1/js/msal-browser.min.js" crossorigin="anonymous"></script>
 <style>
 :root{
   --bg:#07090f;--s1:#0d1020;--s2:#131829;--s3:#1a2035;--border:#1e2540;
@@ -4009,7 +4009,8 @@ async function initMsal() {
 }
 
 async function connectOneDrive() {
-  if (!msalInstance) { showToast('Auth not ready — try again in a moment.'); return; }
+  if (!msalInstance) await initMsal();
+  if (!msalInstance) { showToast('Microsoft auth failed to load — check your internet connection.'); return; }
   try {
     const result = await msalInstance.loginPopup({ scopes: OD_SCOPES });
     oneDriveToken = result.accessToken;
