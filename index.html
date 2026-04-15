@@ -10,13 +10,13 @@
 <script src="msal-browser.min.js"></script>
 <style>
 :root{
-  --bg:#07090f;--s1:#0d1020;--s2:#131829;--s3:#1a2035;--border:#1e2540;
-  --accent:#7c6bfa;--a2:#00e5b8;--a3:#ff4757;--a4:#ffa502;
+  --bg:#080A0F;--s1:#0d1020;--s2:#131829;--s3:#1a2035;--border:#1e2540;
+  --accent:#FF6B35;--a2:#00D4FF;--a3:#ff4757;--a4:#FFD700;
   --text:#ecedfa;--t2:#7880a8;--t3:#363d60;
-  --green:#2ed573;--red:#ff4757;--blue:#3d9eff;--purple:#a55eea;
+  --green:#39FF14;--red:#ff4757;--blue:#00D4FF;--purple:#A855F7;--cool:#7c6bfa;
   --r:12px;--rs:8px;
-  --shadow:0 4px 28px rgba(0,0,0,.55);--shadow-sm:0 2px 12px rgba(0,0,0,.4);
-  --accent-glow:0 0 24px rgba(124,107,250,.18);--a2-glow:0 0 20px rgba(0,229,184,.15);
+  --shadow:0 4px 28px rgba(0,0,0,.65);--shadow-sm:0 2px 12px rgba(0,0,0,.4);
+  --accent-glow:0 0 28px rgba(255,107,53,.22);--a2-glow:0 0 20px rgba(0,212,255,.15);
   --sidebar-w:218px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -32,18 +32,18 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',system-ui,sans-
 /* SIDEBAR */
 .sb{width:var(--sidebar-w);min-height:100vh;background:linear-gradient(180deg,#0b0e1c 0%,#0d1120 100%);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:100;overflow-y:auto}
 .sb-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border)}
-.logo-badge{background:linear-gradient(135deg,var(--accent),var(--a2));color:#fff;font-weight:900;font-size:11px;padding:4px 10px;border-radius:6px;display:inline-block;margin-bottom:8px;letter-spacing:.5px;box-shadow:0 2px 12px rgba(124,107,250,.35)}
+.logo-badge{background:linear-gradient(135deg,var(--accent),#ff9a6c);color:#fff;font-weight:900;font-size:11px;padding:4px 10px;border-radius:6px;display:inline-block;margin-bottom:8px;letter-spacing:.5px;box-shadow:0 2px 12px rgba(255,107,53,.4)}
 .logo-t{font-size:15px;font-weight:800;letter-spacing:-.2px}.logo-s{font-size:11px;color:var(--t2);margin-top:3px;line-height:1.4}
-.sb-cd{padding:14px 18px;border-bottom:1px solid var(--border);text-align:center;background:rgba(124,107,250,.03)}
+.sb-cd{padding:14px 18px;border-bottom:1px solid var(--border);text-align:center;background:rgba(255,107,53,.03)}
 .cd-num{font-size:34px;font-weight:900;color:var(--accent);line-height:1;letter-spacing:-1px}.cd-lbl{font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px}
 .set-date-btn{background:none;border:1px solid var(--border);color:var(--t3);border-radius:var(--rs);padding:5px 12px;font-size:11px;cursor:pointer;margin-top:8px;width:100%;transition:all .2s;font-family:'Outfit',sans-serif;font-weight:600}
-.set-date-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(124,107,250,.06)}
+.set-date-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(255,107,53,.06)}
 .sb-nav{flex:1;padding:10px 8px}
 .nav-lbl{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--t3);padding:12px 10px 5px}
 .ni{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--rs);cursor:pointer;font-size:13px;font-weight:500;color:var(--t2);transition:all .18s;margin-bottom:1px;border:1px solid transparent;position:relative}
 .ni:hover{background:rgba(255,255,255,.04);color:var(--text);border-color:var(--border)}
-.ni.active{background:linear-gradient(90deg,rgba(124,107,250,.18),rgba(124,107,250,.06));color:var(--accent);border-color:rgba(124,107,250,.25);font-weight:700;box-shadow:var(--accent-glow)}
-.ni.active::before{content:'';position:absolute;left:-1px;top:4px;bottom:4px;width:3px;background:linear-gradient(180deg,var(--accent),var(--a2));border-radius:0 3px 3px 0}
+.ni.active{background:linear-gradient(90deg,rgba(255,107,53,.18),rgba(255,107,53,.06));color:var(--accent);border-color:rgba(255,107,53,.3);font-weight:700;box-shadow:var(--accent-glow)}
+.ni.active::before{content:'';position:absolute;left:-1px;top:4px;bottom:4px;width:3px;background:linear-gradient(180deg,var(--accent),#FFD700);border-radius:0 3px 3px 0}
 .ni-ico{font-size:15px;width:22px;text-align:center;flex-shrink:0}
 .sb-prog{padding:14px 18px 18px;border-top:1px solid var(--border);background:rgba(0,0,0,.15)}
 .sp-lbl{font-size:11px;color:var(--t2);margin-bottom:6px;font-weight:600;display:flex;justify-content:space-between}
@@ -70,9 +70,9 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',system-ui,sans-
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:var(--rs);font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all .18s;text-decoration:none;font-family:'Outfit',sans-serif;letter-spacing:.1px}
 .btn:active{transform:scale(.97)}
-.btn-p{background:linear-gradient(135deg,var(--accent),#9d8ffd);color:#fff;box-shadow:0 2px 14px rgba(124,107,250,.3)}.btn-p:hover{background:linear-gradient(135deg,#8d7dfb,#b0a4fe);box-shadow:0 4px 20px rgba(124,107,250,.45);transform:translateY(-1px)}
-.btn-s{background:var(--s2);color:var(--t2);border:1px solid var(--border)}.btn-s:hover{color:var(--text);border-color:rgba(124,107,250,.4);background:var(--s3)}
-.btn-green{background:rgba(46,213,115,.08);color:var(--green);border:1px solid rgba(46,213,115,.25)}.btn-green:hover{background:rgba(46,213,115,.18);border-color:var(--green)}
+.btn-p{background:linear-gradient(135deg,var(--accent),#ff9a6c);color:#fff;box-shadow:0 2px 14px rgba(255,107,53,.35)}.btn-p:hover{background:linear-gradient(135deg,#ff7f4f,#ffb088);box-shadow:0 4px 22px rgba(255,107,53,.5);transform:translateY(-1px)}
+.btn-s{background:var(--s2);color:var(--t2);border:1px solid var(--border)}.btn-s:hover{color:var(--text);border-color:rgba(255,107,53,.4);background:var(--s3)}
+.btn-green{background:rgba(57,255,20,.08);color:var(--green);border:1px solid rgba(57,255,20,.25)}.btn-green:hover{background:rgba(57,255,20,.16);border-color:var(--green)}
 .btn-copy{background:rgba(0,229,184,.08);color:var(--a2);border:1px solid rgba(0,229,184,.2)}.btn-copy:hover{background:rgba(0,229,184,.18)}
 .btn-yt{background:rgba(255,0,0,.08);color:#ff5555;border:1px solid rgba(255,0,0,.2)}.btn-yt:hover{background:rgba(255,0,0,.18)}
 .btn-sm{padding:4px 11px;font-size:11px}
@@ -786,23 +786,26 @@ body>.sb{z-index:10}
 .sb-prog-wrap{padding:0 18px 14px;border-bottom:1px solid var(--border)}
 .sb-prog-lbl{display:flex;justify-content:space-between;font-size:9px;color:var(--t2);font-weight:600;margin-bottom:5px;text-transform:uppercase;letter-spacing:.8px}
 .sb-prog-bar{height:5px;background:var(--s3);border-radius:100px;overflow:hidden}
-.sb-prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--a2));border-radius:100px;transition:width .6s ease}
+.sb-prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),#FFD700);border-radius:100px;transition:width .6s ease;box-shadow:0 0 8px rgba(255,107,53,.5);animation:xp-pulse 2.5s ease-in-out infinite}
+@keyframes xp-pulse{0%,100%{box-shadow:0 0 6px rgba(255,107,53,.4)}50%{box-shadow:0 0 14px rgba(255,107,53,.8),0 0 24px rgba(255,215,0,.3)}}
 
 /* Step 3 — Zone nav labels */
 .nav-zone{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;padding:10px 10px 5px;display:flex;align-items:center;gap:5px;pointer-events:none}
-.nav-zone-train{color:var(--green)}
-.nav-zone-progress{color:var(--blue)}
-.nav-zone-study{color:var(--purple)}
+.nav-zone-train{color:#39FF14;text-shadow:0 0 8px rgba(57,255,20,.5)}
+.nav-zone-progress{color:#00D4FF;text-shadow:0 0 8px rgba(0,212,255,.4)}
+.nav-zone-study{color:#A855F7;text-shadow:0 0 8px rgba(168,85,247,.4)}
 .ni-badge{font-size:9px;font-weight:700;margin-left:auto;padding:1px 6px;border-radius:4px}
-.ni-badge-green{color:var(--green);background:rgba(46,213,115,.1)}
-.ni-badge-orange{color:var(--a4);background:rgba(255,165,2,.1)}
+.ni-badge-green{color:#39FF14;background:rgba(57,255,20,.1)}
+.ni-badge-orange{color:var(--a4);background:rgba(255,215,0,.1)}
 .ni-badge-red{color:var(--red);background:rgba(255,71,87,.1)}
-.ni-badge-accent{color:var(--accent);background:rgba(124,107,250,.12);border:1px solid rgba(124,107,250,.2)}
+.ni-badge-accent{color:var(--accent);background:rgba(255,107,53,.12);border:1px solid rgba(255,107,53,.25)}
 
 /* Step 4 — Start Here stats cards */
 .sh-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
-.sh-stat{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:16px;text-align:center;transition:border-color .2s}
-.sh-stat:hover{border-color:rgba(124,107,250,.35)}
+.sh-stat{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:16px;text-align:center;transition:all .2s;position:relative;overflow:hidden}
+.sh-stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),#FFD700);opacity:0;transition:opacity .2s}
+.sh-stat:hover{border-color:rgba(255,107,53,.4);box-shadow:0 4px 20px rgba(255,107,53,.12);transform:translateY(-2px)}
+.sh-stat:hover::before{opacity:1}
 .sh-stat-val{font-size:28px;font-weight:900;letter-spacing:-1px;line-height:1}
 .sh-stat-lbl{font-size:8px;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-top:5px}
 .sh-stat-sub{font-size:9px;font-weight:700;margin-top:6px}
@@ -810,15 +813,15 @@ body>.sb{z-index:10}
 .sh-stat-bar-fill{height:100%;border-radius:100px}
 
 /* Step 5 — Coach briefing card */
-.coach-card{background:linear-gradient(135deg,rgba(255,165,2,.08),rgba(255,71,87,.04));border:1px solid rgba(255,165,2,.25);border-radius:14px;padding:18px 20px;margin-bottom:18px;position:relative;overflow:hidden}
-.coach-card::after{content:'🏅';position:absolute;top:-15px;right:-5px;font-size:64px;opacity:.06;pointer-events:none}
-.coach-ico{width:36px;height:36px;background:linear-gradient(135deg,#ffa502,#ff6b35);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.coach-lbl{font-size:9px;color:var(--a4);font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
-.coach-msg{font-size:13px;color:rgba(236,237,250,.88);line-height:1.65;font-style:italic}
+.coach-card{background:linear-gradient(135deg,rgba(255,107,53,.1),rgba(255,71,87,.06));border:1px solid rgba(255,107,53,.35);border-radius:14px;padding:18px 20px;margin-bottom:18px;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(255,107,53,.1)}
+.coach-card::after{content:'💪';position:absolute;top:-10px;right:-2px;font-size:72px;opacity:.07;pointer-events:none}
+.coach-ico{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),#FF4500);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 2px 10px rgba(255,107,53,.4)}
+.coach-lbl{font-size:9px;color:var(--accent);font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.coach-msg{font-size:13px;color:rgba(236,237,250,.9);line-height:1.65;font-style:italic}
 
-/* Step 6 — Today's Training task cards */
+/* Step 6 — WOD task cards */
 .training-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.training-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--t2)}
+.training-lbl{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:var(--accent);text-shadow:0 0 12px rgba(255,107,53,.4)}
 .training-count{font-size:10px;color:var(--t2)}
 .task-card{border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .18s;margin-bottom:8px}
 .task-card:hover{transform:translateX(3px)}
@@ -882,10 +885,10 @@ body>.sb{z-index:10}
 .badge-reach-bar{background:rgba(255,255,255,.05);border-radius:100px;height:3px;overflow:hidden;margin-top:6px}
 .badge-reach-fill{height:100%;background:var(--a4);border-radius:100px}
 /* XP level card */
-.xp-card{background:var(--s1);border:1px solid rgba(165,94,234,.25);border-radius:14px;padding:16px 18px;margin-bottom:20px}
-.xp-avatar{width:44px;height:44px;background:linear-gradient(135deg,var(--purple),var(--accent));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.xp-bar-wrap{background:rgba(255,255,255,.05);border-radius:100px;height:6px;overflow:hidden;margin:6px 0}
-.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:100px;transition:width .6s ease}
+.xp-card{background:linear-gradient(135deg,rgba(255,107,53,.07),rgba(255,215,0,.04));border:1px solid rgba(255,107,53,.3);border-radius:14px;padding:16px 18px;margin-bottom:20px;box-shadow:0 4px 20px rgba(255,107,53,.08)}
+.xp-avatar{width:44px;height:44px;background:linear-gradient(135deg,var(--accent),#FFD700);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 2px 12px rgba(255,107,53,.4)}
+.xp-bar-wrap{background:rgba(255,255,255,.06);border-radius:100px;height:8px;overflow:hidden;margin:6px 0}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),#FFD700);border-radius:100px;transition:width .6s ease;box-shadow:0 0 8px rgba(255,107,53,.5)}
 
 /* ===== END REDESIGN CSS FOUNDATION ===== */
 </style>
@@ -5810,26 +5813,26 @@ function buildStartHere() {
       </div>
       <div class="sh-stat">
         <div class="sh-stat-val" style="color:var(--purple)">${earnedCount}</div>
-        <div class="sh-stat-lbl">Badges Earned</div>
-        ${inReachCount > 0 ? `<div class="sh-stat-sub" style="color:var(--a4)">${inReachCount} in reach 🏅</div>` : ''}
+        <div class="sh-stat-lbl">PRs Earned</div>
+        ${inReachCount > 0 ? `<div class="sh-stat-sub" style="color:var(--a4)">${inReachCount} in reach 🏆</div>` : ''}
       </div>
     </div>
 
     <!-- COACH BRIEFING -->
     <div class="coach-card">
       <div style="display:flex;gap:14px;align-items:flex-start">
-        <div class="coach-ico">💬</div>
+        <div class="coach-ico">📣</div>
         <div>
-          <div class="coach-lbl">Coach's Briefing · Today</div>
+          <div class="coach-lbl">🔥 Coach's Orders · Today</div>
           <div class="coach-msg">"${coach}"</div>
         </div>
       </div>
     </div>
 
-    <!-- TODAY'S TRAINING -->
+    <!-- TODAY'S WOD -->
     <div style="margin-bottom:18px">
       <div class="training-hdr">
-        <div class="training-lbl">⚡ Today's Training</div>
+        <div class="training-lbl">⚡ TODAY'S WOD</div>
         <div class="training-count" id="training-count">0 of 3 complete</div>
       </div>
       ${renderTaskCard(tasks[0], 0)}
@@ -7810,7 +7813,7 @@ function buildXPCard() {
   return `
     <div class="xp-card">
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
-        <div class="xp-avatar">⚔️</div>
+        <div class="xp-avatar">💪</div>
         <div>
           <div style="font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:2px">Project Manager</div>
           <div style="font-size:16px;font-weight:900;color:var(--text)">Level ${current.level} — ${current.title}</div>
