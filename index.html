@@ -5917,15 +5917,182 @@ function getBadgeProgress(badge) {
 }
 
 function generateCoachBriefing(qAvg, avgDelta, daysLeft, streak) {
-  return 'Today is a great day to study. Stay focused!';
+  const focus = getWeakestDomain() || 'your weakest areas';
+
+  let scenario;
+  if (streak === 0 && load('lastStudyDate')) {
+    scenario = 'returning';
+  } else if (daysLeft !== '—' && daysLeft <= 7) {
+    scenario = 'exam_week';
+  } else if (daysLeft !== '—' && daysLeft < 20) {
+    scenario = 'urgent';
+  } else if (avgDelta !== null && avgDelta >= 5) {
+    scenario = 'improving';
+  } else if (avgDelta !== null && avgDelta < -3) {
+    scenario = 'declining';
+  } else {
+    scenario = 'steady';
+  }
+
+  const templates = COACH_TEMPLATES[scenario] || COACH_TEMPLATES.steady;
+  const seed = parseInt(getTodayKey().replace(/-/g,'')) % templates.length;
+  const tpl = templates[seed];
+  return tpl
+    .replace(/\{focus\}/g, focus)
+    .replace(/\{days\}/g, daysLeft)
+    .replace(/\{delta\}/g, avgDelta !== null ? Math.abs(avgDelta) : '')
+    .replace(/\{streak\}/g, streak);
 }
 
+function getWeakestDomain() {
+  const qh = load('quizHistory', { byDomain:{} });
+  if (!qh.byDomain) return null;
+  let weak = null, weakScore = 100;
+  Object.entries(qh.byDomain).forEach(([domain, data]) => {
+    if (data.total > 0) {
+      const avg = data.correct / data.total * 100;
+      if (avg < weakScore) { weakScore = avg; weak = domain; }
+    }
+  });
+  return weak;
+}
+
+const COACH_TEMPLATES = {
+  improving: [
+    "{focus} is your biggest open gap — and you have {days} days to close it. Your quiz average jumped {delta} points this week, which tells me the studying is working. Stay on this streak and you'll hit the exam ready.",
+    "The numbers are moving in the right direction — up {delta} points this week. Keep that momentum going. {focus} still needs work, but you have {days} days and a plan. That's enough.",
+    "{delta} points of improvement this week. That's not luck — that's the work paying off. {focus} is next on the list. You have {days} days. Let's close it.",
+    "Your average is climbing. {delta} points up this week means you're absorbing the material. {focus} is the gap to close — today's session matters. {days} days and counting.",
+    "Up {delta} points. You're building real momentum. Don't break the streak — {focus} needs your attention today, and you have {days} days to nail it.",
+    "Week-over-week improvement tells me you're figuring out the exam pattern. {focus} is where the points are left on the table. {days} days — more than enough if you stay consistent.",
+    "The work is showing. +{delta} points this week. {focus} is your target — once you crack it, your overall readiness jumps significantly. {days} days out.",
+    "Good week. {delta} point jump. Keep the same schedule — it's working. {focus} is the domain that will make or break your score. Focus there today.",
+    "{delta} points better than last week. The hard part is keeping that pace. {focus} in {days} days. You've done harder things.",
+    "Momentum is a real thing, and you have it right now. +{delta} points. {focus} is still the weak link — attack it while you're hot."
+  ],
+  steady: [
+    "Consistency is the secret weapon. You're showing up, and it's building a foundation. Keep chipping at {focus} — steady progress over {days} days beats cramming every time.",
+    "No dramatic swings this week, which is fine — consistency beats intensity for exam prep. {focus} is where to direct your energy. {days} days out.",
+    "The studying is happening. That's the most important thing. {focus} needs a push — your numbers there have room to grow. {days} days, one session at a time.",
+    "Even pace, which is good. {focus} is the domain to prioritize this week. Keep the streak alive and let the knowledge compound over these {days} days.",
+    "Holding steady. Now it's time to push. {focus} is your biggest opportunity — one focused session can move the needle. {days} days to exam.",
+    "Consistency is built by showing up even when it doesn't feel exciting. That's what you're doing. {focus} is waiting. {days} days.",
+    "You're in the grind phase. It's not glamorous, but it's how this gets done. {focus} is the priority today. {days} days.",
+    "No big swings this week — consistent is fine. Channel today's energy into {focus}. That's where the exam points are hiding.",
+    "Steady preparation. {focus} is the domain to focus on before exam day — {days} days to make it a strength.",
+    "The streak is alive. The work is happening. {focus} is your next target. {days} days is time well spent if you use it."
+  ],
+  declining: [
+    "The average dipped a bit this week — that happens. Don't let it spiral. {focus} is your target today. {days} days is still enough to turn this around.",
+    "Scores went down slightly. Check in with yourself — are you rushing through sessions? {focus} needs focused attention, not just exposure. {days} days.",
+    "A dip in averages is a signal, not a verdict. Something isn't clicking with {focus}. Today: slow down, re-read, then drill. You have {days} days.",
+    "Slight drop this week. Probably means it's time to change the approach, not just repeat what's not working. {focus} — try a different angle today. {days} days.",
+    "Numbers went the wrong way. That's information. It means {focus} isn't locked in yet. {days} days — adjust and attack.",
+    "Small dip. Normal part of the process. The answer isn't to study more — it's to study smarter. Pinpoint what's confusing you in {focus} and go after that specifically.",
+    "The average dipped. Don't spiral — just recalibrate. {focus} is where to look first. {days} days and a clear plan is all you need.",
+    "A step back sometimes precedes a big jump. But it only works if you diagnose what's off. {focus} today — identify the gap, drill it, move on. {days} days.",
+    "Scores down a bit. Take it as a cue to go back to basics on {focus}. Sometimes a simpler review unlocks what the drills haven't. {days} days.",
+    "Dip in scores. Check your fundamentals on {focus} — the PMP loves to test whether you really understand the 'why' behind concepts, not just the terms."
+  ],
+  urgent: [
+    "{days} days is tight, but it's workable — if you're focused. {focus} is your biggest gap. Every session has to count now. No more missed days.",
+    "We're in the final stretch. {days} days. {focus} is where the exam will challenge you most. Today's session is not optional.",
+    "{days} days out. This is where the work you've put in either shows up or doesn't. {focus} still needs you. Lock it down.",
+    "The clock is real now — {days} days. {focus} is your most critical gap. Drill it, understand it, own it.",
+    "{days} days. Tight but doable. No new content — focus on {focus} and reinforce what you already know. Trust the preparation.",
+    "Final stretch. {days} days. Prioritize {focus} and stay sharp on your strong areas. Don't cram — consolidate.",
+    "{days} days. The exam is very real now. {focus} is the domain to lock in. Keep the streak alive — every session matters.",
+    "Time to get serious. {days} days. {focus} needs intensive attention. Short sessions, high focus, daily.",
+    "{days} days. This is the part where people either push through or fade. You're pushing through. Focus on {focus} today.",
+    "Down to {days} days. Keep it simple: {focus}, practice questions, flashcards. Don't add new material. Reinforce."
+  ],
+  exam_week: [
+    "You've done the work. {days} days out and your prep is built. This week is about staying sharp — light review, not cramming. Trust what you know.",
+    "{days} days. Don't try to learn anything new. Reinforce what you know, especially in {focus}. Calm and confident is the goal.",
+    "Exam week. The heavy lifting is done. Light sessions, confidence drills, sleep. You've prepared — now let the preparation work.",
+    "{days} days. This week: flashcard review, a short practice set, and rest. Don't burn out right before the finish line.",
+    "You're close. {days} days. Stay in the rhythm — one focused session per day, nothing more. The exam rewards calm, prepared minds.",
+    "Final days. Keep the routine, don't add stress. {focus} is your last thing to review briefly, then trust your preparation.",
+    "{days} days out. Light review mode. You've put in the work — now protect your energy and confidence.",
+    "The prep is done. {days} days. Today: review your notes on {focus}, run 10 practice questions, then step away. You're ready.",
+    "{days} days. Every study session from here should be calm and focused — not frantic. You know this material.",
+    "Almost there. {days} days. Brief review of {focus}, a short quiz, then trust yourself. The work is already done."
+  ],
+  returning: [
+    "Welcome back. The streak reset, but the knowledge didn't. Pick it back up today — {focus} is where to start. {days} days is still enough.",
+    "Back at it. The best thing you can do after a break is just start again, no drama. {focus} today. {days} days.",
+    "Glad you're back. Let's not overthink the missed day — just get into today's session. {focus} is waiting. {days} days out.",
+    "Breaks happen. What matters is that you're here now. {focus} and a reset streak. {days} days — let's go.",
+    "Back in the saddle. The material is still there. {focus} is the priority today. Start the streak again — one day at a time.",
+    "Returning after a break. Ease back in: one video, a few practice questions, review your notes on {focus}. {days} days.",
+    "You're back. That's the only thing that matters right now. {focus} today, streak restarted. {days} days.",
+    "Every comeback starts with day one. Today is day one. {focus} — and build from here. {days} days.",
+    "Missed day handled — you're back and that's what counts. {focus} today. Don't let the streak gap become a pattern. {days} days.",
+    "Back at the Boot Camp. {focus} is your focus today. The exam doesn't care about the missed day — only about what you know when you walk in. {days} days."
+  ]
+};
+
 function getDailyTraining() {
+  const key = 'dailyTraining_' + getTodayKey();
+  const overrides = load('taskOverrides_' + getTodayKey(), {});
+  // Always regenerate if overrides changed (swap requested)
+  const cachedRaw = load(key, null);
+  if (cachedRaw && !overrides[0] && !overrides[1] && !overrides[2]) return cachedRaw;
+  const tasks = generateDailyTraining();
+  save(key, tasks);
+  return tasks;
+}
+
+function generateDailyTraining() {
+  const overrides = load('taskOverrides_' + getTodayKey(), {});
   return [
-    {ico:'🎬', title:'Watch a video', sub:'Continue your study plan', nav:'learn'},
-    {ico:'🧠', title:'Practice quiz', sub:'Drill 20 questions', nav:'quiz'},
-    {ico:'🃏', title:'Flashcard review', sub:'Review 10 cards', nav:'flash'}
+    generateWatchTask(overrides[0] || 0),
+    generateDrillTask(overrides[1] || 0),
+    generateReviewTask(overrides[2] || 0)
   ];
+}
+
+function generateWatchTask(skip) {
+  const modules = typeof RAMDAYAL_MODULES !== 'undefined' ? RAMDAYAL_MODULES : [];
+  const unwatched = modules.filter(m => !load('mod_done_' + m.num, false));
+  const target = unwatched[skip % Math.max(1, unwatched.length)] || modules[0];
+  if (!target) return { ico:'🎬', title:'Watch: Ramdayal Course', sub:'Continue your video training', nav:'learn' };
+  return {
+    ico: '🎬',
+    title: 'Watch: ' + (target.title || 'Module ' + target.num),
+    sub: 'Ramdayal · Module ' + target.num + ' · ~45 min · ' + (target.pri === 'HIGH' ? 'High Priority' : 'On schedule'),
+    nav: 'learn'
+  };
+}
+
+function generateDrillTask(skip) {
+  const qh = load('quizHistory', { total:0, correct:0, byDomain:{} });
+  let weakDomain = null;
+  let weakScore = 100;
+  if (qh.byDomain) {
+    Object.entries(qh.byDomain).forEach(([domain, data]) => {
+      if (data.total > 0) {
+        const avg = Math.round(data.correct / data.total * 100);
+        if (avg < weakScore) { weakScore = avg; weakDomain = domain; }
+      }
+    });
+  }
+  return {
+    ico: '🧠',
+    title: 'Drill: 20 Practice Questions',
+    sub: weakDomain ? weakDomain + ' focus · ~15 min · Targets your weak spots' : 'Mixed domains · ~15 min',
+    nav: 'quiz',
+    domain: weakDomain
+  };
+}
+
+function generateReviewTask(skip) {
+  return {
+    ico: '🃏',
+    title: 'Review: 10 Flashcards',
+    sub: 'Auto-selected from your recent misses · ~5 min',
+    nav: 'flash'
+  };
 }
 
 function buildSHPduCallout() {
