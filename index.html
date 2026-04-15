@@ -1334,6 +1334,7 @@ body>.sb{z-index:10}
     </div>
   </div>
   <video id="video-modal-player" controls style="width:100%;height:calc(100vh - 52px);background:#000;display:block"></video>
+  <iframe id="video-modal-od-frame" src="about:blank" allowfullscreen style="width:100%;height:calc(100vh - 52px);border:none;display:none"></iframe>
 </div>
 
 <!-- ===== FLASHCARDS ===== -->
@@ -6242,32 +6243,29 @@ async function openVideoInModal(relPath, title) {
   titleEl.textContent = title || relPath.split('/').pop();
   player.src = '';
   modal.classList.add('open');
-  // OneDrive mode
+  // OneDrive mode — use /preview embed URL in iframe (avoids CORS on CDN download URLs)
   if (!pmpDirHandle && oneDriveToken) {
+    const odFrame = document.getElementById('video-modal-od-frame');
     showToast('Loading from OneDrive…');
     try {
-      const downloadUrl = await getOneDriveDownloadUrl(relPath);
-      console.log('[OD modal] downloadUrl result:', downloadUrl ? 'GOT URL' : 'NULL', downloadUrl ? String(downloadUrl).substring(0,60) : '');
-      if (!downloadUrl) throw new Error('Could not get download URL from OneDrive.');
-      titleEl.textContent = '⏳ Buffering video…';
-      const vidRes = await fetch(downloadUrl);
-      if (!vidRes.ok) throw new Error('Download failed: HTTP ' + vidRes.status);
-      const blob = await vidRes.blob();
-      if (currentVideoBlobUrl) URL.revokeObjectURL(currentVideoBlobUrl);
-      currentVideoBlobUrl = URL.createObjectURL(blob);
-      const blobUrl = currentVideoBlobUrl;
-      player.onerror = null;
-      player.onerror = () => {
-        player.onerror = null;
-        player.src = '';
-        URL.revokeObjectURL(blobUrl);
-        titleEl.innerHTML = '⚠ Could not play video. <a href="' + downloadUrl + '" target="_blank" style="color:var(--accent);text-decoration:underline">Open in OneDrive →</a>';
-      };
-      player.src = blobUrl;
+      const token = await getOneDriveToken();
+      if (!token) throw new Error('Not signed in to OneDrive.');
+      const encodedPath = ('PMP/' + relPath).split('/').map(encodeURIComponent).join('/');
+      const prevRes = await fetch(
+        `https://graph.microsoft.com/v1.0/me/drive/root:/${encodedPath}:/preview`,
+        { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: '{}' }
+      );
+      if (!prevRes.ok) throw new Error('Preview failed: HTTP ' + prevRes.status);
+      const prevData = await prevRes.json();
+      const embedUrl = prevData.getUrl;
+      if (!embedUrl) throw new Error('No embed URL returned from OneDrive.');
+      player.style.display = 'none';
+      odFrame.style.display = 'block';
+      odFrame.src = embedUrl;
       titleEl.textContent = title || relPath.split('/').pop();
-      player.play().catch(() => {});
     } catch(e) {
-      player.src = '';
+      player.style.display = 'none';
+      if (odFrame) odFrame.style.display = 'none';
       titleEl.textContent = '⚠ ' + (e.message || e);
     }
     return;
@@ -6295,7 +6293,9 @@ function closeVideoModal() {
   const modal = document.getElementById('video-modal');
   const player = document.getElementById('video-modal-player');
   if (modal) modal.classList.remove('open');
-  if (player) { player.pause(); player.src = ''; }
+  if (player) { player.pause(); player.src = ''; player.style.display = 'block'; }
+  const odFrame = document.getElementById('video-modal-od-frame');
+  if (odFrame) { odFrame.src = 'about:blank'; odFrame.style.display = 'none'; }
   if (currentVideoBlobUrl) { URL.revokeObjectURL(currentVideoBlobUrl); currentVideoBlobUrl = null; }
 }
 
