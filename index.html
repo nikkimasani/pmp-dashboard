@@ -852,6 +852,9 @@ body>.sb{z-index:10}
 
 /* Step 8 — Celebration components */
 /* Tier 1 — Win toast */
+/* Footer */
+#site-footer{position:fixed;bottom:0;left:var(--sidebar-w);right:0;text-align:center;padding:6px;font-size:10px;color:var(--t3);letter-spacing:.5px;pointer-events:none;z-index:50;font-weight:500}
+
 .win-toast{position:fixed;bottom:24px;right:24px;background:var(--s2);border:1px solid rgba(46,213,115,.35);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,.4);z-index:3000;transform:translateX(120%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);max-width:300px}
 .win-toast.show{transform:translateX(0)}
 .win-toast-ico{font-size:22px;flex-shrink:0}
@@ -982,12 +985,9 @@ body>.sb{z-index:10}
     <div class="nav-zone nav-zone-study">📚 Study</div>
     <div class="ni" onclick="nav('plan',this)"><span class="ni-ico">📚</span><span>Study Plan</span><span class="ni-badge ni-badge-green" id="nb-plan">—</span></div>
     <div class="ni" onclick="nav('lessons',this)"><span class="ni-ico">🎓</span><span>Lessons</span></div>
-    <div class="ni" onclick="nav('ref',this)"><span class="ni-ico">📝</span><span>Reference</span></div>
-    <div class="ni" onclick="nav('notes',this)"><span class="ni-ico">📝</span><span>My Notes</span></div>
-    <div class="ni" onclick="nav('apply',this)"><span class="ni-ico">📋</span><span>Application</span></div>
-    <div class="ni" onclick="nav('group',this)"><span class="ni-ico">🤝</span><span>Study Group</span></div>
-    <div class="ni" onclick="nav('files',this)"><span class="ni-ico">📁</span><span>Your Files</span></div>
-    <div class="ni" onclick="nav('study',this)"><span class="ni-ico">📖</span><span>Study Center</span></div>
+    <div class="ni" onclick="nav('ref',this)"><span class="ni-ico">📐</span><span>Reference</span></div>
+    <div class="ni" onclick="nav('notes',this)"><span class="ni-ico">✍️</span><span>My Notes</span></div>
+    <div class="ni" onclick="nav('apply',this)"><span class="ni-ico">📋</span><span>PMI Application</span></div>
   </div>
   <div class="sb-streak" id="sb-streak-bar">
     <div>
@@ -5886,7 +5886,10 @@ function buildStartHere() {
     <div style="margin-bottom:18px">
       <div class="training-hdr">
         <div class="training-lbl">⚡ TODAY'S WOD</div>
-        <div class="training-count" id="training-count">0 of 3 complete</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="training-count" id="training-count">0 of 3 complete</div>
+          <button onclick="resetTodayTasks()" style="background:none;border:1px solid var(--border);color:var(--t2);font-size:10px;padding:2px 8px;border-radius:4px;cursor:pointer;font-family:'Bricolage Grotesque',sans-serif;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--t2)'">↺ Reset</button>
+        </div>
       </div>
       ${renderTaskCard(tasks[0], 0)}
       ${renderTaskCard(tasks[1], 1)}
@@ -5932,6 +5935,16 @@ function renderTaskCard(task, idx) {
 
 function getTodayKey() {
   return new Date().toISOString().slice(0,10);
+}
+
+function resetTodayTasks() {
+  const k = getTodayKey();
+  save('dailyDone_' + k, {});
+  save('taskOverrides_' + k, {});
+  // re-render the start here panel
+  if (typeof buildStartHere === 'function') buildStartHere();
+  else if (typeof renderStartHere === 'function') renderStartHere();
+  else { nav('today', document.querySelector('.ni.active')); }
 }
 
 function updateTaskCount() {
@@ -8671,5 +8684,7 @@ function lpEnter(){
 }
 // ===== END LANDING PAGE =====
 </script>
+
+<div id="site-footer">Designed by Nikki Masani</div>
 </body>
 </html>
