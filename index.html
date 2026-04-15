@@ -5861,8 +5861,12 @@ function updateTaskCount() {
   const el = document.getElementById('training-count');
   if (el) el.textContent = count + ' of 3 complete';
   if (count === 3) {
-    awardXP(25, 'All 3 training tasks complete!');
-    showWinToast('🏋️ Training Complete!', 'All 3 tasks done for today', 25);
+    const bonusKey = 'trainingBonus_' + getTodayKey();
+    if (!load(bonusKey, false)) {
+      save(bonusKey, true);
+      awardXP(25, 'All 3 training tasks complete!');
+      showWinToast('🏋️ Training Complete!', 'All 3 tasks done for today', 25);
+    }
   }
 }
 
