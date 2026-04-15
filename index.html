@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@3/dist/msal-browser.min.js" crossorigin="anonymous"></script>
 <style>
 :root{
   --bg:#07090f;--s1:#0d1020;--s2:#131829;--s3:#1a2035;--border:#1e2540;
@@ -3975,68 +3976,94 @@ function buildLearn() {
 let pmpDirHandle = null;
 
 // ============================================================
-// ONEDRIVE DIRECT LINK MODE
+// ONEDRIVE — MSAL AUTH
 // ============================================================
-let onedriveSharingUrl = load('onedriveSharingUrl', null);
+const MSAL_CLIENT_ID = '0f962b69-dd93-4e33-8a69-3c5ec1576ebf';
+const OD_FOLDER = 'PMP';
+const OD_SCOPES = ['Files.Read'];
 
-function connectOneDrive() {
-  const url = prompt(
-    'Paste your OneDrive PMP folder sharing URL below.\n\n' +
-    'How to get it:\n' +
-    '1. Open OneDrive in your browser\n' +
-    '2. Right-click your PMP folder → Share\n' +
-    '3. Set to "Anyone with the link can view"\n' +
-    '4. Click Copy link and paste it here'
-  );
-  if (!url) return;
-  const trimmed = url.trim();
-  if (!trimmed.startsWith('http')) { showToast('Invalid URL — paste the full OneDrive sharing link.'); return; }
-  onedriveSharingUrl = trimmed;
-  save('onedriveSharingUrl', trimmed);
-  showToast('OneDrive connected! Scanning for video courses…');
-  buildFiles();
-  buildStartHere();
-  scanDynamicVideos();
+let msalInstance = null;
+let oneDriveToken = null;
+
+async function initMsal() {
+  if (typeof msal === 'undefined') return;
+  msalInstance = new msal.PublicClientApplication({
+    auth: {
+      clientId: MSAL_CLIENT_ID,
+      authority: 'https://login.microsoftonline.com/consumers',
+      redirectUri: window.location.origin + window.location.pathname
+    },
+    cache: { cacheLocation: 'localStorage', storeAuthStateInCookie: false }
+  });
+  await msalInstance.initialize();
+  await msalInstance.handleRedirectPromise();
+  const accounts = msalInstance.getAllAccounts();
+  if (accounts.length > 0) {
+    try {
+      const result = await msalInstance.acquireTokenSilent({ scopes: OD_SCOPES, account: accounts[0] });
+      oneDriveToken = result.accessToken;
+      buildFiles(); buildStartHere();
+      if (!dynamicCourses) scanDynamicVideos();
+    } catch(e) { oneDriveToken = null; }
+  }
 }
 
-function disconnectOneDrive() {
-  onedriveSharingUrl = null;
-  save('onedriveSharingUrl', null);
+async function connectOneDrive() {
+  if (!msalInstance) { showToast('Auth not ready — try again in a moment.'); return; }
+  try {
+    const result = await msalInstance.loginPopup({ scopes: OD_SCOPES });
+    oneDriveToken = result.accessToken;
+    showToast('Signed in! Scanning your OneDrive…');
+    buildFiles(); buildStartHere(); buildMyCourses();
+    scanDynamicVideos();
+  } catch(e) {
+    if (e.errorCode !== 'user_cancelled') showToast('Sign-in failed: ' + (e.message || e));
+  }
+}
+
+async function disconnectOneDrive() {
+  if (msalInstance) {
+    const accounts = msalInstance.getAllAccounts();
+    if (accounts.length > 0) {
+      try { await msalInstance.logoutPopup({ account: accounts[0] }); } catch(e) {}
+    }
+  }
+  oneDriveToken = null;
   dynamicCourses = null;
-  buildMyCourses();
-  buildFiles();
-  buildStartHere();
+  buildMyCourses(); buildFiles(); buildStartHere();
 }
 
-function encodeOneDriveShareId(url) {
-  return 'u!' + btoa(url).replace(/=+$/, '').replace(/\//g, '_').replace(/\+/g, '-');
+async function getOneDriveToken() {
+  if (!msalInstance) return null;
+  const accounts = msalInstance.getAllAccounts();
+  if (!accounts.length) return null;
+  try {
+    const result = await msalInstance.acquireTokenSilent({ scopes: OD_SCOPES, account: accounts[0] });
+    oneDriveToken = result.accessToken;
+    return oneDriveToken;
+  } catch(e) {
+    oneDriveToken = null;
+    return null;
+  }
 }
 
 async function getOneDriveDownloadUrl(relPath) {
-  if (!onedriveSharingUrl) return null;
-  const shareId = encodeOneDriveShareId(onedriveSharingUrl);
-  const encodedPath = relPath.split('/').map(p => encodeURIComponent(p)).join('/');
-  // Try Graph API first — returns proper streaming URLs for video
+  const token = await getOneDriveToken();
+  if (!token) return null;
+  const fullPath = OD_FOLDER + '/' + relPath;
+  const encodedPath = fullPath.split('/').map(encodeURIComponent).join('/');
   try {
-    const graphUrl = `https://graph.microsoft.com/v1.0/shares/${shareId}/root:/${encodedPath}?$select=id,name,@microsoft.graph.downloadUrl`;
-    const res = await fetch(graphUrl, { headers: { 'Accept': 'application/json' } });
+    const res = await fetch(
+      `https://graph.microsoft.com/v1.0/me/drive/root:/${encodedPath}?$select=id,name,@microsoft.graph.downloadUrl`,
+      { headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' } }
+    );
     if (res.ok) {
       const data = await res.json();
       const url = data['@microsoft.graph.downloadUrl'] || data['@content.downloadUrl'];
       if (url) return url;
     }
-  } catch(e) { console.warn('Graph API attempt failed, trying legacy:', e); }
-  // Fallback to legacy OneDrive API
-  try {
-    const legacyUrl = `https://api.onedrive.com/v1.0/shares/${shareId}/root:/${encodedPath}`;
-    const res = await fetch(legacyUrl, { headers: { 'Accept': 'application/json' } });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    return data['@content.downloadUrl'] || data['@microsoft.graph.downloadUrl'] || null;
-  } catch(e) {
-    console.error('OneDrive fetch error:', e);
-    return null;
-  }
+  } catch(e) { console.error('OneDrive download URL error:', e); }
+  return null;
 }
 
 async function connectPMPFolder() {
@@ -4061,7 +4088,7 @@ async function connectPMPFolder() {
 let dynamicCourses = null; // null=not scanned, []=scanned
 
 async function scanDynamicVideos() {
-  if (!pmpDirHandle && !onedriveSharingUrl) { dynamicCourses = null; buildMyCourses(); return; }
+  if (!pmpDirHandle && !oneDriveToken) { dynamicCourses = null; buildMyCourses(); return; }
   const section = document.getElementById('my-courses-section');
   const list = document.getElementById('my-courses-list');
   if (section) section.style.display = 'block';
@@ -4107,14 +4134,21 @@ async function scanLocalVideos() {
 
 async function scanOneDriveVideos() {
   const VIDEO_EXTS = new Set(['mp4','mkv','avi','mov','webm','m4v']);
-  const shareId = encodeOneDriveShareId(onedriveSharingUrl);
+  const token = await getOneDriveToken();
+  if (!token) {
+    dynamicCourses = [];
+    buildMyCourses();
+    showToast('Sign in to Microsoft to scan OneDrive videos.');
+    return;
+  }
+  const headers = { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' };
 
-  async function odListChildren(path) {
-    const url = path
-      ? `https://graph.microsoft.com/v1.0/shares/${shareId}/root:/${path.split('/').map(encodeURIComponent).join('/')}:/children?$select=name,folder,file&$top=200`
-      : `https://graph.microsoft.com/v1.0/shares/${shareId}/root/children?$select=name,folder,file&$top=200`;
+  async function odListChildren(subPath) {
+    const path = subPath ? `${OD_FOLDER}/${subPath}` : OD_FOLDER;
+    const encodedPath = path.split('/').map(encodeURIComponent).join('/');
+    const url = `https://graph.microsoft.com/v1.0/me/drive/root:/${encodedPath}:/children?$select=name,folder,file,id&$top=200`;
     try {
-      const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      const res = await fetch(url, { headers });
       if (!res.ok) return null;
       const data = await res.json();
       return data.value || [];
@@ -4125,7 +4159,7 @@ async function scanOneDriveVideos() {
   if (!rootItems) {
     dynamicCourses = [];
     buildMyCourses();
-    showToast('Could not scan OneDrive. Make sure the folder is shared with "Anyone with the link can view".');
+    showToast('Could not access OneDrive PMP folder. Make sure a "PMP" folder exists in your OneDrive root.');
     return;
   }
 
@@ -4151,14 +4185,14 @@ async function scanOneDriveVideos() {
   dynamicCourses = courseResults.filter(Boolean);
   buildMyCourses();
   if (dynamicCourses.length > 0) showToast('Found ' + dynamicCourses.length + ' video courses!');
-  else showToast('No video files found. Check the folder is shared with "Anyone with the link can view".');
+  else showToast('No video files found in your OneDrive PMP folder.');
 }
 
 function buildMyCourses() {
   const section = document.getElementById('my-courses-section');
   const list = document.getElementById('my-courses-list');
   if (!section || !list) return;
-  if ((!pmpDirHandle && !onedriveSharingUrl) || !dynamicCourses) { section.style.display = 'none'; return; }
+  if ((!pmpDirHandle && !oneDriveToken) || !dynamicCourses) { section.style.display = 'none'; return; }
   section.style.display = 'block';
   if (dynamicCourses.length === 0) {
     list.innerHTML = '<div style="font-size:12px;color:var(--t2);padding:12px 0">No video files found in this folder. Make sure you selected your PMP root folder.</div>';
@@ -4193,7 +4227,7 @@ function buildMyCourses() {
 }
 
 async function openFromDir(relPath) {
-  if (!pmpDirHandle && !onedriveSharingUrl) {
+  if (!pmpDirHandle && !oneDriveToken) {
     // Navigate to Files tab and flash the connect button
     const ni = document.querySelectorAll('.ni');
     nav('files', ni[ni.length - 1]);
@@ -4210,11 +4244,11 @@ async function openFromDir(relPath) {
     return;
   }
   // OneDrive mode
-  if (!pmpDirHandle && onedriveSharingUrl) {
+  if (!pmpDirHandle && oneDriveToken) {
     showToast('Fetching from OneDrive…');
     const downloadUrl = await getOneDriveDownloadUrl(relPath);
     if (!downloadUrl) {
-      showToast('Could not fetch "' + relPath.split('/').pop() + '" from OneDrive. Check the folder is shared and the file path matches.');
+      showToast('Could not fetch "' + relPath.split('/').pop() + '" from OneDrive.');
       return;
     }
     const ext = relPath.split('.').pop().toLowerCase();
@@ -4273,7 +4307,7 @@ function buildFiles() {
   const container = document.getElementById('files-list');
   if (!container) return;
 
-  if (!pmpDirHandle && !onedriveSharingUrl) {
+  if (!pmpDirHandle && !oneDriveToken) {
     const supported = !!window.showDirectoryPicker;
     container.innerHTML = `
       <div style="text-align:center;padding:52px 24px">
@@ -4284,9 +4318,9 @@ function buildFiles() {
         </div>
         <div style="display:flex;flex-direction:column;gap:12px;max-width:420px;margin:0 auto 24px">
           <div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;text-align:left">
-            <div style="font-size:13px;font-weight:800;margin-bottom:4px">☁️ OneDrive Link <span style="background:rgba(46,213,115,.15);color:var(--green);font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;margin-left:6px">Recommended</span></div>
-            <div style="font-size:12px;color:var(--t2);margin-bottom:12px;line-height:1.6">Files stream from your OneDrive — works on any computer, no local copy needed.</div>
-            <button class="btn btn-p" style="width:100%;justify-content:center" onclick="connectOneDrive()">Connect via OneDrive Link →</button>
+            <div style="font-size:13px;font-weight:800;margin-bottom:4px">☁️ OneDrive <span style="background:rgba(46,213,115,.15);color:var(--green);font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;margin-left:6px">Recommended</span></div>
+            <div style="font-size:12px;color:var(--t2);margin-bottom:12px;line-height:1.6">Sign in with your Microsoft account — files stream directly from your OneDrive.</div>
+            <button class="btn btn-p" style="width:100%;justify-content:center" onclick="connectOneDrive()">Sign in with Microsoft →</button>
           </div>
           ${supported ? `
           <div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;text-align:left">
@@ -5204,7 +5238,7 @@ function buildStartHere() {
   if (!el) return;
   const supported = !!window.showDirectoryPicker;
 
-  if (!pmpDirHandle && !onedriveSharingUrl) {
+  if (!pmpDirHandle && !oneDriveToken) {
     // PRE-SETUP: hero connect card
     el.innerHTML = `
       <div class="sh-hero">
@@ -5214,7 +5248,7 @@ function buildStartHere() {
           Choose how to connect — both give you one-click access to all 44 files and videos.
         </div>
         <div style="display:flex;flex-direction:column;gap:10px;max-width:420px;margin:0 auto 18px;text-align:left">
-          <button class="btn btn-p sh-hero-btn" style="margin-bottom:0;width:100%;justify-content:center" onclick="connectOneDrive()">☁️ Connect via OneDrive Link →</button>
+          <button class="btn btn-p sh-hero-btn" style="margin-bottom:0;width:100%;justify-content:center" onclick="connectOneDrive()">☁️ Sign in with Microsoft →</button>
           <div class="sh-hero-note" style="margin-bottom:4px">Files stream from your OneDrive — works on any computer</div>
           ${supported
             ? `<button class="btn btn-s sh-hero-btn" style="margin-bottom:0;width:100%;justify-content:center" onclick="connectPMPFolder()">💻 Connect Local Folder →</button>
@@ -5447,7 +5481,7 @@ function buildSHPduCallout() {
 // PDF IN-BROWSER VIEWER
 // ============================================================
 async function openPdfInModal(relPath, title) {
-  if (!pmpDirHandle && !onedriveSharingUrl) {
+  if (!pmpDirHandle && !oneDriveToken) {
     showToast('Connect your PMP folder first to view files in-browser.');
     return;
   }
@@ -5459,7 +5493,7 @@ async function openPdfInModal(relPath, title) {
   iframe.src = 'about:blank';
   modal.classList.add('open');
   // OneDrive mode
-  if (!pmpDirHandle && onedriveSharingUrl) {
+  if (!pmpDirHandle && oneDriveToken) {
     try {
       const downloadUrl = await getOneDriveDownloadUrl(relPath);
       if (!downloadUrl) throw new Error('Could not get download URL from OneDrive.');
@@ -5525,7 +5559,7 @@ function showAppTab(tab) {
 // VIDEO MODAL
 // ============================================================
 async function openVideoInModal(relPath, title) {
-  if (!pmpDirHandle && !onedriveSharingUrl) {
+  if (!pmpDirHandle && !oneDriveToken) {
     showToast('Connect your PMP folder first (Your Files tab) to watch videos.');
     return;
   }
@@ -5537,11 +5571,11 @@ async function openVideoInModal(relPath, title) {
   player.src = '';
   modal.classList.add('open');
   // OneDrive mode
-  if (!pmpDirHandle && onedriveSharingUrl) {
+  if (!pmpDirHandle && oneDriveToken) {
     showToast('Loading from OneDrive…');
     try {
       const downloadUrl = await getOneDriveDownloadUrl(relPath);
-      if (!downloadUrl) throw new Error('Could not get download URL from OneDrive. Make sure your folder is shared with "Anyone with the link can view".');
+      if (!downloadUrl) throw new Error('Could not get download URL from OneDrive.');
       player.onerror = null;
       player.onerror = () => {
         player.onerror = null;
@@ -7466,7 +7500,8 @@ document.addEventListener('DOMContentLoaded', () => {
   buildNotesPanel();
   updateProgress();
   // Auto-scan if a connection was already saved from a previous session
-  if (onedriveSharingUrl || pmpDirHandle) scanDynamicVideos();
+  if (pmpDirHandle) scanDynamicVideos();
+  initMsal();
 });
 </script>
 </body>
