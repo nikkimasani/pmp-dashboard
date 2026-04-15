@@ -1674,8 +1674,18 @@ function togglePlanSection(id) {
 
 function toggleSectionDone(id) {
   const done = load('planDone', {});
+  const wasDone = done[id];
   done[id] = !done[id];
   save('planDone', done);
+  if (done[id] && !wasDone) {
+    const sec = (typeof STUDY_SECTIONS !== 'undefined' ? STUDY_SECTIONS : []).find(s => s.id === id);
+    const sectionTitle = sec ? sec.title : id;
+    const badgeId = getDomainBadgeForSection(id);
+    if (badgeId) unlockBadge(badgeId);
+    showCelebrationModal('Section Complete! 🎉', sectionTitle, 'Module finished — keep going!');
+    awardXP(100, 'Study plan section complete');
+    updateSidebarProgress();
+  }
   buildPlan();
   // re-open the section
   setTimeout(() => {
@@ -7771,6 +7781,64 @@ function markFlashReview() {
 // ============================================================
 // PROGRESS TRACKER
 // ============================================================
+function buildXPCard() {
+  const a = getAchievements();
+  const { current, next } = getLevelInfo(a.xp);
+  const pct = next ? Math.round((a.xp - current.xp) / (next.xp - current.xp) * 100) : 100;
+  return `
+    <div class="xp-card">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+        <div class="xp-avatar">⚔️</div>
+        <div>
+          <div style="font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:2px">Project Manager</div>
+          <div style="font-size:16px;font-weight:900;color:var(--text)">Level ${current.level} — ${current.title}</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--t2);margin-bottom:5px">
+        <span>XP Progress</span><span style="color:var(--purple);font-weight:700">${a.xp.toLocaleString()} / ${next ? next.xp.toLocaleString() : '—'} XP</span>
+      </div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:${pct}%"></div></div>
+      <div style="font-size:10px;color:var(--t2);margin-top:6px">${next ? (next.xp - a.xp).toLocaleString() + ' XP to Level ' + next.level + ' — ' + next.title : 'Max level reached!'}</div>
+    </div>`;
+}
+
+function buildBadgeSection(catLabel, catId, badges) {
+  const a = getAchievements();
+  const cards = badges.map(b => {
+    const earned = a.earnedBadges.includes(b.id);
+    const progress = getBadgeProgress(b);
+    const inReach = !earned && progress > 0.5;
+    const cls = earned ? 'badge-card-earned' : inReach ? 'badge-card-reach' : 'badge-card-locked';
+    const statusColor = earned ? 'var(--green)' : inReach ? 'var(--a4)' : 'var(--t3)';
+    const statusLabel = earned ? 'EARNED' : inReach ? 'IN REACH' : 'LOCKED';
+    const reachBar = inReach ? `<div class="badge-reach-bar"><div class="badge-reach-fill" style="width:${Math.round(progress*100)}%"></div></div>` : '';
+    return `
+      <div class="badge-card ${cls}">
+        <div class="badge-card-ico">${b.ico}</div>
+        <div class="badge-card-status" style="color:${statusColor}">${statusLabel}</div>
+        <div class="badge-card-name">${b.name}</div>
+        <div class="badge-card-desc">${b.desc}</div>
+        ${reachBar}
+      </div>`;
+  }).join('');
+  return `
+    <div style="font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px">${catLabel}</div>
+    <div class="badge-grid">${cards}</div>`;
+}
+
+function getDomainBadgeForSection(sectionId) {
+  const map = {
+    scope:'scope_master', schedule:'schedule_pro', cost:'cost_controller',
+    quality:'quality_guard', risk:'risk_manager', procurement:'procurement_pro',
+    resources:'people_leader', comms:'comms_expert', agile:'agile_champion',
+    integration:'integration_ace'
+  };
+  for (const [key, badgeId] of Object.entries(map)) {
+    if (sectionId.toLowerCase().includes(key)) return badgeId;
+  }
+  return null;
+}
+
 function buildProgressTracker() {
   const el = document.getElementById('progress-area');
   if (!el) return;
@@ -7798,7 +7866,20 @@ function buildProgressTracker() {
     else break;
   }
 
-  el.innerHTML = `
+  const xpHtml = buildXPCard();
+  const domainBadges = BADGES.filter(b => b.cat === 'domain');
+  const streakBadges = BADGES.filter(b => b.cat === 'streak');
+  const perfBadges   = BADGES.filter(b => b.cat === 'perf');
+  const badgeHtml = `
+  <div class="ph"><div class="ph-title">My Stats</div><div class="ph-sub">Your XP, level, achievements, and performance at a glance.</div></div>
+  ${xpHtml}
+  <div style="margin-bottom:28px">
+    ${buildBadgeSection('🏅 Domain Mastery Badges', 'domain', domainBadges)}
+    ${buildBadgeSection('🔥 Streak & Hustle Badges', 'streak', streakBadges)}
+    ${buildBadgeSection('🧠 Performance Badges', 'perf', perfBadges)}
+  </div>`;
+
+  el.innerHTML = badgeHtml + `
     <div class="stat-row">
       <div class="stat-card"><div class="stat-big" style="color:var(--accent)">${totalHours.toFixed(1)}</div><div style="font-size:11px;color:var(--t2)">Hours Studied</div></div>
       <div class="stat-card"><div class="stat-big" style="color:var(--a4)">${streak}</div><div style="font-size:11px;color:var(--t2)">Day Streak 🔥</div></div>
@@ -8244,6 +8325,7 @@ function getStreak() {
 
 function updateStreakDisplay() {
   const streak = getStreak();
+  checkStreakBadges(streak);
   const numEl = document.getElementById('sb-streak-num');
   const bar = document.getElementById('sb-streak-bar');
   if (numEl) numEl.textContent = streak;
