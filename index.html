@@ -5466,6 +5466,17 @@ function finishQuiz() {
   });
   save('quizDomainHistory', domHist);
 
+  // Wire XP + badges to quiz completion
+  awardXP(pct >= 70 ? 50 : 15, 'Practice quiz completed');
+  const isMock = false;
+  checkQuizBadges(pct, isMock);
+  const domainKey = quizState.filter && quizState.filter !== 'all' ? quizState.filter : 'general';
+  const prevRecord = checkPersonalRecord(domainKey, pct);
+  if (prevRecord !== null) {
+    setTimeout(() => showPRBanner('quiz-area', domainKey, pct, prevRecord), 100);
+  }
+  updateSidebarProgress();
+
   if (pct >= 80) launchConfetti();
   document.getElementById('quiz-area').innerHTML = `
     <div class="results">
