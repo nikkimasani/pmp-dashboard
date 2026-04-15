@@ -1315,10 +1315,32 @@ body>.sb{z-index:10}
 </div>
 
 <div class="panel" id="p-files">
-  <div class="ph"><div class="ph-title">Your File Library</div><div class="ph-sub">Upload your OneDrive files once — then open them directly in your browser from anywhere.</div></div>
+  <div class="ph"><div class="ph-title">Your File Library</div><div class="ph-sub">Access the shared PMP materials folder or connect your own local copy.</div></div>
+
+  <!-- SHARED FOLDER ACCESS GUIDE -->
+  <div style="background:rgba(200,255,0,.06);border:1px solid rgba(200,255,0,.2);border-radius:var(--r);padding:20px 22px;margin-bottom:20px">
+    <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:12px">📂 Accessing the Shared PMP Folder</div>
+    <div style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:16px">The full PMP study materials are hosted in a shared OneDrive folder. Since you'll be viewing from your own device, follow these steps to get everything working:</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px">
+      <div style="display:flex;gap:14px;align-items:flex-start">
+        <div style="width:24px;height:24px;background:var(--accent);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">1</div>
+        <div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Open the shared folder</div><div style="font-size:12px;color:var(--t2)">Click the button below to open the public OneDrive PMP folder in your browser.</div></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start">
+        <div style="width:24px;height:24px;background:var(--accent);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">2</div>
+        <div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Download the folder</div><div style="font-size:12px;color:var(--t2)">In OneDrive, click <strong style="color:var(--text)">Download</strong> at the top. It will download as a ZIP file. Extract it to a folder on your computer (e.g. <code style="color:var(--accent);font-size:11px">Documents/PMP</code>).</div></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start">
+        <div style="width:24px;height:24px;background:var(--accent);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">3</div>
+        <div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Connect the local folder</div><div style="font-size:12px;color:var(--t2)">Scroll down and click <strong style="color:var(--text)">Connect My PMP Folder</strong>. Navigate to the folder you extracted in step 2. Every file will get an <strong style="color:var(--text)">Open →</strong> button instantly.</div></div>
+      </div>
+    </div>
+    <a class="btn btn-p" href="https://1drv.ms/f/c/12dc5ef91903e837/IgCS4ONPJp0nQJYPqZDaXLmnAfzrUEvAtZRT6NAo0FuV_ko?e=MbVZoj" target="_blank" style="text-decoration:none">📂 Open Shared PMP Folder →</a>
+  </div>
+
   <div class="tip-box" style="margin-bottom:16px">
-    <div class="tip-t">One-time setup — then one click to open any file</div>
-    <div class="tip-b">Click <strong>Connect My PMP Folder</strong> below → navigate to <strong>OneDrive → PMP</strong> → click Select Folder. Every file gets an <strong>Open →</strong> button. Works in Chrome and Edge. No paths, no copying, ever again.</div>
+    <div class="tip-t">Already downloaded? Connect your local folder</div>
+    <div class="tip-b">Click <strong>Connect My PMP Folder</strong> below → navigate to your local PMP folder → click Select Folder. Every file gets an <strong>Open →</strong> button. Works in Chrome and Edge.</div>
   </div>
   <div id="files-list"></div>
 </div>
