@@ -4212,11 +4212,10 @@ function checkPersonalRecord(domainKey, pct) {
   return null;
 }
 
-// Stubs — will be replaced in Tasks 3 and 4
+// Celebration helpers — showWinToast and showCelebrationModal implemented below; updateSidebarProgress stub for Task 4
 let _winToastTimer = null;
 function showWinToast(title, sub, xpAmount) {
   const t = document.getElementById('win-toast');
-  const ico = document.getElementById('win-toast-ico');
   const tEl = document.getElementById('win-toast-title');
   const sEl = document.getElementById('win-toast-sub');
   const xEl = document.getElementById('win-toast-xp');
@@ -4248,7 +4247,9 @@ function _showNextCelebration() {
   const pill = document.getElementById('cel-pill');
   if (pillText) { pill.textContent = pillText; pill.style.display = ''; }
   else { pill.style.display = 'none'; }
-  document.getElementById('celebration-overlay').classList.add('show');
+  const overlay = document.getElementById('celebration-overlay');
+  if (!overlay) { _celActive = false; return; }
+  overlay.classList.add('show');
   launchConfetti();
 }
 
@@ -4258,9 +4259,11 @@ function closeCelebration() {
   setTimeout(_showNextCelebration, 300);
 }
 
+let _confettiFrame;
 function launchConfetti() {
   const canvas = document.getElementById('confetti-canvas');
   if (!canvas) return;
+  cancelAnimationFrame(_confettiFrame);
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -4276,7 +4279,6 @@ function launchConfetti() {
     rot: Math.random() * 360,
     rotV: (Math.random() - .5) * 8
   }));
-  let frame;
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     particles.forEach(p => {
@@ -4287,10 +4289,9 @@ function launchConfetti() {
       ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r);
       ctx.restore();
     });
-    if (particles.some(p => p.alpha > 0)) frame = requestAnimationFrame(draw);
+    if (particles.some(p => p.alpha > 0)) _confettiFrame = requestAnimationFrame(draw);
     else ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
-  cancelAnimationFrame(frame);
   draw();
 }
 
