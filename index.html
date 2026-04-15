@@ -4110,6 +4110,114 @@ function save(k, v) { try { localStorage.setItem('pmp_' + k, JSON.stringify(v));
 function load(k, def) { try { const v = localStorage.getItem('pmp_' + k); return v !== null ? JSON.parse(v) : def; } catch(e) { return def; } }
 
 // ============================================================
+// ACHIEVEMENT ENGINE
+// ============================================================
+const XP_LEVELS = [
+  { level:1, xp:0,      title:'Recruit' },
+  { level:2, xp:500,    title:'Trainee' },
+  { level:3, xp:1000,   title:'Associate' },
+  { level:4, xp:1750,   title:'Practitioner' },
+  { level:5, xp:2750,   title:'Senior Practitioner' },
+  { level:6, xp:4000,   title:'Project Lead' },
+  { level:7, xp:5500,   title:'Project Manager' },
+  { level:8, xp:7500,   title:'Senior PM' },
+  { level:9, xp:10000,  title:'PMP Candidate' },
+  { level:10, xp:13000, title:'PMP Champion' }
+];
+
+const BADGES = [
+  // Domain mastery
+  { id:'scope_master',    ico:'🏗️', name:'Scope Master',     desc:'Scope Management complete',    cat:'domain', trigger:'scope' },
+  { id:'schedule_pro',    ico:'⏱️', name:'Schedule Pro',      desc:'Schedule Management complete',  cat:'domain', trigger:'schedule' },
+  { id:'cost_controller', ico:'💰', name:'Cost Controller',   desc:'Cost & EVM complete',           cat:'domain', trigger:'cost' },
+  { id:'quality_guard',   ico:'✅', name:'Quality Guard',     desc:'Quality Management complete',   cat:'domain', trigger:'quality' },
+  { id:'risk_manager',    ico:'⚠️', name:'Risk Manager',      desc:'Risk Management complete',      cat:'domain', trigger:'risk' },
+  { id:'procurement_pro', ico:'📦', name:'Procurement Pro',   desc:'Procurement complete',          cat:'domain', trigger:'procurement' },
+  { id:'people_leader',   ico:'🤝', name:'People Leader',     desc:'Resource Management complete',  cat:'domain', trigger:'resources' },
+  { id:'comms_expert',    ico:'📡', name:'Comms Expert',      desc:'Communications complete',       cat:'domain', trigger:'comms' },
+  { id:'agile_champion',  ico:'🔄', name:'Agile Champion',    desc:'Agile/Hybrid complete',         cat:'domain', trigger:'agile' },
+  { id:'integration_ace', ico:'🔗', name:'Integration Ace',   desc:'Integration Management complete', cat:'domain', trigger:'integration' },
+  // Streak
+  { id:'week_warrior',    ico:'🔥', name:'Week Warrior',      desc:'7-day streak',                  cat:'streak', trigger:7 },
+  { id:'two_week_push',   ico:'💪', name:'Two-Week Push',     desc:'14-day streak',                 cat:'streak', trigger:14 },
+  { id:'iron_will',       ico:'🏆', name:'Iron Will',         desc:'30-day streak',                 cat:'streak', trigger:30 },
+  // Performance
+  { id:'sharp_shooter',   ico:'🎯', name:'Sharp Shooter',     desc:'Score 80%+ on any quiz',        cat:'perf', trigger:80 },
+  { id:'exam_ready',      ico:'🧠', name:'Exam Ready',        desc:'Score 80%+ on full mock exam',  cat:'perf', trigger:'mock80' },
+  { id:'perfect_score',   ico:'⭐', name:'Perfect Score',     desc:'Score 100% on any section quiz',cat:'perf', trigger:100 }
+];
+
+function getAchievements() {
+  return load('achievements', { xp:0, earnedBadges:[], bestScores:{} });
+}
+
+function saveAchievements(a) {
+  save('achievements', a);
+}
+
+function getLevelInfo(xp) {
+  let current = XP_LEVELS[0];
+  let next = XP_LEVELS[1];
+  for (let i = XP_LEVELS.length - 1; i >= 0; i--) {
+    if (xp >= XP_LEVELS[i].xp) { current = XP_LEVELS[i]; next = XP_LEVELS[i+1] || null; break; }
+  }
+  return { current, next };
+}
+
+function awardXP(amount, reason) {
+  const a = getAchievements();
+  const prevLevel = getLevelInfo(a.xp).current.level;
+  a.xp += amount;
+  saveAchievements(a);
+  const newLevel = getLevelInfo(a.xp).current.level;
+  showWinToast('⚡ +' + amount + ' XP', reason);
+  if (newLevel > prevLevel) {
+    const info = getLevelInfo(a.xp);
+    showCelebrationModal('Level Up!', 'Level ' + info.current.level + ' — ' + info.current.title, 'You reached a new rank 🎖️');
+  }
+  updateSidebarProgress();
+}
+
+function unlockBadge(badgeId) {
+  const a = getAchievements();
+  if (a.earnedBadges.includes(badgeId)) return;
+  a.earnedBadges.push(badgeId);
+  saveAchievements(a);
+  const badge = BADGES.find(b => b.id === badgeId);
+  if (!badge) return;
+  awardXP(150, badge.name + ' badge earned');
+  showCelebrationModal('Badge Unlocked! ' + badge.ico, badge.name, badge.desc);
+}
+
+function checkStreakBadges(streak) {
+  if (streak >= 7)  unlockBadge('week_warrior');
+  if (streak >= 14) unlockBadge('two_week_push');
+  if (streak >= 30) unlockBadge('iron_will');
+}
+
+function checkQuizBadges(pct, isMock) {
+  if (pct >= 80) unlockBadge('sharp_shooter');
+  if (pct >= 80 && isMock) unlockBadge('exam_ready');
+  if (pct === 100) unlockBadge('perfect_score');
+}
+
+function checkPersonalRecord(domainKey, pct) {
+  const a = getAchievements();
+  const prev = a.bestScores[domainKey] || 0;
+  if (pct > prev) {
+    a.bestScores[domainKey] = pct;
+    saveAchievements(a);
+    return prev; // return previous best so caller can show PR banner
+  }
+  return null;
+}
+
+// Stubs — will be replaced in Tasks 3 and 4
+function showWinToast(title, sub, xpAmount) { /* implemented in Task 3 */ }
+function showCelebrationModal(title, name, desc, pill) { /* implemented in Task 3 */ }
+function updateSidebarProgress() { /* implemented in Task 4 */ }
+
+// ============================================================
 // COPY TO CLIPBOARD
 // ============================================================
 function copy(text) {
