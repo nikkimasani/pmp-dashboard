@@ -8827,7 +8827,7 @@ async function saveProfile() {
   const err = document.getElementById('setup-error');
   if (!name) { err.textContent = 'Name is required.'; return; }
   const role = ADMIN_EMAILS.includes(currentUser.email) ? 'admin' : 'user';
-  const { error } = await sbClient.from('pmp_profiles').insert({ id: currentUser.id, name, role, exam_date: examDate || null });
+  const { error } = await sbClient.from('pmp_profiles').upsert({ id: currentUser.id, name, role, exam_date: examDate || null });
   if (error) { err.textContent = error.message; return; }
   if (examDate) localStorage.setItem('pmp_exam_date', examDate);
   document.getElementById('profile-setup').style.display = 'none';
