@@ -4282,7 +4282,7 @@ function saveDateModal() {
   document.getElementById('date-modal').classList.remove('open');
 }
 function clearExamDate() {
-  localStorage.removeItem('examDate');
+  localStorage.removeItem('pmp_examDate');
   document.getElementById('exam-date-in').value = '';
   document.getElementById('cd').textContent = '—';
   document.getElementById('date-modal').classList.remove('open');
@@ -8811,6 +8811,7 @@ async function onAuthReady(user) {
   const { data: profile } = await sbClient.from('pmp_profiles').select('*').eq('id', user.id).single();
   if (!profile) { document.getElementById('profile-setup').style.display = 'flex'; return; }
   window._profileName = profile.name;
+  if (profile.exam_date && !load('examDate')) save('examDate', profile.exam_date);
   if (ADMIN_EMAILS.includes(user.email) || profile.role === 'admin') {
     const el = document.getElementById('admin-nav-item');
     if (el) el.style.display = 'flex';
@@ -8838,7 +8839,7 @@ async function saveProfile() {
   const role = ADMIN_EMAILS.includes(currentUser.email) ? 'admin' : 'user';
   const { error } = await sbClient.from('pmp_profiles').upsert({ id: currentUser.id, name, role, exam_date: examDate || null });
   if (error) { err.textContent = error.message; return; }
-  if (examDate) localStorage.setItem('pmp_exam_date', examDate);
+  if (examDate) save('examDate', examDate);
   document.getElementById('profile-setup').style.display = 'none';
   await onAuthReady(currentUser);
 }
