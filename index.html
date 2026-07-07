@@ -1591,6 +1591,8 @@ const LOCAL_VIDEOS = [
 ];
 
 const PDU_RESOURCES = [
+  { name:"PMI Official PMP Certification Page", desc:"Use this as the source of truth for the current PMP exam, eligibility, format, and official PMI resources.", link:"https://www.pmi.org/certifications/project-management-pmp", free:true },
+  { name:"PMI Official PMP Exam Updates", desc:"Current PMI page for the refreshed PMP exam. Use this before any older course, simulator, or study guide.", link:"https://www.pmi.org/certifications/project-management-pmp/new-exam", free:true },
   { name:"PMI Free Webinars (1,000+ on-demand)", desc:"Official PMI webinars that qualify as PDUs. Free with PMI membership. Covers all knowledge areas.", link:"https://www.pmi.org/learning/webinars", free:true },
   { name:"PM Podcast — 60 Free PDUs", desc:"Podcasts qualify as PDU activity. The PM Podcast offers structured content for PDU maintenance.", link:"https://www.project-management-podcast.com/pdu", free:true },
   { name:"Master of Project Academy — Free PDU Bundle", desc:"Free PDU training bundle. Self-paced courses and podcasts that count toward your 60 PDUs.", link:"https://blog.masterofproject.com/free-pmp-pdu-webinars-free-pmp-pdu-podcasts/", free:true },
@@ -1609,7 +1611,7 @@ const ALL_FILES = [
   { icon:"📄", name:"Common PM Formulas Sheet", desc:"Print this. Quiz yourself weekly until formulas are memorized.", pri:"HIGH", rel:"pmiitest/Concept-Activity-5-Common-PM-Formulas.pdf" },
   { icon:"📄", name:"Critical Path Exercises", desc:"Hands-on CPM practice. Work after covering Schedule Management.", pri:"HIGH", rel:"pmiitest/Concept-Activity-1-Critical-Path-Exercises.pdf" },
   { icon:"📄", name:"Earned Value Exercises", desc:"EVM practice problems with solutions.", pri:"HIGH", rel:"pmiitest/Concept-Activity-2-Earned-Value-Exercises (1).pdf" },
-  { icon:"📄", name:"2022 PMP Review — 7th Edition", desc:"Covers what changed in the 2021 ECO update.", pri:"HIGH", rel:"pmiitest/14_Review 7th_2022PMP_March2022.pdf" },
+  { icon:"📄", name:"2022 PMP Review — 7th Edition", desc:"Legacy 2021-era review. Use only for historical comparison; defer to the 2026 boot camp plan and PMI official pages for current weighting.", pri:"LEGACY", rel:"pmiitest/14_Review 7th_2022PMP_March2022.pdf" },
   { icon:"🎮", name:"Week 1 & 2 Review Game", desc:"Interactive PowerPoint quiz. Self-test at end of Week 2.", pri:"MED", rel:"PMP_Week_1_and_2_Review_Game_Final.pptx" },
   { icon:"📊", name:"Session Slides — Week 1 & Week 2", desc:"Training session slide decks. Review at end of each week.", pri:"MED", rel:"Session_1-Week_1.pptx" },
   { icon:"📋", name:"Risk Register Template", desc:"Use when studying Risk Management.", pri:"TEMPLATE", rel:"pmistudymaterial (1)/Risk Register.xlsx" },
@@ -4145,7 +4147,7 @@ QUIZ_QUESTIONS.push(
   {q:"Project management office (PMO) types from least to most control:",opts:["Supportive → Controlling → Directive","Directive → Controlling → Supportive","Controlling → Supportive → Directive","Supportive → Directive → Controlling"],ans:0,domain:"Business",type:"Predictive",exp:"Supportive PMO: provides templates, best practices (low control). Controlling PMO: requires compliance with frameworks (medium). Directive PMO: manages projects directly (high control). This order is testable on the exam."}
 );
 
-// 50 additional questions — total now 150
+// 50 additional questions — total now 150 before the 2026 refresh set below
 QUIZ_QUESTIONS.push(
   // ── Communications Management ─────────────────────────────────────────
   {q:"A project team has 8 members. How many communication channels exist?",opts:["28","36","56","8"],ans:0,domain:"Process",type:"Predictive",exp:"Channels = n(n-1)/2 = 8×7/2 = 28. Adding one person to a team of 8 creates 8 new channels. The formula grows quadratically — 10 people = 45 channels."},
@@ -4205,6 +4207,25 @@ QUIZ_QUESTIONS.push(
   {q:"A project was on time and on budget, but the business case benefits were never realized. This means:",opts:["The project failed","The project delivered successfully, but benefits realization failed","The PM failed to plan properly","The sponsor failed to communicate the goals"],ans:1,domain:"Business",type:"Predictive",exp:"Project delivery success (on scope/time/cost/quality) and benefits realization (strategic outcomes achieved) are two separate things. Both are needed for full organizational value. This distinction is increasingly tested."},
   {q:"The MAIN advantage of program management over independent project management is:",opts:["Lower total project costs","Achieving benefits that can't be achieved by managing projects independently","Standardized schedules across projects","A single PMO for all reporting"],ans:1,domain:"Business",type:"Predictive",exp:"Programs exist to realize benefits through coordinated management of interdependent projects. The program delivers outcomes — market entry, customer satisfaction — that no single project achieves alone."},
   {q:"The correct hierarchy from broadest to narrowest scope is:",opts:["Project → Program → Portfolio","Portfolio → Program → Project","Program → Portfolio → Project","Portfolio → Project → Program"],ans:1,domain:"Business",type:"Predictive",exp:"Portfolio (strategic level, broadest) → Programs (benefits-focused, groups related projects) → Projects (specific deliverables, narrowest). Each level has its own management discipline and success criteria."}
+);
+
+// 2026 PMP refresh questions - AI, sustainability, value delivery, governance, and outcomes
+QUIZ_QUESTIONS.push(
+  {q:"Your organization approves an AI scheduling assistant. Its forecast says the project can finish 3 weeks early, but the estimate conflicts with known vendor lead times. What should the PM do FIRST?",opts:["Accept the AI forecast because the tool is approved","Validate the assumptions and source data before using the forecast","Tell the team to compress the schedule immediately","Disable the tool for the rest of the project"],ans:1,domain:"Process",type:"Hybrid",exp:"AI is decision support, not decision authority. The PM validates data, assumptions, and constraints before updating forecasts or baselines."},
+  {q:"A team uses a generative AI tool to draft a stakeholder report. The draft omits a major unresolved risk because it would make the project look weak. What should the PM do?",opts:["Send it because the tool produced it objectively","Edit the report to accurately disclose project status and risk","Ask AI to rewrite the risk in more positive language","Delay reporting until the risk is solved"],ans:1,domain:"People",type:"Hybrid",exp:"PMI ethics still apply when AI is used. The PM is accountable for honest, accurate communication and cannot hide material risks."},
+  {q:"An AI tool recommends using confidential customer data to improve project analytics. The team says the output would be more accurate. What is the BEST response?",opts:["Use the data because better analysis improves outcomes","Use the data only in sprint retrospectives","Check privacy, security, consent, and governance rules before any use","Ask the vendor to anonymize it after analysis"],ans:2,domain:"Business",type:"Hybrid",exp:"Data privacy, consent, and governance come before tool convenience. The PM must protect confidential information and follow organizational and regulatory requirements."},
+  {q:"A sponsor wants to add an AI chatbot feature late in the project because competitors have one. What should the PM do?",opts:["Add it to keep the product competitive","Reject it because AI features are risky","Route the request through change control or backlog prioritization based on delivery approach","Ask the team to prototype it outside the plan"],ans:2,domain:"Process",type:"Hybrid",exp:"AI does not bypass normal governance. In predictive work, use change control. In agile work, add it to the backlog for PO prioritization."},
+  {q:"A lower-cost supplier can meet schedule, but its materials conflict with the organization's sustainability commitments. What should the PM do?",opts:["Select the lowest cost supplier because cost baseline is approved","Evaluate lifecycle impact, constraints, and business objectives before recommending a decision","Let procurement decide without project input","Accept the supplier and log sustainability as a lesson learned"],ans:1,domain:"Business",type:"Predictive",exp:"The 2026 exam emphasizes business outcomes and sustainability. Cost is one factor; the PM must evaluate broader value, constraints, compliance, and stakeholder commitments."},
+  {q:"A new environmental regulation affects packaging in the middle of execution. Compliance will change scope and cost. What should the PM do?",opts:["Implement immediately and absorb the cost","Raise a change request and assess impacts to scope, cost, schedule, risk, and benefits","Ignore it until the next phase gate","Ask the sponsor to verbally approve the extra work"],ans:1,domain:"Business",type:"Predictive",exp:"Regulatory and sustainability changes require impact analysis and formal governance. Urgency does not remove the need for integrated change control."},
+  {q:"A community stakeholder group opposes the project because of perceived environmental impact. What should the PM do FIRST?",opts:["Escalate to legal","Meet with the group to understand concerns and update the stakeholder engagement approach","Remove the group from communications because they are external","Publish a status report defending the project"],ans:1,domain:"People",type:"Hybrid",exp:"Stakeholder engagement starts with listening and understanding concerns. The PM updates engagement and communication strategies based on current stakeholder position."},
+  {q:"An agile team is delivering every sprint, but product adoption metrics are flat. What should the PM and Product Owner focus on?",opts:["Increasing team velocity","Delivering more features per sprint","Inspecting customer feedback and reprioritizing toward measurable value","Extending sprint length to improve quality"],ans:2,domain:"Business",type:"Agile",exp:"Value delivery is measured by outcomes, not just output. If adoption is flat, inspect feedback and reorder the backlog toward benefits."},
+  {q:"A project meets scope, schedule, and cost targets but does not improve the business KPI named in the business case. What is the BEST interpretation?",opts:["The project is automatically successful because baselines were met","Delivery succeeded, but benefits realization and outcome achievement need attention","The PM should retroactively change the KPI","The team should add more scope without approval"],ans:1,domain:"Business",type:"Hybrid",exp:"Modern PMP questions distinguish deliverables from outcomes. Meeting baselines matters, but business value depends on realized benefits."},
+  {q:"No one is assigned to measure benefits after the project closes. What should the PM do before closure?",opts:["Close the project because benefits happen after closure","Identify or confirm the benefits owner and hand off measurement criteria","Assign the Scrum Master to track benefits indefinitely","Remove benefits from the final report"],ans:1,domain:"Business",type:"Predictive",exp:"Benefits realization often continues after the project. The PM should ensure ownership, measurement criteria, and handoff are clear before closure."},
+  {q:"A PMO asks every project to use the same predictive template, but your project has high uncertainty and frequent stakeholder feedback. What should the PM recommend?",opts:["Use the template exactly as written","Tailor the delivery approach and governance to project context while meeting required controls","Ignore PMO controls entirely","Switch every project in the organization to agile"],ans:1,domain:"Process",type:"Hybrid",exp:"PMI expects tailoring. Governance should be right-sized to the project and organization, not blindly copied or ignored."},
+  {q:"A sustainability requirement is discovered after vendors have submitted proposals. What should the procurement team do?",opts:["Add it only to the preferred vendor negotiation","Update procurement documents through the approved process and give vendors fair access to the requirement","Ignore it until contract award","Ask vendors verbally whether they can comply"],ans:1,domain:"Process",type:"Predictive",exp:"Fair procurement requires the same requirements and evaluation criteria for all bidders. Sustainability criteria should be handled transparently through the procurement process."},
+  {q:"An AI-generated risk list identifies several useful risks but misses a known regulatory threat. What should the PM conclude?",opts:["The known threat is no longer relevant","The AI output should replace expert judgment","The AI output is an input to review, not a complete risk register","Only AI-identified risks should be analyzed"],ans:2,domain:"Process",type:"Hybrid",exp:"AI can support risk identification, but the PM still uses expert judgment, stakeholder input, historical data, and compliance review."},
+  {q:"A team member says sustainability work is outside project management because it is a corporate policy issue. What is the BEST response?",opts:["Agree and remove it from the project plan","Treat relevant sustainability obligations as constraints, requirements, risks, or acceptance criteria","Escalate immediately to the CEO","Document it only after closure"],ans:1,domain:"Business",type:"Hybrid",exp:"If sustainability affects the project, it belongs in project planning and delivery through requirements, constraints, risks, procurement, quality, or acceptance criteria."},
+  {q:"A sponsor asks the PM to report only completed deliverables and avoid mentioning that benefits are trending below target. What should the PM do?",opts:["Follow the sponsor's preference because they own the business case","Report complete, accurate status including benefits risk and proposed actions","Wait until final closure to mention benefits","Ask the team to improve the metric before the report"],ans:1,domain:"People",type:"Hybrid",exp:"Honesty and responsibility require transparent reporting. Benefits risk is material information for decision makers."}
 );
 
 const TERMS = [
@@ -6687,7 +6708,7 @@ function renderSCMockExam() {
       <div style="text-align:center;padding:44px 20px">
         <div style="font-size:52px;margin-bottom:12px">📝</div>
         <div style="font-size:22px;font-weight:800;margin-bottom:8px">60-Question Mock PMP Exam</div>
-        <div style="font-size:13px;color:var(--t2);margin-bottom:6px">Timed · 90 minutes · Scenario-based</div>
+        <div style="font-size:13px;color:var(--t2);margin-bottom:6px">Timed · 80 minutes · 2026-weighted scenario set</div>
         <div style="font-size:13px;color:var(--t2);margin-bottom:24px">Covers People (33%), Process (41%), Business Environment (26%)</div>
         <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
           <span class="bdg bdg-accent">People Domain</span>
@@ -6696,20 +6717,40 @@ function renderSCMockExam() {
           <span class="bdg bdg-gray">Predictive &amp; Agile</span>
         </div>
         <button class="btn btn-p" style="font-size:15px;padding:13px 32px" onclick="startMockExam()">Begin Mock Exam →</button>
-        <div style="font-size:11px;color:var(--t3);margin-top:14px">Questions are randomized from the full 150-question bank</div>
+        <div style="font-size:11px;color:var(--t3);margin-top:14px">Questions are sampled to match the 2026 PMP split: People 33%, Process 41%, Business Environment 26%</div>
       </div>`;
   } else {
     renderMockQuestion();
   }
 }
 
+function pickMockQuestionsByDomain(domain, count) {
+  return QUIZ_QUESTIONS
+    .filter(q => q.domain === domain)
+    .sort(() => Math.random() - 0.5)
+    .slice(0, count);
+}
+
+function build2026MockQuestions() {
+  const selected = [
+    ...pickMockQuestionsByDomain('People', 20),
+    ...pickMockQuestionsByDomain('Process', 25),
+    ...pickMockQuestionsByDomain('Business', 15)
+  ];
+  const used = new Set(selected);
+  const fallback = QUIZ_QUESTIONS
+    .filter(q => !used.has(q))
+    .sort(() => Math.random() - 0.5);
+  return [...selected, ...fallback].slice(0, 60).sort(() => Math.random() - 0.5);
+}
+
 function startMockExam() {
-  const shuffled = [...QUIZ_QUESTIONS].sort(() => Math.random() - 0.5);
+  const questions = build2026MockQuestions();
   _mockState = {
-    questions: shuffled.slice(0, 60),
-    answers: new Array(60).fill(null),
+    questions,
+    answers: new Array(questions.length).fill(null),
     current: 0,
-    timerSeconds: 90 * 60,
+    timerSeconds: 80 * 60,
     done: false
   };
   if (window._mockTimer) clearInterval(window._mockTimer);
@@ -7692,6 +7733,20 @@ function buildStudyGroup() {
 // FLASHCARDS
 // ============================================================
 const FLASHCARDS = [
+
+  // 2026 Exam Refresh
+  {cat:"AI",q:"How should a PMP treat AI-generated estimates, forecasts, or reports?",a:"Use AI as decision support, not decision authority. Validate source data, assumptions, constraints, bias, and security before acting. The PM remains accountable for the decision and communication."},
+  {cat:"AI",q:"What is the safest PMP answer when AI output conflicts with expert judgment or known constraints?",a:"Investigate and validate. Compare the AI output to historical data, expert judgment, risk information, and real-world constraints. Do not blindly accept or reject it."},
+  {cat:"AI",q:"What AI governance issues are testable on the 2026 PMP exam?",a:"Data privacy, consent, security, transparency, human review, bias, intellectual property, tool approval, and accurate reporting. AI does not bypass ethics or governance."},
+  {cat:"Sustainability",q:"How does sustainability show up in PMP scenarios?",a:"As requirements, constraints, risks, procurement criteria, stakeholder expectations, quality standards, compliance obligations, and business value tradeoffs. Treat it as part of project delivery, not a side topic."},
+  {cat:"Sustainability",q:"What should the PM do when sustainability conflicts with cost or schedule?",a:"Analyze lifecycle impact, business case, stakeholder commitments, regulatory constraints, and baseline impact. Then use change control or backlog prioritization based on the delivery approach."},
+  {cat:"Sustainability",q:"How should sustainability criteria be handled in procurement?",a:"Document them in procurement requirements and source selection criteria before vendor evaluation. Apply criteria consistently and fairly to all bidders."},
+  {cat:"Value",q:"Deliverables vs. outcomes - what's the exam distinction?",a:"Deliverables are outputs the project creates. Outcomes are business results those outputs are supposed to enable. A project can deliver scope successfully while benefits or outcomes still fall short."},
+  {cat:"Value",q:"What is benefits realization ownership?",a:"A named person or group owns measuring and sustaining benefits, often after project close. Before closure, the PM should confirm handoff, metrics, timing, and reporting expectations."},
+  {cat:"Value",q:"What should an agile team do when velocity is high but adoption is low?",a:"Inspect customer feedback and outcome metrics, then reprioritize the backlog toward value. More output is not the same as better business results."},
+  {cat:"Governance",q:"What does tailoring mean in the current PMP exam?",a:"Adapting delivery approach, documentation, controls, cadence, and governance to project context while still meeting organizational requirements. Tailoring is not ignoring process."},
+  {cat:"Governance",q:"How do AI or sustainability changes move through governance?",a:"They follow normal project governance: impact analysis, change control in predictive work, backlog prioritization in agile work, and transparent stakeholder communication."},
+  {cat:"Governance",q:"What is the right response to new regulation during execution?",a:"Assess the impact, document it, engage compliance/legal as needed, and route changes through formal governance. Regulatory urgency still requires controlled decision making."},
   // EVM Formulas
   {cat:"EVM",q:"What is the formula for Cost Variance (CV)?",a:"CV = EV − AC\n\nPositive = under budget. Negative = over budget.\nMemory: EV is always first. Cost = vs AC."},
   {cat:"EVM",q:"What is the formula for Schedule Variance (SV)?",a:"SV = EV − PV\n\nPositive = ahead of schedule. Negative = behind.\nMemory: EV is always first. Schedule = vs PV."},
@@ -7867,7 +7922,7 @@ const FLASHCARDS = [
 ];
 
 let flashState = {deck:[], idx:0, flipped:false, learned:new Set(), filter:'All'};
-const FLASH_CATS = ['All','EVM','Schedule','Risk','Contracts','Agile','PMI Mindset','Quality','Ethics','Scope','Integration','Key Terms'];
+const FLASH_CATS = ['All','AI','Sustainability','Value','Governance','EVM','Schedule','Risk','Contracts','Agile','PMI Mindset','Quality','Ethics','Scope','Integration','Key Terms'];
 
 function buildFlash() {
   const el = document.getElementById('flash-area');
