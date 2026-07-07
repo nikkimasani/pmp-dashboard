@@ -2062,6 +2062,80 @@ const LESSONS = [
   quizFilter: q => q.domain === 'Business' || q.q.includes('charter') || q.q.includes('escalat')
 },
 {
+  id:'pmp-2026-refresh', color:'#ff6b81', icon:'✨', title:'2026 PMP Refresh: AI, Sustainability & Value Delivery',
+  domain:'2026 Exam Refresh', week:5, tags:['2026','Business Environment','High-Frequency'],
+  ramdayalModule:7,
+  summary:'Focused lesson for the refreshed PMP exam topics: AI-aware project delivery, sustainability, governance, measurable business outcomes, and value delivery.',
+  concepts:[
+    { title:'AI Is Decision Support, Not Decision Authority',
+      body:'The 2026 PMP exam expects project managers to understand how AI can support planning, reporting, estimation, risk identification, and stakeholder communication. The key exam rule is simple: <strong>AI can assist, but the PM remains accountable</strong>. Never accept AI output without validating the source data, assumptions, constraints, privacy rules, and business context.',
+      keyPoints:[
+        'Validate AI estimates against historical data, expert judgment, and known constraints',
+        'Treat AI-generated risks, schedules, and reports as inputs for review',
+        'Protect confidential data and follow privacy, consent, and security policies',
+        'Do not hide bad news because an AI-generated report makes status look cleaner',
+        'Human review is required for ethical, governance, and stakeholder-sensitive decisions',
+        'AI does not bypass change control, procurement rules, or compliance obligations'
+      ]
+    },
+    { title:'Sustainability Is Part of Delivery',
+      body:'Sustainability is no longer a side note. On the refreshed exam it can appear as a requirement, constraint, risk, procurement criterion, stakeholder concern, quality standard, or regulatory obligation. The PM should integrate sustainability into the project plan instead of treating it as a corporate-policy issue outside the project.',
+      keyPoints:[
+        'Evaluate lifecycle impact, not only short-term project cost',
+        'Include sustainability requirements in procurement documents and source selection criteria',
+        'Route sustainability-driven scope or cost changes through the right governance path',
+        'Engage stakeholders who are affected by environmental or social impacts',
+        'Log sustainability threats and opportunities in the risk register',
+        'Balance sustainability commitments with scope, schedule, cost, quality, and business value'
+      ]
+    },
+    { title:'Value Delivery Means Outcomes, Not Just Outputs',
+      body:'The current exam distinguishes project outputs from business outcomes. A project can deliver every approved deliverable and still fail to create the intended benefit. The PM must understand the business case, success metrics, benefits owner, and handoff plan so the organization can measure value after delivery.',
+      keyPoints:[
+        'Deliverables are what the project creates; outcomes are the business results enabled by those deliverables',
+        'Benefits realization can continue after project closure',
+        'The PM should confirm who owns benefits measurement after handoff',
+        'Agile teams should inspect adoption, customer feedback, and outcome metrics, not only velocity',
+        'If benefits are trending below target, report the risk honestly and propose actions',
+        'Backlog priority should favor measurable value over feature volume'
+      ]
+    },
+    { title:'Governance and Tailoring Still Matter',
+      body:'The refreshed exam emphasizes modern topics, but PMI still expects disciplined governance. Tailoring means adapting the method, cadence, documentation, and controls to the project context while meeting organizational requirements. It does not mean ignoring process.',
+      keyPoints:[
+        'Predictive changes go through integrated change control',
+        'Agile changes go into the backlog for Product Owner prioritization',
+        'Hybrid projects need both predictive governance and agile delivery discipline',
+        'Regulatory changes require impact analysis and controlled decision making',
+        'Procurement criteria must be fair, transparent, and shared with all vendors',
+        'The best answer usually balances value, compliance, stakeholder trust, and process integrity'
+      ]
+    }
+  ],
+  formulas:[],
+  examples:[
+    { label:'AI Forecast Scenario',
+      scenario:'An approved AI scheduling tool says the project can finish 3 weeks early, but the forecast ignores a vendor lead time that the team already knows about.',
+      steps:['Do not accept the AI forecast automatically','Validate the assumptions and source data','Compare the recommendation with expert judgment and known constraints','Update the forecast only after the analysis supports it','Communicate any schedule change through the normal reporting and governance process']
+    },
+    { label:'Sustainability Procurement Scenario',
+      scenario:'A cheaper vendor can meet schedule, but its material conflicts with the organization\'s sustainability commitment.',
+      steps:['Do not choose based only on lowest cost','Review sustainability requirements, lifecycle impact, and business commitments','Check whether procurement criteria need to be updated and shared fairly','Assess cost, schedule, quality, risk, compliance, and stakeholder impact','Use the approved decision or change-control path before committing']
+    },
+    { label:'Value Delivery Scenario',
+      scenario:'An agile team is completing every sprint, but customer adoption is flat and the business KPI is not improving.',
+      steps:['Do not push the team to simply increase velocity','Inspect customer feedback and outcome metrics','Work with the Product Owner to reprioritize the backlog toward measurable value','Clarify whether the original benefits assumptions are still valid','Report benefits risk honestly to decision makers']
+    }
+  ],
+  worksheet:[
+    { num:1, prompt:'An AI tool creates a project status report that leaves out a major unresolved risk. What should the PM do?', answer:'The PM should correct the report so it accurately communicates the unresolved risk, impact, and proposed actions. AI output does not reduce the PM\'s ethical responsibility for honest reporting.', tags:['AI','Ethics'] },
+    { num:2, prompt:'A new environmental regulation adds required work after the baseline is approved. What is the correct PMP response?', answer:'Document the requirement, assess scope/schedule/cost/risk/benefit impacts, engage compliance or legal as needed, and route the change through formal governance. Regulatory urgency does not bypass change control.', tags:['Sustainability','Governance'] },
+    { num:3, prompt:'A project delivered the product on time and on budget, but the business KPI did not improve. Was the project successful?', answer:'Delivery may have succeeded, but benefits realization fell short. The PMP exam separates outputs from outcomes; the PM should make sure benefits ownership, metrics, and handoff are clear.', tags:['Value','Benefits'] },
+    { num:4, prompt:'A PMO template is too heavy for a small hybrid project. Can the PM tailor it?', answer:'Yes, if tailoring still meets organizational governance requirements. Tailoring means right-sizing controls and documentation to project context, not ignoring required process.', tags:['Governance','Tailoring'] }
+  ],
+  quizFilter: q => q.q.includes('AI') || q.q.toLowerCase().includes('sustainability') || q.q.toLowerCase().includes('benefit') || q.q.toLowerCase().includes('value') || q.domain === 'Business'
+},
+{
   id:'evm', color:'#ffa502', icon:'💰', title:'Earned Value Management (EVM)',
   domain:'Ramdayal Module 5', week:3, tags:['Math-Heavy','Process','High-Frequency'],
   ramdayalModule:5,
