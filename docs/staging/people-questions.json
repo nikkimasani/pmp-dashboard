@@ -1,0 +1,796 @@
+{
+  "questions": [
+    {
+      "q": "During project kickoff, three department heads each describe a different end state for the project. The charter has been signed and work is scheduled to begin next week. What should the PM do FIRST?",
+      "opts": [
+        "Begin work as chartered and resolve differences as they arise",
+        "Facilitate a shared visioning workshop with the department heads to align on one common vision",
+        "Ask the sponsor to dictate the correct vision to the departments",
+        "Document the three visions and let each department pursue its own interpretation"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "The 2026 ECO's first People task is to develop a common vision — the PM facilitates alignment before execution begins, because misaligned visions guarantee rework and conflict later. Starting work anyway defers the problem, sponsor dictation skips buy-in, and parallel interpretations institutionalize the misalignment."
+    },
+    {
+      "q": "Six months into a two-year program, the market shifts and the original product vision no longer matches customer needs. Team members are still quoting the kickoff vision statement. What should the PM do?",
+      "opts": [
+        "Keep the original vision to maintain team stability",
+        "Work with key stakeholders to refresh the vision, then re-communicate it to the team",
+        "Quietly adjust the backlog without changing the stated vision",
+        "Escalate to the PMO to decide whether the vision can change"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Hybrid",
+      "exp": "The ECO explicitly requires the PM to keep the vision current — a vision is a living alignment tool, not a kickoff artifact. Preserving a stale vision or silently diverging from it creates a gap between stated direction and actual work; escalating to the PMO abdicates a responsibility the PM owns with stakeholders."
+    },
+    {
+      "q": "An agile team keeps building features the Product Owner rejects at sprint review. In the retrospective, developers say they thought the product goal meant 'fastest performance,' while the PO meant 'easiest onboarding.' What should the Scrum Master do?",
+      "opts": [
+        "Ask the PO to write more detailed acceptance criteria for every story",
+        "Facilitate a root-cause discussion to surface where understanding of the vision diverged, then realign the team on the product goal",
+        "Add a PO approval gate before development starts",
+        "Recommend the team velocity be reduced until quality improves"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "The ECO enabler is to break down situations to identify the root cause of a misunderstanding of the vision — the divergence is in shared understanding, not in story-level detail. More acceptance criteria and approval gates treat symptoms and add process weight, while cutting velocity punishes the team without fixing the misalignment."
+    },
+    {
+      "q": "A PM inherits a project where the team can recite the schedule but nobody can explain why the project matters to the business. Morale is low and decisions constantly escalate to the PM. What is the BEST response?",
+      "opts": [
+        "Create a detailed RACI so escalations go to the right person",
+        "Communicate and promote the project vision so the team can connect daily work to outcomes and make decisions independently",
+        "Hold one-on-ones to address morale individually",
+        "Ask the sponsor to visit the team and reset expectations"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "A promoted, understood vision lets team members self-direct decisions and gives work meaning — which addresses both the escalation pattern and the morale root cause at once. A RACI clarifies routing but not judgment, one-on-ones treat morale symptomatically, and a sponsor visit is a single event rather than sustained shared purpose."
+    },
+    {
+      "q": "Midway through a hybrid transformation project, the PM notices the predictive infrastructure workstream and the agile application workstream are optimizing for conflicting goals — stability versus speed of change. What should the PM do FIRST?",
+      "opts": [
+        "Let each workstream continue optimizing locally since both goals are valid",
+        "Bring both workstream leads together to reconnect their goals to the single shared project vision",
+        "Ask the steering committee to pick one goal over the other",
+        "Merge the two workstreams under one lead"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Hybrid",
+      "exp": "Both goals are legitimate, so the PM's job is to re-anchor both teams to the shared vision and negotiate how the goals serve it together — that is developing and promoting a common vision. Local optimization entrenches the conflict, escalating for a binary choice discards a solvable trade-off, and restructuring is disruptive before facilitation has been tried."
+    },
+    {
+      "q": "During backlog refinement, a new senior stakeholder repeatedly proposes features that pull the product away from its stated vision. The Product Owner feels pressured to accept them. What should the Scrum Master do?",
+      "opts": [
+        "Support the PO in using the product vision as the filter for backlog decisions, and engage the stakeholder in a vision conversation",
+        "Tell the stakeholder that only the PO may propose backlog items",
+        "Add the features to a separate 'stakeholder wishlist' backlog to keep the peace",
+        "Escalate the stakeholder's behavior to their manager"
+      ],
+      "ans": 0,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "The vision exists precisely to guide prioritization under pressure — the Scrum Master supports the PO in applying it and pulls the stakeholder into shared understanding rather than shutting them out. Gatekeeping and escalation damage the relationship, and a shadow wishlist avoids the alignment conversation the situation actually needs."
+    },
+    {
+      "q": "A project's vision statement was written by the sponsor alone and emailed to stakeholders. Three months later, stakeholder surveys show most cannot describe the project's intended outcome. What does this MOST likely indicate?",
+      "opts": [
+        "The stakeholders lack the skills to understand strategic documents",
+        "The vision was communicated but never co-developed or promoted, so shared ownership never formed",
+        "The vision statement was too long",
+        "The survey was poorly designed"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "A shared vision is built with key stakeholders and continuously promoted — a one-way email creates awareness at best, not ownership or recall. Blaming stakeholder ability or the survey deflects from the engagement gap, and length is a formatting detail rather than the root cause."
+    },
+    {
+      "q": "Two sprints before a major release, the PM overhears developers describing the release goal in ways that contradict what was agreed at the last stakeholder review. What should the PM do?",
+      "opts": [
+        "Say nothing — the sprint backlog is already committed",
+        "Immediately re-verify shared understanding of the release goal with the team and correct the drift before more work is built on it",
+        "Wait for the sprint review to see if the misunderstanding shows up in the increment",
+        "Send the stakeholder review minutes to the team again"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Vision and goal drift compounds with every story built on the wrong understanding, so the PM acts as soon as the signal appears — proactive alignment is cheaper than rework. Waiting for the review knowingly ships misalignment, and re-sending minutes is one-way communication that already failed once."
+    },
+    {
+      "q": "A sponsor asks the PM why time is being 'wasted' on a visioning workshop when the requirements are already documented. What is the PM's BEST response?",
+      "opts": [
+        "Cancel the workshop since requirements exist",
+        "Explain that requirements define what to build, while a shared vision aligns stakeholders on why — preventing conflicting interpretations during execution",
+        "Agree to shorten the workshop to 15 minutes",
+        "Tell the sponsor the PMO mandates the workshop"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Requirements and vision serve different purposes: requirements specify outputs, vision aligns people on intent and outcomes, which is what resolves ambiguity when requirements are silent. Canceling or gutting the workshop trades away that alignment, and citing mandate answers authority instead of the sponsor's actual question."
+    },
+    {
+      "q": "After an acquisition, a project team now includes members from both companies. Each group keeps referring to 'how we did it at our company,' and integration deliverables are stalling. What should the PM do FIRST?",
+      "opts": [
+        "Assign deliverables so each company's members work separately",
+        "Facilitate a session to build one shared vision and working agreement that both groups co-create",
+        "Adopt the acquiring company's standards since they now own the project",
+        "Escalate the stalling deliverables to both companies' executives"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Hybrid",
+      "exp": "The root cause is two identities with no shared picture of success — co-creating a common vision and working agreements builds the 'one team' foundation the ECO's first task targets. Separating the groups hardens the divide, imposing one side's standards breeds resentment, and escalation outsources a facilitation job that belongs to the PM."
+    },
+    {
+      "q": "Two senior engineers have argued for a week over an architecture decision, and the disagreement is now surfacing in team meetings as personal criticism. What should the PM do FIRST?",
+      "opts": [
+        "Make the architecture decision to end the debate",
+        "Meet with both engineers to understand the source and context of the conflict before choosing a resolution approach",
+        "Separate them onto different workstreams",
+        "Report the behavior to their functional managers"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "The ECO sequence is to identify the conflict source and analyze its context before implementing a strategy — a technical disagreement that has turned personal needs diagnosis, not a verdict. Deciding for them or separating them suppresses the conflict without resolving it, and escalating to managers skips the PM's own conflict management responsibility."
+    },
+    {
+      "q": "A team established ground rules including 'cameras on in remote meetings' and 'no interrupting.' One member repeatedly violates both, and others have started disengaging. What should the PM do?",
+      "opts": [
+        "Update the ground rules to remove the ones being violated",
+        "Address the violations directly and privately with the member, reinforcing the team's agreed norms",
+        "Call out the member in the next team meeting as an example",
+        "Ignore it — ground rules are guidelines, not requirements"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "The ECO requires the PM to manage and rectify ground rule violations — norms only protect the team if they are enforced, and correction should be private and respectful. Deleting the rules rewards violation, public shaming creates a psychological safety problem, and ignoring it teaches the team that agreements are optional."
+    },
+    {
+      "q": "During sprint planning, a tester and a developer clash over whether test automation debt should be prioritized. The debate is heated but focused on the work. What should the Scrum Master do?",
+      "opts": [
+        "Stop the debate to keep planning on schedule",
+        "Let the constructive conflict continue, facilitating so it stays respectful and reaches a team decision",
+        "Take a team vote immediately",
+        "Defer the topic to the retrospective"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Task-focused conflict is healthy and often produces better decisions — the Scrum Master's job is to keep it constructive, not to eliminate it. Shutting the debate down or forcing an instant vote loses the value of the exchange, and deferring a prioritization question out of planning delays a decision planning exists to make."
+    },
+    {
+      "q": "A vendor's project lead and your internal team lead are in open conflict over interface responsibilities, and the vendor is threatening to invoke contract penalties. What should the PM do?",
+      "opts": [
+        "Refer the matter directly to the legal department",
+        "Bring both parties together to clarify the responsibility boundaries against the agreed scope, seeking a collaborative resolution first",
+        "Side with the internal team lead to protect the organization",
+        "Instruct both leads to communicate only in writing going forward"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "PMI's preferred resolution is collaboration on the actual source — here, ambiguous responsibility boundaries — before escalation into contractual or legal channels. Jumping to legal escalates prematurely, taking sides destroys vendor trust, and written-only communication reduces the rich dialogue this conflict needs."
+    },
+    {
+      "q": "Two product managers from different business units both claim final say over your project's feature priorities, and their teams have stopped cooperating. You facilitated a joint session, but the standoff continues. What should the PM do NEXT?",
+      "opts": [
+        "Continue scheduling joint sessions until they agree",
+        "Escalate to the shared executive sponsor with a clear description of the decision needed and options analyzed",
+        "Alternate priority decisions between the two product managers",
+        "Freeze all feature work until they agree"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Hybrid",
+      "exp": "Collaboration was attempted first, which is the right sequence — when a genuine authority gap blocks resolution, escalating with a framed decision and options is proactive, not a failure. Endless sessions ignore that the impasse is structural, alternating decisions institutionalizes incoherence, and freezing work harms delivery to force a point."
+    },
+    {
+      "q": "A normally collaborative team member suddenly becomes combative in reviews after their component was reassigned to a colleague. What should the PM do?",
+      "opts": [
+        "Apply the forcing technique since the reassignment decision is final",
+        "Speak privately with the member to understand the context — the behavior likely stems from the reassignment, not the review content",
+        "Publicly remind the team about professional conduct",
+        "Reverse the reassignment to restore harmony"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Analyzing conflict context is an ECO enabler — the timing points to the reassignment as the real source, so the PM addresses that root privately with empathy. Forcing and public conduct reminders attack symptoms, and reversing a sound decision to avoid discomfort is smoothing that sacrifices the project to appease one person."
+    },
+    {
+      "q": "Your agile team just had its third sprint in a row disrupted by mid-sprint priority changes from a director who bypasses the Product Owner. Team members are now openly frustrated. What should the Scrum Master do?",
+      "opts": [
+        "Absorb the changes to keep the director satisfied",
+        "Meet with the director to explain the cost of mid-sprint disruption and route future requests through the PO and backlog",
+        "Tell the team to ignore the director's requests",
+        "Extend sprint length so changes are less disruptive"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "The Scrum Master protects the team and educates stakeholders on the process — engaging the director directly, explaining impact, and re-establishing the PO as the channel resolves the source of the recurring conflict. Absorbing changes rewards the bypass, ignoring a director escalates the conflict, and longer sprints dilute agility without fixing the behavior."
+    },
+    {
+      "q": "Your team spans four countries. A misunderstanding between two members from different cultures has escalated because one considers direct public disagreement disrespectful. What should the PM do?",
+      "opts": [
+        "Establish a single communication style everyone must follow",
+        "Facilitate a conversation that acknowledges the cultural difference, and refresh team ground rules so both styles are respected",
+        "Route all cross-cultural communication through the PM",
+        "Treat it as a performance issue for the member who took offense"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Hybrid",
+      "exp": "Supporting varied experiences and perspectives means designing norms that work across cultures, co-created by the team — this resolves the conflict and prevents recurrence. Imposing one style privileges one culture, routing through the PM creates a bottleneck and dependency, and framing offense as a performance issue punishes a cultural difference."
+    },
+    {
+      "q": "A newly formed team keeps waiting for the PM to assign every task, even small ones. The PM wants the team to become self-managing over time. What is the BEST approach?",
+      "opts": [
+        "Immediately stop assigning tasks and let the team figure it out",
+        "Use a directing style now and progressively delegate as the team's competence and confidence grow",
+        "Continue assigning tasks indefinitely since the team prefers it",
+        "Ask the PMO to provide a self-management training course"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Situational leadership matches style to team maturity — a new team needs more direction, with the PM deliberately shifting toward coaching and delegating as capability develops. Withdrawing support abruptly sets the team up to fail, never delegating caps their growth, and training alone doesn't substitute for graduated real ownership."
+    },
+    {
+      "q": "A team member proposes an unconventional solution the PM privately doubts. The team wants to try it as a small experiment within the sprint. What should a servant leader do?",
+      "opts": [
+        "Veto the experiment to avoid wasted effort",
+        "Support the time-boxed experiment and help the team define how they'll evaluate the result",
+        "Allow it only if the team works overtime to cover the risk",
+        "Require sponsor approval before any experiment"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Empowering the team means letting them own solution decisions, especially when the risk is contained in a time-boxed experiment with clear evaluation criteria. Vetoing on private doubt undermines empowerment, demanding overtime punishes initiative, and sponsor approval for a sprint-level experiment adds governance far above the decision's risk level."
+    },
+    {
+      "q": "Senior management repeatedly pulls your team into 'urgent' side work, and the team feels unable to push back. Sprint commitments are failing as a result. What should the PM do?",
+      "opts": [
+        "Tell the team to decline the requests themselves",
+        "Represent the team: present the delivery impact to management and negotiate a protected capacity or intake process",
+        "Add the side work to the sprint backlog as it arrives",
+        "Report reduced velocity and let the metrics speak for themselves"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Representing the voice of the team is an explicit ECO enabler — the PM shields the team by making the cost visible to management and negotiating a sustainable intake mechanism. Pushing the confrontation onto individual members abdicates that duty, absorbing the work validates the disruption, and passive metrics reporting hopes someone else acts."
+    },
+    {
+      "q": "Two team members share overlapping responsibilities, and a critical task fell through the gap because each thought the other owned it. What should the PM do FIRST?",
+      "opts": [
+        "Discipline both members for the miss",
+        "Clarify and document roles and responsibilities with the team so ownership is unambiguous",
+        "Take ownership of all critical tasks personally",
+        "Add a daily checklist review meeting"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "The failure is structural — ambiguous roles — so the fix is establishing clear roles and responsibilities, an explicit ECO enabler, ideally with the team so they own the boundaries. Discipline punishes a system problem, PM ownership doesn't scale and disempowers, and another meeting inspects for a gap that clarity would eliminate."
+    },
+    {
+      "q": "A high-performing developer wants to grow into a lead role and asks the PM for opportunities. The project has no formal lead openings. What should the PM do?",
+      "opts": [
+        "Explain that career development is HR's responsibility",
+        "Create growth opportunities within the project, such as leading a feature or mentoring juniors, and support their development",
+        "Promise a promotion after the project ends",
+        "Tell them to focus on their current tasks until the project completes"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Leading the team includes developing people — delegating leadership of a feature or a mentoring role grows the individual, strengthens the team, and builds knowledge redundancy at no structural cost. Deflecting to HR or deferring to 'later' wastes motivation, and an unauthorized promotion promise is a commitment the PM may not be able to keep."
+    },
+    {
+      "q": "After a failed deployment, the team hesitates to discuss what went wrong in the retrospective, offering only vague answers. What should the Scrum Master focus on?",
+      "opts": [
+        "Requiring written incident reports from each member",
+        "Rebuilding psychological safety so the team can examine failure openly without fear of blame",
+        "Skipping the retrospective until emotions settle",
+        "Identifying which member caused the failure"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Vague answers after a failure signal fear of blame — without psychological safety, no inspection or improvement mechanism works, so the leader addresses that foundation first. Written reports formalize the fear, skipping the retro loses the learning moment, and hunting for a culprit is precisely what the team is afraid of."
+    },
+    {
+      "q": "A functional manager in a matrix organization keeps redirecting your shared team member to operational work without telling you, causing missed project deadlines. What should the PM do?",
+      "opts": [
+        "Instruct the team member to refuse the functional manager's requests",
+        "Meet with the functional manager to negotiate the resource's allocation and agree on a mechanism for handling competing demands",
+        "Escalate directly to the sponsor for a ruling",
+        "Replace the team member with a dedicated resource"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Matrix conflicts over shared resources are resolved manager-to-manager first — negotiating the allocation and a standing mechanism addresses the source, not the symptom. Putting the team member in the middle is unfair to them, escalation comes only if negotiation fails, and swapping the resource dodges a pattern that would repeat with anyone."
+    },
+    {
+      "q": "You are launching a project that will change how three business units process orders. Beyond the obvious unit heads, how should you identify stakeholders?",
+      "opts": [
+        "Wait for affected people to raise their hands during execution",
+        "Systematically analyze who affects or is affected by the project — including end users, support teams, compliance, and external parties — and record them in a stakeholder register",
+        "Limit the register to those with budget authority to keep engagement manageable",
+        "Ask the sponsor for the complete list"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Stakeholder identification is deliberate and broad — missed stakeholders surface later as resistance and rework, which is far costlier than early analysis. Waiting for self-identification is reactive, filtering by budget authority ignores high-influence users and gatekeepers, and the sponsor's view alone is one perspective, not an analysis."
+    },
+    {
+      "q": "A stakeholder analysis shows the head of operations has high power and is currently resistant, while the project needs her department's cooperation in three months. What should the PM do?",
+      "opts": [
+        "Delay engaging her until her department's involvement begins",
+        "Engage her now — understand her concerns, address what's driving resistance, and work to move her toward supportive before her cooperation is needed",
+        "Ask the sponsor to instruct her to cooperate",
+        "Design the plan to minimize dependence on her department"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Engagement gaps between current and desired states are worked proactively — trust and attitude shifts take time, so starting three months early is the point. Delaying guarantees meeting resistance at the moment of dependency, sponsor pressure produces compliance rather than support, and re-planning around a key department avoids rather than engages."
+    },
+    {
+      "q": "Your project's executive stakeholders complain your updates are too detailed, while the technical leads say the same updates lack depth. What should the PM do?",
+      "opts": [
+        "Find a middle level of detail that partially satisfies both",
+        "Tailor communication to each audience — concise outcome-focused updates for executives, detailed technical content for leads",
+        "Let each group pull what they need from the project repository",
+        "Ask the two groups to agree on one format"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Hybrid",
+      "exp": "Analyzing and tailoring communication to stakeholder needs is a core ECO enabler — different audiences legitimately need different content, format, and depth. A compromise format serves nobody well, self-service repositories push the PM's communication job onto stakeholders, and forcing one format treats a tailoring problem as a negotiation."
+    },
+    {
+      "q": "In an agile program, a compliance officer keeps declining sprint review invitations, then raises objections late that force rework. What should the PM do?",
+      "opts": [
+        "Keep sending invitations and document the declines",
+        "Meet the compliance officer to understand their constraints, and agree on an engagement approach that fits how they work — such as a focused compliance checkpoint",
+        "Proceed without compliance input and handle objections as they come",
+        "Escalate their non-attendance to their manager"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Effective engagement adapts to the stakeholder — a compliance officer may never attend sprint reviews, but a tailored touchpoint gets their input early where it prevents rework. Documenting declines is defensive rather than productive, proceeding without input accepts recurring rework, and escalation before understanding their constraints damages the relationship."
+    },
+    {
+      "q": "A key stakeholder supported the project publicly but privately tells peers it will fail. You learn this through a trusted colleague. What should the PM do?",
+      "opts": [
+        "Confront the stakeholder with what you heard secondhand",
+        "Meet the stakeholder one-on-one, invite candid feedback about their concerns, and listen for what the public support is masking",
+        "Reduce their access to project information",
+        "Inform the sponsor of the stakeholder's duplicity"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Hidden resistance means concerns exist that the PM hasn't made safe to voice — a genuine, non-accusatory invitation to candor builds the trust needed to surface and address them. Confronting with hearsay poisons the conversation, restricting information confirms their distrust, and reporting 'duplicity' upward converts a recoverable relationship into a political fight."
+    },
+    {
+      "q": "Your project depends on a partner organization whose liaison is friendly but never commits to dates. Deliverable handoffs keep slipping. What should the PM do?",
+      "opts": [
+        "Add buffer to every handoff and accept the behavior",
+        "Build the relationship while making commitments concrete — agree on specific dates, document them, and establish a joint review cadence",
+        "Copy the liaison's executives on every request",
+        "Threaten to report the partner's non-performance"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Building trust and influencing stakeholders to accomplish objectives means pairing relationship warmth with structure — explicit commitments and a shared cadence convert friendliness into accountability. Pure buffering treats slippage as permanent, cc-ing executives on everything erodes trust fast, and threats spend the relationship for one deliverable."
+    },
+    {
+      "q": "At a steering meeting, two influential stakeholders push conflicting success criteria: one wants earliest launch, the other wants full feature completeness. The project cannot deliver both. What should the PM do?",
+      "opts": [
+        "Build a plan that averages the two positions without discussing it further",
+        "Facilitate a discussion between them to align expectations against project objectives and agree on explicit trade-off priorities",
+        "Let the more senior stakeholder's criteria win",
+        "Present both criteria to the team and let them choose"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Optimizing alignment among stakeholder needs, expectations, and project objectives is exactly this situation — the PM facilitates an explicit trade-off conversation so success has one agreed definition. Splitting the difference hides the conflict until launch, seniority-based defaults ignore the merits, and delegating the choice to the team hands them a political decision."
+    },
+    {
+      "q": "During release planning, the sales VP tells customers the product will include capabilities the roadmap shows as 'future consideration.' What should the PM do FIRST?",
+      "opts": [
+        "Ask engineering to try to fit the capabilities in",
+        "Talk with the sales VP promptly to correct the expectation gap and align on what can be committed externally",
+        "Send customers a corrected roadmap directly",
+        "Raise it at the next quarterly governance review"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Expectation misalignment compounds the longer it stands — the PM goes to the source quickly, aligns the VP with the actual roadmap, and agrees on how external commitments get made. Stretching engineering to cover an unauthorized promise rewards it, bypassing the VP to customers undermines them publicly, and waiting a quarter lets customers plan on fiction."
+    },
+    {
+      "q": "You categorize your 40 stakeholders and find a cluster with high interest but low influence: the end users whose daily work the system will change. How should you engage them?",
+      "opts": [
+        "Minimal effort — their low influence means low priority",
+        "Keep them meaningfully informed and involved, since their adoption determines the project's actual value even though they hold little formal power",
+        "Engage only their managers as proxies",
+        "Survey them once at the end for satisfaction"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Power grids inform tailoring, not dismissal — low-influence, high-interest users often decide whether benefits materialize, because adoption is theirs to give. Treating them as low priority or proxying through managers misses ground truth and breeds resistance, and a closing survey measures the failure instead of preventing it."
+    },
+    {
+      "q": "A junior business analyst on your project shows strong stakeholder facilitation instincts but lacks confidence with executives. An upcoming expectation-alignment workshop needs a facilitator. What should the PM do?",
+      "opts": [
+        "Facilitate the workshop personally since the stakes are high",
+        "Have the analyst co-facilitate with you, mentoring them before and debriefing after",
+        "Assign the analyst alone to force growth",
+        "Hire an external facilitator"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Hybrid",
+      "exp": "The ECO ties mentoring to stakeholder alignment work — co-facilitation grows the analyst safely while protecting the workshop outcome, and the debrief converts experience into learning. Doing it all yourself develops nobody, solo assignment risks both the person and the workshop, and outsourcing spends money to avoid a development opportunity."
+    },
+    {
+      "q": "Halfway through the project, a stakeholder insists the agreed dashboard 'was always supposed to include' predictive analytics, which appears nowhere in the documented scope. What should the PM do?",
+      "opts": [
+        "Refuse the request, citing the scope statement",
+        "Explore the expectation with the stakeholder — understand the need behind it, clarify the documented agreement, and route any genuine gap through change control or the backlog",
+        "Add the analytics quietly since the stakeholder is influential",
+        "Ask the sponsor to overrule the stakeholder"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Hybrid",
+      "exp": "The PM treats this as an expectation gap first — understanding the underlying need preserves the relationship, while the documented baseline and change process handle the scope question honestly. Flat refusal wins the document battle and loses the stakeholder, silent gold-plating corrupts the baseline, and sponsor overrule escalates a conversation the PM should have."
+    },
+    {
+      "q": "Your agile team demos a working increment every two weeks, yet the customer's operations chief says he 'has no idea where this project is going.' Demos show features; he cares about the cutover impact on his teams. What should the PM do?",
+      "opts": [
+        "Encourage him to keep attending demos until the picture emerges",
+        "Recognize his expectations differ from what demos address, and add engagement tailored to his concerns — like a cutover-impact walkthrough and readiness roadmap",
+        "Send him the sprint burndown charts",
+        "Deprioritize his concerns until closer to cutover"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Identifying internal customer expectations means noticing when your engagement mechanism answers a question the stakeholder isn't asking — his need is operational readiness, not feature progress. More demos and burndowns repeat the mismatch in different formats, and deferring readiness concerns until cutover is when they become unmanageable."
+    },
+    {
+      "q": "Customer satisfaction scores for your project's deliverables dropped over two consecutive review cycles, though all acceptance criteria are being met. What should the PM do?",
+      "opts": [
+        "Note that criteria are met and treat the scores as subjective noise",
+        "Investigate the drop with the customer directly — expectations may have shifted beyond the documented criteria — and respond to what's found",
+        "Raise the acceptance criteria to be more strict",
+        "Wait one more cycle to confirm a trend"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Monitoring customer satisfaction and responding is an explicit ECO enabler — meeting documented criteria while satisfaction falls signals expectations have moved, and only conversation reveals where. Dismissing the signal or passively waiting lets the gap widen, and tightening criteria guesses at a cause the PM hasn't investigated."
+    },
+    {
+      "q": "An external customer emails your sponsor claiming the project team 'never listens,' days after that customer's change request was declined through proper change control. What should the PM do?",
+      "opts": [
+        "Forward the change control records to the sponsor as proof of proper process",
+        "Contact the customer to revisit the decision's rationale and how it was communicated — a correct decision delivered poorly still damages the relationship",
+        "Reverse the decision to restore goodwill",
+        "Ask the sponsor to handle the customer directly from now on"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Managing expectations includes how decisions land, not just how they're made — the complaint is about feeling unheard, so the PM re-engages on rationale and communication quality. Proving procedural correctness answers a question the customer didn't ask, reversing a sound decision buys peace with the baseline, and handing off the relationship abandons it."
+    },
+    {
+      "q": "Your project will replace a legacy system maintained for 15 years by one engineer who retires two months before cutover. What should the PM do NOW?",
+      "opts": [
+        "Schedule a handover document to be written in the engineer's final week",
+        "Identify the critical knowledge the engineer holds and start structured transfer immediately — pairing, documentation, and walkthroughs with the receiving team",
+        "Extend the engineer's contract past cutover",
+        "Rely on the vendor's documentation of the legacy system"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Knowledge transfer starts with identifying critical knowledge and takes sustained time — tacit knowledge moves through pairing and repetition, not a final-week document dump. A last-minute handover captures a fraction of 15 years, a contract extension is a contingency rather than a transfer plan, and vendor docs never contain the local adaptations that matter."
+    },
+    {
+      "q": "Sprint retrospectives generate useful lessons, but the PM notices other teams in the program keep hitting problems your team already solved. What should the PM do?",
+      "opts": [
+        "Nothing — retrospectives are internal to each team",
+        "Foster cross-team knowledge sharing, such as communities of practice or a shared lessons repository the program actually uses",
+        "Email your team's retrospective notes to all teams",
+        "Ask the PMO to mandate identical practices across teams"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Fostering an environment for knowledge transfer extends beyond one team — communities of practice and living shared repositories let lessons flow where they're needed. Keeping lessons siloed wastes them, raw retro notes lack context and get ignored, and mandated uniformity transfers compliance rather than knowledge."
+    },
+    {
+      "q": "A consultant rolling off your project next month is the only person who understands the custom integration layer. She is fully allocated to delivery tasks until her end date. What should the PM do?",
+      "opts": [
+        "Let her finish her delivery tasks — the documentation can be reconstructed later",
+        "Reprioritize her remaining time to include structured knowledge transfer, accepting a small delivery trade-off now to avoid a large capability gap later",
+        "Ask her to document everything in her personal time",
+        "Plan to re-hire her later if questions arise"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Hybrid",
+      "exp": "Critical knowledge walking out the door is a project risk that justifies reprioritizing paid time — a deliberate transfer window costs days, while reconstruction costs months. Deferring to 'later' assumes availability that ends at her exit, personal-time documentation is unprofessional and unreliable, and re-hiring is an expensive gamble on her future availability."
+    },
+    {
+      "q": "Your team's knowledge base is complete but nobody uses it — members say asking a colleague is faster, but the two experts being asked are becoming bottlenecks. What should the PM do?",
+      "opts": [
+        "Mandate that all questions be submitted through the knowledge base",
+        "Blend approaches: keep valuing direct exchange while reducing bottlenecks — rotate pairing with the experts, capture answers to repeated questions, and make the knowledge base part of the answer flow",
+        "Accept the bottleneck since tacit exchange is working",
+        "Reduce the experts' delivery load so they can answer more questions"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Knowledge transfer is a social system — the fix spreads tacit knowledge through pairing while capturing recurring answers where they're actually sought, easing the bottleneck without banning what works. Mandating tool usage fights human behavior and loses, and both 'accept it' and 'give experts more answer time' leave the single points of failure in place."
+    },
+    {
+      "q": "At project close, the sponsor asks the PM to skip the lessons-learned session to release the team a week early. The project had several novel technical solutions the organization will reuse. What should the PM do?",
+      "opts": [
+        "Comply — team release dates outrank retrospective ceremonies",
+        "Explain the organizational value of capturing the novel solutions, and propose a right-sized session that fits the release timeline",
+        "Hold the session anyway without telling the sponsor",
+        "Write the lessons learned personally from memory after the team leaves"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "The PM advocates for knowledge the organization will demonstrably reuse, while flexing on format — a focused half-day capture is a negotiation, not a confrontation. Silent compliance loses irreplaceable knowledge, defying the sponsor covertly breaks trust, and solo-written lessons miss the team perspectives that make them useful."
+    },
+    {
+      "q": "Starting a 14-month project with 60 stakeholders across five countries, the PM is deciding how to handle communications. What should the PM do FIRST?",
+      "opts": [
+        "Set up a weekly all-stakeholder status email",
+        "Define a communication strategy based on stakeholder analysis — who needs what information, when, in what format, and through which channel",
+        "Buy a collaboration platform license for all stakeholders",
+        "Ask each stakeholder to subscribe to the project dashboard"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "The ECO's communication task begins with defining a strategy driven by stakeholder needs — channels, cadence, and formats are outputs of that analysis, not starting points. A uniform weekly email ignores differing needs across 60 people and five cultures, and tools or self-service subscriptions are mechanisms chosen before knowing what they must carry."
+    },
+    {
+      "q": "Your status reports say the project is 'green,' but the PM knows a key dependency is likely to slip and is working on options. A stakeholder later discovers the risk from another source and accuses the project of hiding problems. What went wrong?",
+      "opts": [
+        "The stakeholder misunderstood the reporting cycle",
+        "The PM sacrificed transparency — emerging risks belong in stakeholder communication even while responses are still being developed",
+        "The other source should not have shared project information",
+        "Nothing — reporting 'green' was accurate at the time"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Promoting transparency means sharing known risks with appropriate context, not waiting until solutions are ready — stakeholders can handle 'at risk, options in progress' far better than surprise. Blaming the stakeholder or the leak deflects, and 'green' while privately expecting a slip is precisely the trust-destroying gap the accusation names."
+    },
+    {
+      "q": "The PM sends detailed weekly updates but has no idea whether stakeholders read or understand them, and steering meetings are silent. What should the PM do?",
+      "opts": [
+        "Continue — silence indicates satisfaction",
+        "Establish a feedback loop: ask specific stakeholders what's working, add confirmation questions to meetings, and adjust communications based on what returns",
+        "Make the updates shorter",
+        "Replace the written updates with more meetings"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Hybrid",
+      "exp": "Communication isn't complete until it's received and understood — the ECO explicitly requires a feedback loop, and silence is an absence of signal, not a positive one. Assuming satisfaction is the classic one-way communication trap, while shortening updates or adding meetings changes format before learning what the audience actually needs."
+    },
+    {
+      "q": "The steering committee requires a monthly EVM-based status report, but your delivery teams run Kanban and track flow metrics. What should the PM do?",
+      "opts": [
+        "Tell the committee EVM doesn't apply to agile work",
+        "Understand the committee's underlying reporting needs and translate team-level flow data into the governance view they require",
+        "Make the teams track EVM data alongside their flow metrics",
+        "Send the committee raw cumulative flow diagrams"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Hybrid",
+      "exp": "Supporting reporting and governance processes in a hybrid environment means the PM bridges: governance needs cost and progress confidence, which flow and financial data can legitimately provide when translated. Refusing the requirement ignores governance's legitimacy, double-tracking burdens teams with duplicate bookkeeping, and raw team artifacts push the translation work onto the audience."
+    },
+    {
+      "q": "Two days before a stakeholder briefing, the PM discovers the report deck contains an error overstating completed scope by 10%. Fixing the data means the briefing shows worse progress than last month. What should the PM do?",
+      "opts": [
+        "Present the deck as-is and correct the error next month",
+        "Correct the report and openly explain the error and its impact at the briefing",
+        "Cancel the briefing until numbers improve",
+        "Present corrected numbers without mentioning the prior error"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Accurate reporting and transparency outrank optics — owning the correction openly preserves the credibility every future report depends on. Knowingly presenting wrong data is a misrepresentation, canceling to manage appearances hides information stakeholders are entitled to, and silent correction leaves last month's record false and invites harder questions later."
+    },
+    {
+      "q": "A distributed agile team relies almost entirely on chat messages. Misunderstandings are increasing, and two features were built on misread requirements. What should the Scrum Master facilitate?",
+      "opts": [
+        "A policy requiring formal written specifications for all requirements",
+        "A team working agreement matching communication richness to the message — complex or ambiguous topics move to face-to-face/video with confirmation of understanding",
+        "Migration to a better chat tool",
+        "Daily written summaries of all chat decisions"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Complex and ambiguous information needs rich, interactive channels where understanding can be checked in real time — a team-owned agreement fixes the channel-message mismatch at its root. Heavyweight specs overcorrect against agile collaboration, a new chat tool changes the vehicle but not the mismatch, and daily summaries document misunderstandings without preventing them."
+    },
+    {
+      "q": "The sponsor asks for a single-page monthly summary, the PMO requires a standard 12-section report, and the customer wants a live dashboard. Producing all three is straining the PM's time. What should the PM do?",
+      "opts": [
+        "Pick the PMO format since it is mandatory and point everyone to it",
+        "Build reporting from a single source of data that feeds all three views, and negotiate with the PMO if any requirement adds no value",
+        "Rotate which report is produced each month",
+        "Delegate all reporting to a team member"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Hybrid",
+      "exp": "Understanding reporting requirements and aligning reports to stakeholder expectations doesn't mean triple manual effort — one data source rendering multiple views serves each audience sustainably, and genuinely valueless requirements are challenged through the PMO, not ignored. Forcing one format fails two audiences, rotation fails two of three every month, and delegation moves the burden without reducing it."
+    },
+    {
+      "q": "During execution, the PM learns that a group of frontline supervisors — never included in the stakeholder register — are actively telling staff the new system will eliminate jobs, and resistance is spreading. What should the PM do FIRST?",
+      "opts": [
+        "Issue a corporate communication denying job losses",
+        "Add the supervisors to the stakeholder register, analyze their concerns, and engage them directly with accurate information",
+        "Ask HR to address the rumor",
+        "Accelerate the rollout before resistance grows"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "This is a stakeholder identification miss surfacing as resistance — the fix is registering, analyzing, and directly engaging the supervisors, whose influence over frontline adoption is decisive. A corporate denial without engagement reads as spin, delegating to HR keeps the project distant from stakeholders it needs, and racing the resistance converts skeptics into opponents."
+    },
+    {
+      "q": "In sprint 3 of 12, the Product Owner tells you two key stakeholders have started skipping reviews because 'the early increments don't concern their area.' Their features arrive in sprints 8-10. What should the PM do?",
+      "opts": [
+        "Accept it and re-invite them at sprint 7",
+        "Keep them connected with lightweight touchpoints now — brief roadmap updates and early input requests — so context and trust exist when their features arrive",
+        "Require attendance at all reviews as a governance rule",
+        "Move their features earlier to hold their attention"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Engagement is maintained across the whole lifecycle at an intensity fitted to relevance — lightweight continuity now prevents cold restarts, late-breaking requirement surprises, and eroded trust at sprint 8. Total disengagement for five sprints loses shared context, mandatory attendance breeds resentment for low-value hours, and resequencing the backlog by attention rather than value distorts prioritization."
+    },
+    {
+      "q": "A team member privately tells the PM they are overwhelmed but afraid to say so because the team culture celebrates 'crushing it.' The PM has noticed declining quality in this person's work. What should the PM do?",
+      "opts": [
+        "Reassign their work quietly to protect them",
+        "Address the individual's workload supportively, and separately work on team norms so raising capacity concerns becomes safe for everyone",
+        "Share the concern at standup to normalize the discussion",
+        "Tell them everyone feels overwhelmed sometimes"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Agile",
+      "exp": "Servant leadership addresses both the person and the system — immediate workload support plus deliberate norm-shaping so the next overwhelmed person speaks up sooner. Quiet reassignment helps once but hides the cultural cause, exposing a confidence at standup violates trust, and minimizing the concern dismisses both the person and the quality signal."
+    },
+    {
+      "q": "The PM of a hybrid program learns the predictive workstream schedules stakeholder reviews quarterly while the agile workstream demos biweekly. The shared sponsor complains about receiving 'two different projects' worth of communication.' What should the PM do?",
+      "opts": [
+        "Standardize both workstreams on quarterly reviews",
+        "Create an integrated communication approach for shared stakeholders — one coherent program view — while letting each workstream keep its internal cadence",
+        "Standardize both workstreams on biweekly demos",
+        "Tell the sponsor to treat the workstreams as separate projects"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Hybrid",
+      "exp": "Hybrid communication is tailored at two levels: internal cadences can differ by delivery approach, but shared stakeholders need one integrated, coherent picture. Forcing either cadence onto both workstreams breaks a rhythm that fits each approach, and telling the sponsor to accept fragmentation makes the PM's integration job the sponsor's problem."
+    }
+  ],
+  "flashcards": [
+    {
+      "cat": "PMI Mindset",
+      "q": "What is 'Develop a common vision' (2026 ECO People Task 1) and its four enablers?",
+      "a": "New headline task for 2026. Enablers: (1) Help ensure a shared vision with key stakeholders, (2) Promote the shared vision, (3) Keep the vision current, (4) Break down situations to find the root cause of vision misunderstandings.\n\nExam signal: misaligned teams/stakeholders → realign on the shared vision before process fixes."
+    },
+    {
+      "cat": "PMI Mindset",
+      "q": "What are the 8 People domain tasks in the 2026 ECO (33% of exam)?",
+      "a": "1. Develop a common vision\n2. Manage conflicts\n3. Lead the project team\n4. Engage stakeholders\n5. Align stakeholder expectations\n6. Manage stakeholder expectations\n7. Help ensure knowledge transfer\n8. Plan and manage communication\n\nNote: three of eight tasks are stakeholder-focused."
+    },
+    {
+      "cat": "PMI Mindset",
+      "q": "PMI's preferred conflict resolution sequence?",
+      "a": "Identify the source → analyze the context → then resolve, preferring Collaborate/Problem-Solve (win-win, addresses root cause).\n\nOther modes: Compromise (lose-lose, partial), Smooth/Accommodate (emphasize agreement), Force (win-lose, emergencies only), Withdraw/Avoid (rarely correct on the exam).\n\nEscalate only after direct facilitation fails."
+    },
+    {
+      "cat": "PMI Mindset",
+      "q": "What does servant leadership look like in exam answers?",
+      "a": "Remove impediments, empower the team to decide, protect the team from disruption, represent the team's voice to management, build psychological safety, grow people through delegation and mentoring.\n\nWrong-answer patterns: PM decides for the team, escalates first, disciplines publicly, or absorbs stakeholder disruption silently."
+    },
+    {
+      "cat": "PMI Mindset",
+      "q": "Align vs. Manage stakeholder expectations — what's the difference in the 2026 ECO?",
+      "a": "Align (Task 5): categorize stakeholders, identify expectations, facilitate discussions to align them, act on mentoring opportunities — getting everyone to one agreed picture.\n\nManage (Task 6): identify internal/external CUSTOMER expectations, keep outcomes aligned to them, monitor satisfaction and respond — keeping the picture true over time."
+    },
+    {
+      "cat": "PMI Mindset",
+      "q": "A stakeholder's engagement level suddenly changes mid-project. What's the exam-correct pattern?",
+      "a": "Engagement assessment is continuous: update the stakeholder register/engagement assessment, analyze why the change happened, tailor the engagement approach, and act proactively.\n\nNever: ignore it, wait for the next reporting cycle, or immediately escalate without understanding the cause."
+    },
+    {
+      "cat": "PMI Mindset",
+      "q": "What is the PM's ground-rules responsibility (ECO conflict task)?",
+      "a": "Establish an environment that fosters adherence to common ground rules, and manage/rectify violations.\n\nGround rules are co-created by the team, made explicit (team charter/working agreement), and enforced consistently — violations addressed directly and privately, not ignored or punished publicly."
+    },
+    {
+      "cat": "PMI Mindset",
+      "q": "What are the three knowledge-transfer enablers in the 2026 ECO?",
+      "a": "(1) Identify knowledge critical to the project, (2) Gather knowledge, (3) Foster an environment for knowledge transfer.\n\nKey distinction: explicit knowledge → documents/repositories; tacit knowledge → pairing, shadowing, mentoring, communities of practice. Departing experts and retirements = start structured transfer immediately, not in the final week."
+    },
+    {
+      "cat": "Key Terms",
+      "q": "Tuckman's ladder — five stages and the PM's role in each",
+      "a": "Forming (orient, direct) → Storming (conflict emerges; facilitate, don't suppress) → Norming (norms gel; support) → Performing (self-managing; delegate) → Adjourning (close, celebrate, capture knowledge).\n\nAdding/removing a member can knock a team back to earlier stages — expect it, don't treat it as failure."
+    },
+    {
+      "cat": "Key Terms",
+      "q": "Communication channels formula and why it matters",
+      "a": "Channels = n(n−1) ÷ 2, where n = number of people.\n\n8 people = 28 channels; add 2 more → 45. Communication complexity grows quadratically, which is why larger teams need deliberate communication structure and why agile prefers small teams."
+    },
+    {
+      "cat": "Key Terms",
+      "q": "Push vs. pull vs. interactive communication — when is each right?",
+      "a": "Interactive (meetings, video, face-to-face): complex, ambiguous, or sensitive topics; confirms understanding in real time.\n\nPush (email, reports): distributing information where confirmation isn't immediate.\n\nPull (dashboards, repositories): large volumes for stakeholders to access at will.\n\nExam trap: choosing push/pull for resolving misunderstandings — that needs interactive."
+    },
+    {
+      "cat": "Key Terms",
+      "q": "Stakeholder engagement assessment matrix — the five levels",
+      "a": "Unaware → Resistant → Neutral → Supportive → Leading.\n\nMap each stakeholder's CURRENT (C) vs DESIRED (D) level; the gap drives the engagement plan. Work gaps proactively and early — attitude shifts take time, so don't wait until you need the stakeholder's cooperation."
+    },
+    {
+      "cat": "Key Terms",
+      "q": "Situational leadership — matching style to team maturity",
+      "a": "Directing (low competence, high commitment: new teams) → Coaching (some competence, variable commitment) → Supporting (competent, variable confidence) → Delegating (high competence, high commitment).\n\nExam signal: 'new/inexperienced team' → more direction; 'high-performing team' → delegate and empower. One fixed style is the wrong answer."
+    },
+    {
+      "cat": "Agile",
+      "q": "How does the Scrum Master handle stakeholders who bypass the Product Owner or disrupt the sprint?",
+      "a": "Protect the team and educate the stakeholder: explain the cost of mid-sprint disruption, route requests through the PO and backlog, and invite the stakeholder into the right ceremonies (refinement, review).\n\nNever: silently absorb the work, tell the team to ignore stakeholders, or escalate before a direct conversation."
+    },
+    {
+      "cat": "Agile",
+      "q": "What is psychological safety and why does the exam care?",
+      "a": "The shared belief that the team is safe for interpersonal risk-taking — admitting mistakes, raising concerns, challenging ideas — without fear of blame.\n\nIt is the foundation of retrospectives, transparency, and self-organization. Exam signal: vague answers after failure, hidden overwork, silent retros → rebuild safety first; blame-hunting and public callouts are always wrong."
+    }
+  ]
+}
