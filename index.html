@@ -4119,6 +4119,87 @@ function buildLearn() {
 // FILE SYSTEM ACCESS API
 // ============================================================
 let pmpDirHandle = null;
+const PMP_FS_DB = 'pmp-dashboard-storage';
+const PMP_FS_STORE = 'handles';
+const PMP_FS_KEY = 'pmp-folder';
+function openPmpStorage() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(PMP_FS_DB, 1);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(PMP_FS_STORE)) db.createObjectStore(PMP_FS_STORE);
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+async function pmpStorageGet(key) {
+  const db = await openPmpStorage();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(PMP_FS_STORE, 'readonly');
+    const req = tx.objectStore(PMP_FS_STORE).get(key);
+    req.onsuccess = () => resolve(req.result || null);
+    req.onerror = () => reject(req.error);
+  });
+}
+async function pmpStorageSet(key, value) {
+  const db = await openPmpStorage();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(PMP_FS_STORE, 'readwrite');
+    const req = tx.objectStore(PMP_FS_STORE).put(value, key);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+async function pmpStorageDelete(key) {
+  const db = await openPmpStorage();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(PMP_FS_STORE, 'readwrite');
+    const req = tx.objectStore(PMP_FS_STORE).delete(key);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+async function persistPMPFolderHandle(handle) {
+  if (!handle) return;
+  try {
+    await pmpStorageSet(PMP_FS_KEY, handle);
+  } catch (e) {
+    console.warn('Failed to persist PMP folder handle', e);
+  }
+}
+async function clearPersistedPMPFolderHandle() {
+  try {
+    await pmpStorageDelete(PMP_FS_KEY);
+  } catch (e) {
+    console.warn('Failed to clear PMP folder handle', e);
+  }
+}
+async function disconnectPMPFolder() {
+  pmpDirHandle = null;
+  await clearPersistedPMPFolderHandle();
+  buildFiles();
+  buildStartHere();
+}
+async function restorePMPFolderHandle() {
+  if (!window.showDirectoryPicker) return false;
+  if (typeof indexedDB === 'undefined') return false;
+  try {
+    const savedHandle = await pmpStorageGet(PMP_FS_KEY);
+    if (!savedHandle) return false;
+    if (typeof savedHandle.queryPermission !== 'function') {
+      await clearPersistedPMPFolderHandle();
+      return false;
+    }
+    const permission = await savedHandle.queryPermission({ mode: 'read' });
+    if (permission !== 'granted') return false;
+    pmpDirHandle = savedHandle;
+    return true;
+  } catch (e) {
+    console.warn('Failed to restore PMP folder handle', e);
+    return false;
+  }
+}
 
 async function connectPMPFolder() {
   if (!window.showDirectoryPicker) {
@@ -4127,6 +4208,7 @@ async function connectPMPFolder() {
   }
   try {
     pmpDirHandle = await window.showDirectoryPicker({ mode: 'read' });
+    await persistPMPFolderHandle(pmpDirHandle);
     showToast('Connected: ' + pmpDirHandle.name + ' — all files now open in one click!');
     buildFiles();
     buildStartHere();
@@ -4250,7 +4332,7 @@ function buildFiles() {
   container.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(46,213,115,.07);border:1px solid rgba(46,213,115,.25);border-radius:var(--rs);margin-bottom:14px">
       <div style="font-size:13px;color:var(--green);font-weight:700">✓ Connected: <span style="color:var(--text)">${pmpDirHandle.name}</span></div>
-      <button class="btn btn-s btn-sm" onclick="pmpDirHandle=null;buildFiles()">Disconnect</button>
+      <button class="btn btn-s btn-sm" onclick="disconnectPMPFolder()">Disconnect</button>
     </div>
     ${fileCards}`;
 }
@@ -5213,7 +5295,7 @@ function buildStartHere() {
         <div style="font-size:13px;font-weight:700;color:var(--green)">✓ Folder Connected: <span style="color:var(--text)">${pmpDirHandle.name}</span></div>
         <div style="display:flex;gap:8px">
           <button class="btn btn-s btn-sm" onclick="goToTab('files')">Browse Files →</button>
-          <button class="btn btn-s btn-sm" onclick="pmpDirHandle=null;buildStartHere();buildFiles()">Disconnect</button>
+          <button class="btn btn-s btn-sm" onclick="disconnectPMPFolder()">Disconnect</button>
         </div>
       </div>
 
@@ -7504,8 +7586,9 @@ function changeOneNoteUrl() {
 // ============================================================
 // INIT
 // ============================================================
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   updateCountdown();
+  await restorePMPFolderHandle();
   buildLearn();
   buildFiles();
   buildQuiz();
