@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#181818"/>
+  <text x="256" y="250" font-family="Arial, Helvetica, sans-serif" font-size="112" font-weight="900" fill="#c8ff00" text-anchor="middle">PMP</text>
+  <text x="256" y="340" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="700" fill="#ecedfa" text-anchor="middle" letter-spacing="6">CAMP</text>
+</svg>

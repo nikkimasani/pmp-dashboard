@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PMP Boot Camp</title>
+<meta name="theme-color" content="#181818">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP Camp">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/icon-192.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
@@ -9159,6 +9167,30 @@ function lpEnter(){
   setTimeout(()=>{ov.classList.add('hidden');bar.style.opacity='0';},820);
 }
 // ===== END LANDING PAGE =====
+
+// ===== PWA SERVICE WORKER =====
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (window.__pmpSwReloading) return;
+    window.__pmpSwReloading = true;
+    window.location.reload();
+  });
+  navigator.serviceWorker.register('/sw.js').then(registration => {
+    registration.update().catch(() => {});
+    if (registration.waiting) {
+      registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+    }
+    registration.addEventListener('updatefound', () => {
+      const installing = registration.installing;
+      if (!installing) return;
+      installing.addEventListener('statechange', () => {
+        if (installing.state === 'installed' && navigator.serviceWorker.controller) {
+          installing.postMessage({ type: 'SKIP_WAITING' });
+        }
+      });
+    });
+  }).catch(() => {});
+}
 </script>
 
 <div id="site-footer">Designed by Nikki Masani</div>
