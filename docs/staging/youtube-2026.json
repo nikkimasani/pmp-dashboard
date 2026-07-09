@@ -1,0 +1,64 @@
+{
+  "videos": [
+    {
+      "name": "Andrew Ramdayal — PMP 2026 New Exam Updates",
+      "desc": "Ramdayal's course and TIA study guide are fully updated for the July 2026 exam. His channel covers what changed — the new ECO, the 33/41/26 domain split, and how to adjust an existing study plan without starting over.",
+      "query": "Andrew Ramdayal PMP 2026 new exam update",
+      "free": true
+    },
+    {
+      "name": "David McLachlan — PMP Exam Content Outline Explained (2026)",
+      "desc": "McLachlan's April 2026 breakdown of the official 2026 ECO, domain by domain and task by task — including the Business Environment expansion to 26% and what PMI actually tests under each task.",
+      "query": "David McLachlan PMP exam content outline explained 2026",
+      "free": true
+    },
+    {
+      "name": "David McLachlan — 150 PMBOK 7 Scenario-Based Questions",
+      "desc": "Scenario-based questions with worked answers in the situational style the 2026 exam leans on. Pair with his 200 Agile questions to cover the ~60% adaptive/hybrid weighting on the new exam.",
+      "query": "David McLachlan 150 PMBOK 7 scenario based PMP exam questions",
+      "free": true
+    },
+    {
+      "name": "15 Things to Know About the 2026 PMP Exam",
+      "desc": "Quick orientation on the July 2026 refresh: 240 minutes, 10 unscored pretest questions, case-study sets and graphic-interpretation items, and the new People 33% / Process 41% / Business Environment 26% weights.",
+      "query": "15 things to know about the 2026 PMP exam",
+      "free": true
+    },
+    {
+      "name": "PMI Official — The New PMP Exam (July 2026)",
+      "desc": "PMI's own explanation of the July 2026 launch — the authoritative source on how AI, sustainability, and value delivery are woven through the new ECO rather than tested as separate domains.",
+      "query": "PMI new PMP exam July 2026 what it means for you",
+      "free": true
+    },
+    {
+      "name": "Business Environment Domain Deep Dive (2026)",
+      "desc": "Business Environment tripled from 8% to 26% — roughly 44 scored questions. Deep dives cover governance and compliance, benefits and value delivery, organizational change, and external-environment scanning scenarios.",
+      "query": "PMP 2026 business environment domain 26 percent deep dive",
+      "free": true
+    },
+    {
+      "name": "Case-Study Question Format Walkthrough (2026)",
+      "desc": "The 2026 exam adds case-study sets — one detailed scenario followed by several linked questions — plus graphic/chart-interpretation items. Watch format walkthroughs so nothing about the interface surprises you on exam day.",
+      "query": "PMP 2026 exam case study question format walkthrough",
+      "free": true
+    },
+    {
+      "name": "AI in Project Management — 2026 Exam Theme",
+      "desc": "AI-assisted planning, predictive analytics, and intelligent risk analysis appear as decision contexts across all three domains. The exam tests PM judgment about when and how to use AI (and who stays accountable), not technical depth.",
+      "query": "AI in project management PMP 2026 exam",
+      "free": true
+    },
+    {
+      "name": "Sustainability in Project Management — 2026 Exam Theme",
+      "desc": "Sustainability is embedded in the new ECO's quality tasks (cost of quality and sustainability), compliance requirements, and risk-response planning — expect sustainable procurement and environmental-impact scenarios, not a standalone domain.",
+      "query": "sustainability in project management PMP exam 2026",
+      "free": true
+    },
+    {
+      "name": "PMP Exam Changes July 2026 — Before You Test",
+      "desc": "Pre-test briefings on the July 9, 2026 cutover: what changed, what stayed the same, and how to verify your prep materials actually match the new ECO instead of the retired 2021 outline.",
+      "query": "PMP exam changes July 2026 what to know before you test",
+      "free": true
+    }
+  ]
+}

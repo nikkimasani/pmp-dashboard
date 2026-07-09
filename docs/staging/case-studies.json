@@ -1,0 +1,264 @@
+{
+  "questions": [
+    {
+      "q": "CASE — Riverside Hospital ERP (Q1/5): Riverside Hospital, a 400-bed nonprofit regional medical center, has chartered an $8M ERP replacement covering finance, HR, and supply chain. The business case commits to two benefits: a 12% reduction in supply-chain costs and a 30% reduction in billing errors within 18 months of go-live. The CFO sponsors the project; a steering committee of clinical and administrative leaders provides governance; hospital operations will own the system after cutover. The vendor implementation follows a predictive, phased rollout with a hard go-live before fiscal year-end, and staff can only attend training around patient-care schedules. During planning, the PM notices the business case names the target benefits, but no one has defined how or when they will be measured, or who owns them after the project closes. What should the PM do FIRST?",
+      "opts": [
+        "Add benefit-measurement activities to the project schedule and assign them to the project team",
+        "Work with the sponsor to develop a benefits realization plan with measurable KPIs, timelines, and named benefit owners",
+        "Note that benefits are realized after closure and are therefore outside the project's scope",
+        "Ask the PMO to audit the business case before proceeding with planning"
+      ],
+      "ans": 1,
+      "domain": "Business",
+      "type": "Predictive",
+      "exp": "Intended benefits need a benefits realization plan — measurable KPIs, measurement timing, and accountable benefit owners — built with the sponsor early, because benefits guide scope and trade-off decisions throughout delivery. The PM cannot keep measurement inside the project team (realization continues after closure) and cannot dismiss benefits as out of scope: connecting project outputs to business value is a core 2026 exam theme."
+    },
+    {
+      "q": "CASE — Riverside Hospital ERP (Q2/5): Riverside Hospital's $8M ERP replacement targets a 12% supply-cost reduction and 30% fewer billing errors within 18 months of go-live. Midway through execution, the PM realizes that a scoped custom-reporting module is consuming significant budget but contributes nothing measurable to either target benefit. What should the PM do?",
+      "opts": [
+        "Remove the module from scope immediately to protect the remaining budget",
+        "Complete the module as scoped, because it was approved in the baseline",
+        "Analyze the module's contribution to intended value and present descoping or deferral options to the sponsor and steering committee",
+        "Transfer the module to the operations team to build after go-live"
+      ],
+      "ans": 2,
+      "domain": "Business",
+      "type": "Predictive",
+      "exp": "The value-delivery mindset means continuously confirming that scope still serves the intended benefits — not blindly executing the baseline. But the PM does not descope unilaterally either: the analysis and recommendation go to the sponsor and governance body, who decide. Analyze first, then route the decision through the proper authority."
+    },
+    {
+      "q": "CASE — Riverside Hospital ERP (Q3/5): Riverside Hospital's ERP replacement went live on time and on budget. Six months later, supply-chain costs have fallen only 4% against the 12% business-case target, and the steering committee declares the project a failure. Which response BEST reflects PMI's view?",
+      "opts": [
+        "The project failed, because the intended benefits were not achieved",
+        "Delivery succeeded, but there is a benefits realization shortfall that the benefit owners must analyze and act on",
+        "The benefits target should be rebaselined to 4% to match actual results",
+        "The project should be reopened so the PM can drive adoption until the target is met"
+      ],
+      "ans": 1,
+      "domain": "Business",
+      "type": "Predictive",
+      "exp": "Project delivery success (on time, on budget, scope accepted) and benefits realization are distinct. A shortfall after closure is an organizational benefits-management issue: the named benefit owners in operations analyze root causes — often adoption or process compliance — and take corrective action. Rebaselining targets to match results defeats benefits management, and reopening a closed project is not the mechanism."
+    },
+    {
+      "q": "CASE — Riverside Hospital ERP (Q4/5): At Riverside Hospital's ERP replacement, budget pressure mounts and the CFO sponsor directs the PM to cut end-user training in half to save $200K. The business case depends on staff adoption to achieve the billing-error and supply-cost benefit targets. What should the PM do FIRST?",
+      "opts": [
+        "Comply — the sponsor has authority over the project budget",
+        "Refuse, because training is essential to the project's success",
+        "Assess the impact of reduced training on benefit achievement and present the analysis before the change is approved",
+        "Move the training costs into the operations department's budget instead"
+      ],
+      "ans": 2,
+      "domain": "Business",
+      "type": "Predictive",
+      "exp": "Neither blind compliance nor refusal is the PMI answer. Training drives adoption, and adoption drives the benefits the project was authorized to deliver — so the PM quantifies how the cut jeopardizes benefit realization and presents that impact analysis so the sponsor makes an informed decision through change control. Shifting the cost elsewhere dodges the value question."
+    },
+    {
+      "q": "CASE — Riverside Hospital ERP (Q5/5): The Riverside Hospital steering committee receives regular cost and schedule status for the ERP replacement, but asks the PM how they will know the project is on track to deliver value BEFORE go-live. What should the PM add to performance reporting?",
+      "opts": [
+        "Detailed task-completion percentages for every work package",
+        "Leading benefit indicators tied to the business case, such as data-migration quality and staff adoption readiness",
+        "Additional earned value metrics, including TCPI and VAC",
+        "Vendor invoicing and payment status"
+      ],
+      "ans": 1,
+      "domain": "Business",
+      "type": "Predictive",
+      "exp": "Cost and schedule metrics measure outputs, not outcomes. To steer toward value, governance needs leading indicators that predict benefit achievement — data quality, training completion, adoption readiness, process-change progress. This lets the steering committee act early if value is at risk, which is exactly the outcome-over-output emphasis of the 2026 exam."
+    },
+    {
+      "q": "CASE — Meridian Bank Digital Onboarding (Q1/5): Meridian Bank is building a digital customer-onboarding platform. The core-banking integration workstream is heavily regulated and follows a predictive approach with quarterly release windows and mandatory compliance gate reviews; the customer-facing app is built by two Scrum teams working in two-week sprints. The Chief Digital Officer sponsors the 12-month program, app features cannot ship until the core-banking APIs they depend on pass gate reviews, compliance requires documented approvals, and both workstreams share one integrated budget. How should the PM approach planning?",
+      "opts": [
+        "Put both workstreams on a single detailed predictive schedule so reporting stays consistent",
+        "Manage the workstreams as two independent projects with separate plans and budgets",
+        "Tailor a hybrid approach — a milestone-based plan for the regulated workstream, release and iteration planning for the Scrum teams, integrated at dependency points",
+        "Convert the core-banking workstream to Scrum so the whole program uses one delivery approach"
+      ],
+      "ans": 2,
+      "domain": "Process",
+      "type": "Hybrid",
+      "exp": "Tailoring is the heart of hybrid delivery: use predictive planning where regulation, fixed release windows, and gates demand it, and agile planning where iterative discovery adds value — then integrate the two at known dependency points (API milestones feeding app releases). Forcing one approach on both workstreams ignores their different contexts, and splitting them into unrelated projects abandons the shared dependencies and budget."
+    },
+    {
+      "q": "CASE — Meridian Bank Digital Onboarding (Q2/5): In Meridian Bank's hybrid onboarding program, a core-banking API milestone slips three weeks past its compliance gate, blocking the user stories both Scrum teams had planned for the next two sprints. What should the PM do FIRST?",
+      "opts": [
+        "Pause the Scrum teams' sprints until the API passes its gate review",
+        "Escalate the delay to the Chief Digital Officer for resolution",
+        "Work with the product owners to reprioritize the backlogs toward unblocked, high-value items while updating the integrated schedule and dependency plan",
+        "Direct the app teams to build against the draft API specification and accept the rework risk"
+      ],
+      "ans": 2,
+      "domain": "Process",
+      "type": "Hybrid",
+      "exp": "In hybrid delivery the PM manages cross-workstream dependencies actively. The immediate move is to keep the agile teams delivering value: reprioritize backlogs to unblocked items with the product owners and reflect the slip in the integrated plan. Idling the teams wastes capacity, escalating is premature before the PM has managed the dependency, and building against unapproved specs in a regulated bank invites compliance rework."
+    },
+    {
+      "q": "CASE — Meridian Bank Digital Onboarding (Q3/5): At Meridian Bank, the Scrum teams push back on the compliance documentation required at each gate review, quoting the Agile Manifesto: 'working software over comprehensive documentation.' The Scrum Master asks the PM to get the requirement waived. How should the PM respond?",
+      "opts": [
+        "Agree — the manifesto takes precedence on the agile workstream",
+        "Explain that regulatory documentation is a compliance requirement, and work with the teams to build it into their Definition of Done",
+        "Assign a separate documentation team so the Scrum teams are not slowed down",
+        "Escalate the disagreement to the compliance department to enforce the requirement"
+      ],
+      "ans": 1,
+      "domain": "Process",
+      "type": "Hybrid",
+      "exp": "The manifesto values working software OVER comprehensive documentation — it does not eliminate documentation, and it never overrides regulatory obligations. In regulated hybrid environments the required evidence becomes part of the Definition of Done so it is produced incrementally, not bolted on at the gate. Handing it to a separate team splits accountability, and escalating to compliance skips the PM's facilitation role."
+    },
+    {
+      "q": "CASE — Meridian Bank Digital Onboarding (Q4/5): Meridian Bank's steering committee is used to milestone and earned-value reports, but the app workstream tracks velocity, burnup, and sprint goals. Committee members complain that they cannot tell whether the program is on track. What should the PM do?",
+      "opts": [
+        "Report only earned value metrics for both workstreams to keep a single format",
+        "Send the committee the raw sprint reports along with the milestone reports",
+        "Create an integrated program view that maps both workstreams to shared milestones, outcomes, and release goals in the committee's terms",
+        "Ask the committee to attend the sprint reviews to see progress directly"
+      ],
+      "ans": 2,
+      "domain": "Process",
+      "type": "Hybrid",
+      "exp": "Communication is tailored to stakeholder needs. Governance needs one coherent answer to 'are we on track for the outcomes we funded' — so the PM translates agile metrics into milestone, release, and outcome terms and integrates them with the predictive workstream's reporting. Forcing EVM onto Scrum teams distorts their work, raw metrics without translation caused the complaint, and sprint reviews complement (not replace) governance reporting."
+    },
+    {
+      "q": "CASE — Meridian Bank Digital Onboarding (Q5/5): A new KYC (know-your-customer) regulation is announced that affects both Meridian Bank's core-banking APIs and multiple customer-facing app screens already built or in the backlog. What should the PM do FIRST?",
+      "opts": [
+        "Have the product owners add the new requirements to the app backlogs and start next sprint",
+        "Submit a change request for the predictive workstream and let the agile teams handle their part separately",
+        "Assess the regulation's impact across both workstreams and the integrated baseline, then route the change through governance while product owners reprioritize the backlogs",
+        "Delay all releases until the regulation's effective date is confirmed"
+      ],
+      "ans": 2,
+      "domain": "Business",
+      "type": "Hybrid",
+      "exp": "A regulatory change hitting both workstreams needs one integrated impact assessment first — scope, schedule, cost, compliance risk, and cross-workstream dependencies — then the appropriate mechanism on each side: formal change control for the predictive baseline, backlog reprioritization with the product owners for the agile teams. Piecemeal responses fragment the change; halting everything is an overreaction before impact is known."
+    },
+    {
+      "q": "CASE — Volt Mobility AI Fleet Analytics (Q1/5): Volt Mobility operates electric ride-share fleets in 14 cities. The PM leads a nine-month project to deploy an AI-driven fleet-analytics platform for predictive maintenance and dynamic vehicle allocation. The VP of Operations sponsors the project; stakeholders include the data-science team, regulatory affairs, city transport regulators, and maintenance vendors. Mid-project, national lawmakers PROPOSE an AI-transparency bill that, if enacted, would require explainability audits of algorithmic decisions like the platform's maintenance predictions. The bill has not passed. What should the PM do FIRST?",
+      "opts": [
+        "Submit a change request to add explainability-audit features to the platform now",
+        "Record the proposed regulation in the risk register and analyze its potential impact with regulatory affairs",
+        "Pause development of the AI components until the legislative outcome is clear",
+        "Ask the sponsor whether the project should continue"
+      ],
+      "ans": 1,
+      "domain": "Business",
+      "type": "Predictive",
+      "exp": "A proposed — not enacted — regulation is an external business-environment risk, not yet a requirement. The PMI sequence is identify and document the risk, analyze probability and impact with the right experts (regulatory affairs), and plan responses while monitoring the legislation. Changing scope or pausing work now would be reacting to something that may never become law; doing nothing would ignore the PM's duty to scan the external environment."
+    },
+    {
+      "q": "CASE — Volt Mobility AI Fleet Analytics (Q2/5): The AI-transparency law affecting Volt Mobility's fleet-analytics platform is ENACTED. Compliance analysis confirms the platform's predictive-maintenance model now requires documented explainability audits before production use, adding significant unplanned work. What should the PM do?",
+      "opts": [
+        "Absorb the audit work into the current baseline since compliance is mandatory",
+        "Begin the explainability work immediately and document it afterward",
+        "Submit a change request with impact analysis on scope, schedule, cost, and risk — with input from legal and compliance — through integrated change control",
+        "Descope the dynamic vehicle-allocation feature to free budget for the audits"
+      ],
+      "ans": 2,
+      "domain": "Business",
+      "type": "Predictive",
+      "exp": "Even mandatory regulatory work goes through integrated change control. 'Mandatory' means the organization must comply — it does not mean the PM absorbs work silently or starts it without assessing impact. The PM analyzes effects on all baselines with legal/compliance input and presents options to the change authority. Trading away another feature is one possible option, but that decision belongs to governance after the impact analysis, not to the PM upfront."
+    },
+    {
+      "q": "CASE — Volt Mobility AI Fleet Analytics (Q3/5): A competitor launches a rival fleet-analytics product, and Volt Mobility's VP of Operations pressures the PM to cut the testing phase and release two months early to defend market position. What should the PM do FIRST?",
+      "opts": [
+        "Compress the schedule as directed — responding to market threats is why the project exists",
+        "Analyze acceleration options and their impact on quality, compliance, risk, and the business case, then review the trade-offs with the sponsor",
+        "Refuse, because reducing testing on an AI system is too risky",
+        "Ask the steering committee to overrule the sponsor's request"
+      ],
+      "ans": 1,
+      "domain": "Business",
+      "type": "Predictive",
+      "exp": "Market disruption is a legitimate business-environment trigger to revisit the plan — but the PMI answer is analyze before acting. The PM evaluates compression options (fast-tracking, crashing, phased release, scope re-sequencing) and quantifies the quality, regulatory, and benefit trade-offs so the sponsor decides with full information. Blind compliance sacrifices the value the project must deliver; flat refusal and premature escalation both skip the analysis."
+    },
+    {
+      "q": "CASE — Volt Mobility AI Fleet Analytics (Q4/5): Volt Mobility's battery-pack supplier announces a 20% price increase driven by raw-material shortages, threatening the fleet-analytics project's hardware budget for on-vehicle telemetry units. What should the PM do FIRST?",
+      "opts": [
+        "Request additional funding from the sponsor to cover the increase",
+        "Quantify the cost impact, review contingency reserves and procurement alternatives, and present options through project governance",
+        "Switch to the cheapest alternative supplier immediately",
+        "Reduce the number of cities in the rollout to stay within budget"
+      ],
+      "ans": 1,
+      "domain": "Business",
+      "type": "Predictive",
+      "exp": "An external market shift is assessed before any response is chosen. The PM quantifies the exposure, checks whether contingency reserves cover it, works procurement alternatives (renegotiation, other vendors, contract terms), and presents costed options to governance. Jumping straight to more funding, a new supplier, or descoping selects a response before the analysis — and each of those is a decision that may exceed the PM's sole authority."
+    },
+    {
+      "q": "CASE — Volt Mobility AI Fleet Analytics (Q5/5): After a regulation, a competitor launch, and a supplier price shock all disrupted the fleet-analytics project in one quarter, Volt Mobility's sponsor asks the PM how to avoid being blindsided again. What should the PM recommend?",
+      "opts": [
+        "Add a larger management reserve to absorb future surprises",
+        "Establish continuous scanning of the external environment — regulatory, market, technology, and supply trends — integrated into risk management and reviewed at regular cadence",
+        "Shorten the project timeline so there is less exposure to external change",
+        "Delegate external monitoring to the legal department"
+      ],
+      "ans": 1,
+      "domain": "Business",
+      "type": "Predictive",
+      "exp": "The 2026 ECO explicitly expects PMs to monitor the external business environment continuously — regulation, market conditions, technology shifts, supply chains — and feed findings into the risk register and reassessments on a regular cadence. Reserves cushion impact but do not provide early warning, compressing the timeline does not remove exposure, and outsourcing all scanning to legal covers only one category of change."
+    },
+    {
+      "q": "CASE — Northgate Smart Transit (Q1/5): The City of Northgate has launched a smart-transit program replacing paper ticketing with account-based fare payment across buses and light rail. The PM leads the systems-integration project within the program. Governance includes a monthly steering committee, PMO stage gates, and a program board. Stakeholders include the elected city council, the transit authority's operations department, a private operator consortium, transit unions worried about job impacts, and rider-advocacy groups pressing for accessibility features. A city election midway through delivery could shift political priorities, and the budget is fixed by municipal appropriation. The council demands faster delivery, the unions demand job guarantees, and advocacy groups demand expanded accessibility scope. What should the PM do FIRST?",
+      "opts": [
+        "Prioritize the city council's demands, since it holds funding authority",
+        "Analyze each stakeholder's power, interest, and impact, and update the stakeholder engagement plan to address the competing expectations",
+        "Call a joint meeting of all stakeholder groups to negotiate a compromise",
+        "Escalate the conflicting demands to the program board for a ruling"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Analysis precedes action. Competing stakeholder demands require the PM to first understand each group's power, interest, expectations, and impact, then tailor engagement strategies in an updated engagement plan. Simply obeying the most powerful stakeholder ignores the others' legitimate influence on adoption; a joint negotiation or board escalation may follow, but only informed by the analysis."
+    },
+    {
+      "q": "CASE — Northgate Smart Transit (Q2/5): In Northgate's smart-transit program, a program-board member bypasses governance and directly instructs the PM's integration team to add a fare-capping feature, telling developers to 'just squeeze it in.' The team has started work. What should the PM do?",
+      "opts": [
+        "Allow the work to continue — the board member outranks the PM",
+        "Stop the unapproved work, meet with the board member to redirect the request through the change process, and reinforce the agreed governance paths with the team",
+        "Report the board member's interference to the city council",
+        "Finish the feature but log it as a risk in the risk register"
+      ],
+      "ans": 1,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "Unapproved scope entering through a side channel undermines both the baseline and governance. The PM stops the unauthorized work, engages the board member respectfully and directly — usually the request has merit and simply needs to go through change control — and re-educates the team that all requests route through agreed channels. Escalating to the council is premature before a direct conversation; completing the work makes the PM complicit in bypassing governance."
+    },
+    {
+      "q": "CASE — Northgate Smart Transit (Q3/5): Northgate's city election replaces several council members, and the new council questions why the smart-transit program deserves its budget. Program funding is reviewed annually. What should the PM do?",
+      "opts": [
+        "Continue delivering as planned — the project was already authorized",
+        "Proactively engage the new council members, brief them on the business case and benefits, update the stakeholder register, and reconfirm strategic alignment through governance",
+        "Ask the sponsor to handle all political stakeholders so the team can stay focused",
+        "Accelerate visible deliverables to demonstrate progress before the funding review"
+      ],
+      "ans": 1,
+      "domain": "Business",
+      "type": "Predictive",
+      "exp": "New decision-makers are new key stakeholders — the PM identifies them, engages early, and re-establishes the 'why' with the business case and benefits before the funding review. Organizational-change and political shifts are exactly the external factors the 2026 exam expects PMs to manage. Ignoring the shift risks cancellation, delegating all engagement wholesale abdicates a shared responsibility, and rushing showy deliverables treats the symptom while distorting the plan."
+    },
+    {
+      "q": "CASE — Northgate Smart Transit (Q4/5): Northgate's smart-transit project approaches a PMO stage gate, but the benefits-tracking documentation the gate requires is incomplete because the team focused on integration testing. The sponsor suggests skipping the gate review 'just this once' to hold the schedule. What should the PM do?",
+      "opts": [
+        "Skip the gate with the sponsor's approval and complete the documentation afterward",
+        "Complete the required gate artifacts, hold the review, and transparently communicate any schedule impact and recovery options",
+        "Hold the gate review using the incomplete documentation and note the gaps in the minutes",
+        "Ask the PMO to permanently remove the benefits-documentation requirement"
+      ],
+      "ans": 1,
+      "domain": "Business",
+      "type": "Predictive",
+      "exp": "Stage gates are governance controls that protect the organization's investment — bypassing one because it is inconvenient defeats its purpose, even with sponsor encouragement. The PM meets the requirement, runs the review, and is transparent about the schedule consequence and recovery options. If a requirement genuinely adds no value, the PM can propose tailoring it through the PMO for the future — but not skip it under schedule pressure."
+    },
+    {
+      "q": "CASE — Northgate Smart Transit (Q5/5): The transit authority's operations director — whose staff must run the new fare system after handover — has skipped the last three design workshops and tells peers the project is 'an IT vanity effort that will be dumped on operations.' What should the PM do FIRST?",
+      "opts": [
+        "Proceed with design decisions and send the director the minutes for review",
+        "Ask the sponsor to direct the operations director to attend the workshops",
+        "Meet the director one-on-one to understand the root cause of the resistance, then tailor the engagement approach to address those concerns",
+        "Mark the director as 'resistant' in the stakeholder register and increase reporting frequency"
+      ],
+      "ans": 2,
+      "domain": "People",
+      "type": "Predictive",
+      "exp": "A disengaged operational owner is one of the highest adoption risks a project can carry — the system's benefits die if operations rejects it. PMI's pattern: understand before acting. The PM meets the director directly, listens for the real concerns (workload, staffing, being handed an unsupportable system), and adjusts the engagement strategy accordingly. Working around the director, forcing attendance via the sponsor, or just relabeling the register treats symptoms and deepens the resistance."
+    }
+  ]
+}
