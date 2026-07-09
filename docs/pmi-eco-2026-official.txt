@@ -1,0 +1,662 @@
+PMP®
+Project Management Professional (PMP)®
+Examination Content Outline – 2026
+
+-- 1 of 23 --
+
+Project Management Professional
+(PMP)®
+Certification Exam Content Outline
+July 2026 PMP® Certification Exam
+Update
+Published by: Project Management Institute, Inc.
+18 Campus Boulevard, Suite 150
+Newtown Square, Pennsylvania 19073-3299 USA
+© 2026 Project Management Institute, Inc. All rights reserved.
+“PMI”, the PMI logo, and “PMP” are marks of Project Management Institute, Inc. For a comprehensive list of PMI marks, contact
+the PMI Legal Department.
+
+-- 2 of 23 --
+
+Table of Contents
+INTRODUCTION ................................................................................................................................................ 4
+EXAM CONTENT OUTLINE .................................................................................................................................... 5
+DOMAINS, TASKS, AND ENABLERS .......................................................................................................................... 6
+DOMAIN I PEOPLE—33% ..................................................................................................................... 7
+DOMAIN II PROCESS—41% ................................................................................................................... 9
+DOMAIN III BUSINESS ENVIRONMENT—26% ........................................................................................... 11
+PMP CERTIFICATION ELIGIBILITY REQUIREMENTS...................................................................................................... 13
+PMP CERTIFICATION EXAM INFORMATION ............................................................................................................. 17
+TAKING THE PMP CERTIFICATION EXAM ................................................................................................................ 21
+RETAKING THE PMP CERTIFICATION EXAM ............................................................................................................. 21
+ACKNOWLEDGMENTS ....................................................................................................................................... 22
+CONTINUING CERTIFICATION REQUIREMENTS (CCR) PROGRAM .................................................................................... 23
+RESOURCES................................................................................................................................................... 23
+
+-- 3 of 23 --
+
+4
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+INTRODUCTION
+Project Management Institute (PMI) offers a globally recognized professional certification for project managers,
+known as the Project Management Professional (PMP)® certification. PMI exam development processes stand
+apart from other certification programs. PMI aligns its processes with the certification industry’s best practices
+such as those found in the Standards for Educational and Psychological Testing. The PMP® certification is also
+accredited against the internationally recognized ISO/ANSI 17024 standards and ISO 9001 .1
+A key development requirement for a fair and reliable certification exam is an analysis of the job being assessed
+and a market assessment of standards and industry practices. Given that the PMP is a global certification, PMI
+conducted a job task analysis (JTA), which included a criterion-referenced approach to assessing candidates.
+With the emergence of several trends in the profession previously unaddressed in the PMP certification exam,
+such as artificial intelligence (AI), and sustainability, it was critical that PMI evaluate the impacts of these trends
+on professional practice expectations. These trends were used as inputs into the JTA to validate their
+relevance and correlation to tasks included in the PMP certification exam. Validation ensures that each exam
+measures the most critical and frequently performed elements of the project management profession in terms
+of realistic work settings and ways of working identified as likely to lead to project success.
+The PMP certification exam is a vital part of earning this professional certification; thus, it is imperative that
+the exam accurately reflects the practices of project managers. All the questions on the exam have been
+written and extensively reviewed by subject matter experts (SMEs) who hold a valid PMP certification. Scored
+questions are pretested to confirm their utility in assessing test-takers accurately and fairly. These questions
+are mapped to the PMP Certification Exam Content Outline (ECO) to help ensure an appropriate number of
+questions are in place for a valid examination.
+PMI retained Alpine Testing Solutions to develop the global PMP Certification Exam Content Outline. Alpine
+Testing Solutions provides psychometric, test development, and credential management solutions to
+credentialing and educational programs.
+Finally, there are noticeable differences between this updated PMP Certification Exam Content Outline and A
+Guide to the Project Management Body of Knowledge (PMBOK® Guide). The taskforce members were charged
+with outlining critical job tasks of individuals who lead, and direct projects based on their experience and
+pertinent resources. Each candidate is required to apply project management concepts and their own
+experience to on-the-job situations through a series of scenario-based questions. The PMBOK® Guide is a
+combination of content, such as principles that guide behavior, common technical areas, and processes that
+reflect good practice and ways of working, to provide the core knowledge that guides activities associated with
+managing projects. The PMP certification exam assesses a candidate’s ability to think critically and apply those
+practices based on experience leading and managing projects.
+1 Published jointly by the American Education Research Association, National Council on Measurement in Education, and American
+Psychological Association. The PMP certification is also accredited by the American National Standards Institute (ANSI) against the
+internationally recognized ISO/IEC 17024 standard: Conformity Assessment—General Requirements for Bodies Operating Certification of
+Persons.
+
+-- 4 of 23 --
+
+5
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+EXAM CONTENT OUTLINE
+The following table identifies the proportion of questions from each domain that will appear on the exam.
+Domain Percentage of Items on the Exam
+I. People 33%
+II. Process 41%
+III. Business Environment 26%
+Total 100%
+Important note: The research conducted through the JTA validated that today’s project management
+practitioners work in a variety of project environments and utilize different project management
+development approaches. Accordingly, the PMP certification reflects this and incorporates approaches
+across the value delivery spectrum. Predictive, adaptive/agile, and hybrid management approaches will be
+found throughout the three domain areas listed above and are not isolated to any particular domain or
+task. Approximately 40% of the items will represent predictive project management approaches, whereas
+the remaining 60% will be divided between adaptive/agile and hybrid management approaches. The exact
+number of items for each question type and approach may vary by form. Our scoring model is periodically
+reviewed by scoring experts to help ensure valid assessment of knowledge and skills. For more information,
+please review the exam reporting section of the PMI Certification Handbook.
+
+-- 5 of 23 --
+
+6
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+DOMAINS, TASKS, AND ENABLERS
+This document provides details about the structure for the PMP Certification Exam Content Outline
+(ECO), including domains, tasks, and enablers as defined by the JTA.
+• Domain: Defined as the high-level knowledge area that is essential to the practice of
+project management.
+• Tasks: The underlying responsibilities of the project manager within each domain
+area.
+• Enablers: Illustrative examples of the work associated with the task. Please note that
+enablers are not meant to be an exhaustive list but rather offer a few examples to
+help demonstrate what the task encompasses.
+Each PMP certification exam will include questions that address all tasks for a domain, and PMI will
+adhere to the percentage of coverage at the domain level as outlined on the previous page.
+Below is an example of the task structure:
+The ECO is in alignment with the PMI Thought Leadership report, Maximizing Project Success: Elevating the
+impact of the project profession. Elevating the impact on our world research, where the result was
+reframing project success to build upon the traditional metrics like schedule, budget, and scope—the
+hallmarks of project management success—to a broader perspective that encompasses stakeholder value
+and accomplishment of desired outcomes. This extensive research contributed to a new, consensus view of
+the definition of project success when the project was perceived to have delivered value that was worth
+the effort and expense.
+Task statement: Help ensure knowledge transfer
+Enablers:
+– Identify knowledge critical to the project
+– Gather knowledge
+– Foster an environment for knowledge transfer
+Domain: People
+
+-- 6 of 23 --
+
+7
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+DOMAIN I PEOPLE—33%
+Task 1 Develop a common vision
+• Help ensure a shared vision with key stakeholders.
+• Promote the shared vision.
+• Keep the vision current.
+• Break down situations to identify the root cause of a misunderstanding of the vision.
+Task 2 Manage conflicts
+• Identify conflict sources.
+• Analyze the context for the conflict.
+• Implement an agreed-on resolution strategy.
+• Communicate conflict management principles with the team and external stakeholders.
+• Establish an environment that fosters adherence to common ground rules.
+• Manage and rectify ground rule violations.
+Task 3 Lead the project team
+• Establish expectations at the team level.
+• Empower the team.
+• Solve problems.
+• Represent the voice of the team.
+• Support the team's varied experiences, skills, and perspectives.
+• Determine an appropriate leadership style.
+• Establish clear roles and responsibilities within the team.
+Task 4 Engage stakeholders
+• Identify stakeholders.
+• Analyze stakeholders.
+• Analyze and tailor communication to stakeholder needs.
+• Execute the stakeholder engagement plan.
+• Optimize alignment among stakeholder needs, expectations, and project objectives.
+• Build trust and influence stakeholders to accomplish project objectives.
+Task 5 Align stakeholder expectations
+• Categorize stakeholders.
+• Identify stakeholder expectations.
+• Facilitate discussions to align expectations.
+• Organize and act on mentoring opportunities.
+Task 6 Manage stakeholder expectations
+• Identify internal and external customer expectations.
+• Align and maintain outcomes to internal and external customer expectations.
+• Monitor internal and external customer satisfaction/expectations and respond as needed.
+
+-- 7 of 23 --
+
+8
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+Task 7 Help ensure knowledge transfer
+• Identify knowledge critical to the project.
+• Gather knowledge.
+• Foster an environment for knowledge transfer.
+Task 8 Plan and manage communication
+• Define a communication strategy.
+• Promote transparency and collaboration.
+• Establish a feedback loop.
+• Understand reporting requirements.
+• Create reports aligned with sponsors and stakeholder expectations.
+• Support reporting and governance processes.
+
+-- 8 of 23 --
+
+9
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+DOMAIN II PROCESS—41%
+Task 1 Develop an integrated project management plan and plan delivery
+• Assess project needs, complexity, and magnitude.
+• Recommend a project management development approach (i.e., predictive, adaptive/agile, or
+hybrid management).
+• Determine critical information requirements (e.g., sustainability).
+• Recommend a project execution strategy.
+• Create an integrated project management plan.
+• Estimate work effort and resource requirements.
+• Assess consolidated project plans for dependencies, gaps, and continued business value.
+• Maintain the integrated project management plan.
+• Collect and analyze data to make informed project decisions.
+Task 2 Develop and manage project scope
+• Define scope.
+• Obtain stakeholder agreement on project scope.
+• Break down scope.
+Task 3 Help ensure value-based delivery
+• Identify value components with key stakeholders.
+• Prioritize work based on value and stakeholder feedback.
+• Assess opportunities to deliver value incrementally.
+• Examine the business value throughout the project.
+• Verify a measurement system is in place to track benefits.
+• Evaluate delivery options to demonstrate value.
+Task 4 Plan and manage resources
+• Define and plan resources based on requirements.
+• Manage and optimize resource needs and availability.
+Task 5 Plan and manage procurement
+• Plan procurement.
+• Execute a procurement management plan.
+• Select preferred contract types.
+• Evaluate vendor performance.
+• Verify objectives of the procurement agreement are met.
+• Participate in agreement negotiations.
+• Determine a negotiation strategy.
+• Manage suppliers and contracts.
+• Plan and manage the procurement strategy.
+• Develop a delivery solution.
+
+-- 9 of 23 --
+
+10
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+Task 6 Plan and manage finance
+• Analyze project financial needs.
+• Quantify risk and contingency financial allocations.
+• Plan spend tracking throughout the project life cycle.
+• Plan financial reporting.
+• Anticipate future finance challenges.
+• Monitor financial variations and work with the governance process.
+• Manage financial reserves.
+Task 7 Plan and optimize quality of products/deliverables
+• Gather quality requirements for project deliverables.
+• Plan quality processes and tools.
+• Execute a quality management plan.
+• Help ensure regulatory compliance.
+• Manage cost of quality (CoQ) and sustainability.
+• Conduct ongoing quality reviews.
+• Implement continuous improvement.
+Task 8 Plan and manage schedule
+• Prepare a schedule based on the selected development approach
+• Coordinate with other projects and operations.
+• Estimate project tasks (milestones, dependencies, story points).
+• Utilize benchmarks and historical data.
+• Create a project schedule.
+• Baseline a project schedule.
+• Execute a schedule management plan.
+• Analyze schedule variation.
+Task 9 Evaluate project status
+• Develop project metrics, analysis, and reconciliation.
+• Identify and tailor needed artifacts.
+• Help ensure artifacts are created, reviewed, updated, and documented.
+• Help ensure accessibility of artifacts.
+• Assess current progress.
+• Measure, analyze, and update project metrics.
+• Communicate project status.
+• Continually assess the effectiveness of artifact management.
+Task 10 Manage project closure
+• Obtain project stakeholder approval of project completion.
+• Determine criteria to successfully close the project or phase.
+• Validate readiness for transition (e.g., to operations team or next phase).
+• Conclude activities to close the project or phase (e.g., final lessons learned, retrospectives,
+procurement, financials, resources).
+
+-- 10 of 23 --
+
+11
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+DOMAIN III BUSINESS ENVIRONMENT—26%
+Task 1 Define and establish project governance
+• Describe and establish the structure, rules, procedures, reporting, ethics, and policies through the
+use of organizational process assets (OPAs).
+• Define success metrics.
+• Outline governance escalation paths and thresholds.
+Task 2 Plan and manage project compliance
+• Confirm project compliance requirements (e.g., security, health and safety, sustainability, regulatory
+compliance).
+• Classify compliance categories.
+• Determine potential threats to compliance.
+• Use methods to support compliance.
+• Analyze the consequences of noncompliance.
+• Determine the necessary approach and action(s) to address compliance needs.
+• Measure the extent to which the project is in compliance.
+Task 3 Manage and control changes
+• Execute the change control process.
+• Communicate the status of proposed changes.
+• Implement approved changes to the project.
+• Update project documentation to reflect changes.
+Task 4 Remove impediments and manage issues
+• Evaluate the impact of impediments.
+• Prioritize and highlight impediments.
+• Determine and apply an intervention strategy to remove/minimize impediments.
+• Reassess continually to help ensure impediments, obstacles, and blockers for the team are being
+addressed.
+• Recognize when a risk becomes an issue.
+• Collaborate with relevant stakeholders on an approach to resolve the issues.
+Task 5 Plan and manage risk
+• Identify risks.
+• Analyze risks.
+• Monitor and control risks.
+• Develop a risk management plan.
+• Maintain a risk register (e.g., poor IT security).
+• Execute a risk management plan (e.g., risk response for security and managing sustainability risks).
+• Communicate the status of a risk impact on the project.
+
+-- 11 of 23 --
+
+12
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+Task 6 Continuous improvement
+• Utilize lessons learned.
+• Help ensure continuous improvement processes are updated.
+• Update organizational process assets (OPAs).
+Task 7 Support organizational change
+• Assess organizational culture.
+• Evaluate the impact of organizational change on the project and determine required actions.
+Task 8 Evaluate external business environment changes
+• Survey changes to the external business environment (e.g., regulations, technology, geopolitical,
+market).
+• Assess and prioritize the impact on project scope/backlog based on changes in the external
+business environment.
+• Continually review the external business environment for impacts on project scope/backlog.
+
+-- 12 of 23 --
+
+13
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+PMP CERTIFICATION ELIGIBILITY
+REQUIREMENTS
+PMP certification holders are expected to have a robust background, which includes academic and commercial
+training as well as professional experience working as a project practitioner. Candidates for the PMP
+certification must apply to gain eligibility to take the PMP certification exam.
+To be eligible for the PMP certification, you must meet one of the educational and professional experience
+paths listed below. All project management experience must have been accrued within the last 10 years in a
+professional setting prior to your application submission.
+Educational Background Professional Project Management Experience
+Completion of upper-secondary/secondary school (e.g., High
+School Diploma, GED-type secondary equivalency, Upper-
+Secondary/School Leaving Certificate) mapped to EQF Level 4
+/ ISCED 3–4 (or the national framework level for upper-
+secondary completion).
+Minimum 60 months/5 years of non-overlapping
+experience leading projects in the past 10 years
+OR
+Completion of a recognized associate’s-level, higher-certificate,
+or advanced technical/vocational program mapped to EQF
+Level 5 / ISCED 5 (or national framework level designated as
+post-secondary, short-cycle tertiary).
+Minimum 48 months/4 years of non-overlapping
+experience leading projects in the past 10 years
+OR
+Bachelor’s degree (or higher) from a recognized/authorized
+institution; or an advanced professional/vocational qualification
+that is formally mapped to EQF Level 6 / ISCED 6 (or the
+national framework level designated as bachelor-equivalent).*
+Minimum 36 months/3 years of nonoverlapping
+experience leading projects in the past 10 years
+OR
+Bachelor’s or postgraduate degree awarded by a program
+accredited by PMI’s Global Accreditation Center (GAC). (GAC
+accreditation is a program quality designation and does not, by
+itself, change the degree level required for eligibility).
+Minimum 24 months/2 years of non-overlapping
+experience leading projects in the past 10 years
+If your application is selected for an audit, you will be required to provide documentation verifying the
+education level and authenticity. If a credential does not cite a framework level, applicants must supply one of
+the following: (a) a link or extract from a national qualifications register, (b) an official statement from the
+awarding body or relevant ministry confirming the level, or (c) a formal evaluation by a recognized national
+body.
+*Non-degree qualifications are eligible at this tier only when a competent authority explicitly maps the award to EQF 6 (or national
+bachelor-equivalent level). Titles containing “advanced,” “professional,” or “graduate” without an official level mapping are insufficient.
+
+-- 13 of 23 --
+
+14
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+Eligible candidates must demonstrate in their PMP application that their professional experience was in leading
+and directing the projects. As defined in the PMBOK® Guide, a project is a temporary initiative in a unique
+context undertaken to create value. The temporary nature of a project indicates a beginning and an end to the
+project work or a phase of the project work. A project’s unique context can be driven by its distinct goals,
+environmental conditions, approaches, stakeholders, or other dimensions. Projects can be stand-alone efforts
+or part of a portfolio or program (as defined by the PMBOK® Guide).
+Commercial Training Requirements:
+In addition to the above project management experience, PMP certification candidates must also have taken
+at least 35 hours of commercial training in project management aligned with topics covered in the PMP
+Certification Exam Content Outline (ECO). The coursework must be completed in the respective sections of the
+application. You can meet commercial training requirements by completing courses from any of the following
+education providers:
+• PMI Authorized Training Partner (ATP)
+• China Registered Education Provider (REP)
+• PMI Global Accreditation Center for Project Management Education Programs (GAC)
+• Project Management course(s) from Accredited Higher Education Institution
+• Employer/company-sponsored programs
+• Training companies or consultants (e.g., training schools)
+• Self-paced on-demand training courses including an end-of-course assessment
+Post-Secondary Academic Education in Project Management
+Verify at least 35 formal training hours of specific instruction that addressed learning objectives in project
+management that aligns to the PMP Certification ECO. Record all training hours regardless of when they
+were accrued. The coursework must be completed before the certification is granted.
+Learning course hours should cover project-management-related topics as detailed in the PMP Certification
+ECO above and may include content on, but not limited to, project scope, project schedule, project
+communications, project risk, project procurement, project financials, project resources, project
+stakeholders, project integration management, and project governance.
+Note that commercial training is not restricted to any specific modality or provider. However, all training is
+subject to audit. PMI reserves the right to deem training as ineligible for PMP certification candidacy based
+on quality and may, at their sole discretion, disqualify training if it is found to be of poor quality. Lastly,
+books and practice exams alone will NOT be accepted as eligible commercial training.
+NOTE: One hour of classroom instruction equals 1 training hour. If you have completed a university
+or college course on project management that met for 3 hours per week for 15 weeks, you would
+record 45 training hours. If only a portion of a course dealt with project management, only the
+hours spent on project management can be applied toward the total.
+
+-- 14 of 23 --
+
+15
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+PMI continues to advance the integrity and trust that define the PMP® certification. While PMI does not
+endorse or control third-party training providers, our Authorized Training Partner (ATP) program helps
+ensure that candidates who choose to pursue structured learning have access to consistent, high-quality
+educational experiences. Candidates are free to prepare in any way they choose if the training meets the
+minimum 35 hours and aligns to the ECO. PMI encourages everyone to exercise caution when engaging
+with organizations that make misleading claims or guarantee exam success. PMI investigates credible
+reports of such misconduct to help preserve the integrity and fairness of the certification process. In
+alignment with ISO/IEC 17024:2012 standards, PMI is introducing enhanced verification within the PMP®
+application system.
+Credit for Prior Learning Paths:
+If you are an active Certified Associate in Project Management (CAPM)® professional certification holder,
+and have met the educational and professional experience requirements, you do NOT need to
+document the 35 training hours. Your project management training requirement is waived. By holding an
+active CAPM® professional certification, you earn a 35-training-hour credit toward the commercial training
+requirements.
+*If you are a graduate of a GAC-accredited degree program, the GAC coursework you completed can also
+count toward fulfilling the 35 training-hour requirement. Learn more about the PMI Global Accreditation
+Center for Project Management Education Programs (GAC).
+How to Record Your Experience and Education on the Application
+Use the experience verification section of the online application to record your professional work experience
+leading and directing projects. The experience does not necessarily have to be paid work, but it does need to
+be in a professional setting. Activities such as school projects, academic research for a degree-granting
+program, planning personal events, or home improvement projects do not qualify. Ensure your project entries
+do not include any routine, operational, or administrative tasks.
+Number of Months of Project Management Experience
+All project experience must be recorded individually regardless of the number of projects you include. Tenure
+is tracked in months, not the number of projects; therefore, 6 months of project management experience
+should be noted as such, regardless of how many projects you led during those 6 months.
+Using the example below, the time leading Project I, from 1 January – 31 March, would count as three months
+toward the eligibility requirement. Whereas the time leading Project II, from 1 February – 31 May, would count
+as two months toward the eligibility requirement. You cannot count the time leading both projects during
+February–April twice. Therefore, Project I and Project II equal five months (1 January–31 May) of project
+management experience toward your eligibility requirement.
+
+-- 15 of 23 --
+
+16
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+Individuals who do not meet the eligibility requirements for the PMP certification should consider exploring
+other certifications, such as the Certified Associate in Project Management (CAPM)®, to advance their
+project management knowledge and skills.
+
+-- 16 of 23 --
+
+17
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+PMP CERTIFICATION EXAM INFORMATION
+The PMP certification exam is comprised of 180 questions including, but not limited to, multiple-choice
+single or multiple response, drag-and-drop, as well as practicum hands-on testing that may include tools,
+data, and case study questions. Of the 180 questions, 10 are considered pretest questions. Pretest
+questions do not affect the score and are used in exams as an effective and legitimate way to test the
+validity of future exam questions. All questions are randomly placed throughout the exam.
+Number of Scored Questions
+Number of Pretest
+(Unscored) Questions
+Total Exam
+Questions
+170 10 180
+Allotted Exam Time
+240 Minutes
+The allotted time to complete the center-based exam is 240 minutes. It may take you less than the allotted
+time to complete the exam.
+For the PMP certification exam, there are two 10-minute breaks in the exam. The first break occurs after
+the case-study section, and the second break occurs approximately midway through the independent
+question portion of the exam. Please note, once you review your responses and start your break you will
+not be able to return to the questions from the previous section of the exam.
+In total, you will have 240 minutes to respond to 180 questions. Those taking the exam online, please refer
+to the section below regarding breaks during the Online Proctored Tests (OPT).
+The exam is preceded by a tutorial and followed by a survey, both of which are optional. The time used to
+complete the tutorial and survey is not included in the exam time of 240 minutes (4 hours).
+
+-- 17 of 23 --
+
+18
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+PMP Certification Exam Question Types:
+Case or Scenario (NEW): The candidate is presented with a detailed scenario or situation, which may include
+graphs or charts to provide additional context. This could be a description of a business, a project, a decision
+making process, or a combination of any. After reviewing the scenario or situation, and any accompanying
+visuals, the candidate will answer a series of questions based on all the information provided. (Available on
+all modalities)
+Example of a Case or Scenario on the Certification Exam
+Enhanced Matching: Enhanced matching questions can include images or diagrams to help clarify the items
+being matched. In the example below, the candidate would drag one of the boxes on the right to a specific
+location on the chart. Might include additional elements like drag-and-drop functionality, allowing users to
+move items around to make matches. (Only available on CBT)
+Example of Enhanced Matching on the Certification Exam
+
+-- 18 of 23 --
+
+19
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+Graphic-Based Questions (NEW): This type of question requires the candidate to refer to, and interpret
+visual information, such as charts, graphs, diagrams, or images, then answer questions based on the
+information provided. (Available on all modalities)
+Example of a Graphic-Based Question on the Certification Exam
+Multiple-Choice Single Response: Multiple answer choices with one correct answer.
+(Available on all modalities)
+Multiple-Response Questions: Multiple answer choices with more than one correct answer. (Available on
+all modalities)
+Point and Click: The item is in the form of an image with hidden hotspot areas. The candidate must identify
+the correct areas by clicking on the correct locations on the image. The image on the left is an example of
+what the candidate would see. The image on the right represents the areas where the candidate can select
+to respond (Only available on CBT).
+Example of Point and Click on the Certification Exam
+
+-- 19 of 23 --
+
+20
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+Matching: Asks candidates to pair items from different lists. It consists of columns of information. The task
+is to drag items from the first column to the middle, corresponding to the information in the third column.
+The example below shows a Matching question before (right) and after (left) the candidate has answered.
+(Only available on CBT)
+Example of Matching on the Certification Exam
+Pull-down List: The correct answer must be selected from a drop-down list as shown below.
+(Only available on CBT)
+Example of a Pull-down List on the Certification Exam
+
+-- 20 of 23 --
+
+21
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+TAKING THE PMP CERTIFICATION EXAM
+The PMP certification exam is available to take in person at a test center using a computer or scantron or it
+can be taken online with a proctor. Please be sure to review the exam day instructions and check-in
+procedures as outlined in the PMI® Certification Handbook.
+In-Person Testing: Computer-Based Testing (CBT) and Paper-Based Testing (PBT)
+• For in-person test center and availability (recommended), please make sure to review test centers near
+you by visiting: https://www.pearsonvue.com/us/en/pmi.html
+• Mainland China professional exam delivery is available via PBT only and provided by ATA test services.
+Please review the PMI Certification Handbook for more information.
+Online Proctored Tests (OPT)
+Online proctored exams will require system tests and an extensive check-in process. Please allow for time
+prior to the exam to help ensure you complete these processes.
+• For testing online via OnVue online proctored, please make sure you review, and complete necessary
+system checks by visiting: https://www.pearsonvue.com/us/en/pmi/onvue.html
+• Candidates who are taking an OPT exam may be asked to present their identification to the proctor
+after they return from a break, prior to continuing with the exam.
+• Candidates in Japan and South Korea who choose to take their exam via the OPT delivery option in their
+local language will be proctored by ATA test services. Please review the PMI Certification Handbook for
+more information.
+RETAKING THE PMP CERTIFICATION EXAM
+If you do not pass your first exam attempt, we encourage you to continue studying and retake the exam.
+You may take the exam up to three times within your 1-year eligibility period. After three attempts, you
+must wait 1 year from the date of the last exam before you reapply for the certification. This policy is
+designed to uphold exam security and reduce overexposure of exam questions to individual candidates.
+However, during this year you are welcome to apply for any other PMI certification.
+If your 1-year eligibility period expires without you passing the exam, even if you have not taken it three
+times, you must reapply for the certification. This policy is designed to uphold eligibility and help ensure all
+experience included in a candidate’s application aligns to the 10-year limit. However, in such a case, you
+will not be subject to a waiting period.
+
+-- 21 of 23 --
+
+22
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+ACKNOWLEDGMENTS
+The Project Management Institute (PMI) is grateful to all the subject matter experts (SMEs) for their
+support and acknowledges their outstanding contributions to the project management profession. PMI was
+honored to have the following SMEs from across the globe contribute to the development of the PMP®
+certification program.
+Shane Allua, PhD, PMP
+Loay Mohamed Ibrahim Aly, PMP, PMI-ACP, PMI-PMOCP, DASM, GPM-b
+Lisa Au, PMP, PMI-ACP
+Jason Chow, PhD, PMI-ACP, PMP
+Mohamad ElHelaly, MSc, PMP, PMI-RMP, PMI-PBA, P3O
+Gabriela Ewachiw, PMP
+Luis Eduardo Franca, PMP, PMI-ACP, PMI-PMOCP, PMI-CPMAI
+Dr. Edward J. Hoffman
+Regina Holzinger PhD, PMP
+Nestor Jimenez, PMP, PMI-PBA, PMI-ACP, PMI-RMP
+Rosana Juestel, PMP, DASM
+Keiichiro Kaneko, PMP
+Alankar Karpe, PMP, PMI-ACP
+Nina Li (Li Nannan), PMP, PMI-ACP
+Husam T. Maghrabi, PMP, PgMP, PfMP, PMI-ACP, AHPP
+Casey Marks, PhD
+Walters Nfortoh, PMP
+Awotunde Olaoluwa, PMP
+Manuel Ortiz de Zevallos, PMP
+Adriana Pavón Navarrete, PMP
+Falguni Rolekar, PMP, PMI-ACP, DASSM
+Miguel Santos, PMP, PMI-ACP, DASSM
+Mercedes Martinez Sanz, PhD, PMP, PMI-ACP, PMI-PBA
+David Schatzman, MBA, DBA, PMP, PgMP, PfMP, PMI-SP, PMI-RMP
+Radha Somasundaram, PMP
+Nok Wing Szeto, Ernie, PMP, DASSM
+Bisi Toro-Popoola, B.Eng, MBA, Pgd .ED
+Esteban Villegas, PMP, PgMP, PMI-ACP, PMI-CPMAI, GPM-b
+Kris Williams, PMP, PMI-ACP
+
+-- 22 of 23 --
+
+23
+©2026 Project Management Institute, Inc. All rights reserved.
+Project Management Professional (PMP)® Examination Content Outline – July 2026
+CONTINUING CERTIFICATION
+REQUIREMENTS (CCR) PROGRAM
+Once you have successfully earned your PMP certification, maintain your certification by completing and
+submitting 60 professional development units (PDUs) every 3 years and paying the certification renewal
+fee.
+For details on the CCR Program and instructions on how to earn and track PDUs in CCR, please review the CCR
+Handbook by visiting https://www.pmi.org/certifications/certification-resources/maintain
+RESOURCES
+Please be sure to review the PMP certification exam resources as provided on the PMP Exam Prep page of
+PMI.org.
+PMI does not endorse specific review courses resources, references, or other materials for certification
+preparation. The references listed are not inclusive of all resources that may be utilized and should not be
+interpreted as a guaranteed means of passing the exam.
+The PMP certification exam is not written according to any single text or singularly supported by any specific
+reference. These references are the most frequently cited by the volunteer project professionals who develop
+PMP certification exam questions. The reference list is provided as a courtesy only.
+
+-- 23 of 23 --
+
