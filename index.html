@@ -803,6 +803,18 @@ body>.sb{z-index:10}
 .nav-zone-train{color:#39FF14;text-shadow:0 0 8px rgba(57,255,20,.5)}
 .nav-zone-progress{color:#00D4FF;text-shadow:0 0 8px rgba(0,212,255,.4)}
 .nav-zone-study{color:#A855F7;text-shadow:0 0 8px rgba(168,85,247,.4)}
+/* ===== COLLAPSIBLE NAV GROUPS ===== */
+.nav-group{margin-top:4px}
+.nav-group-hd{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;padding:10px 10px 5px;cursor:pointer;user-select:none;border-radius:8px;transition:filter .15s}
+.nav-group-hd:hover{filter:brightness(1.3)}
+.nav-group-hd:focus-visible{outline:1px solid var(--accent);outline-offset:2px}
+.nav-chev{font-size:10px;color:var(--t3);transition:transform .22s cubic-bezier(.16,1,.3,1)}
+.nav-group.collapsed .nav-chev{transform:rotate(-90deg)}
+.nav-group-items{overflow:hidden;max-height:400px;transition:max-height .28s cubic-bezier(.16,1,.3,1)}
+.nav-group.collapsed .nav-group-items{max-height:0}
+.nav-group-learn .nav-group-hd{color:#A855F7;text-shadow:0 0 8px rgba(168,85,247,.4)}
+.nav-group-practice .nav-group-hd{color:#39FF14;text-shadow:0 0 8px rgba(57,255,20,.5)}
+.nav-group-toolkit .nav-group-hd{color:#00D4FF;text-shadow:0 0 8px rgba(0,212,255,.4)}
 .ni-badge{font-size:9px;font-weight:700;margin-left:auto;padding:1px 6px;border-radius:4px}
 .ni-badge-green{color:#39FF14;background:rgba(57,255,20,.1)}
 .ni-badge-orange{color:var(--a4);background:rgba(255,184,0,.1)}
@@ -1154,34 +1166,51 @@ document.addEventListener('DOMContentLoaded', function(){
     <button class="set-date-btn" onclick="openDateModal()">Set Target Date</button>
   </div>
   <div class="sb-nav">
-    <div class="nav-zone nav-zone-train">🏋️ Train</div>
-    <div class="ni active" onclick="nav('today',this)"><span class="ni-ico">🚀</span><span>Start Here</span></div>
-    <div class="ni" onclick="nav('learn',this)"><span class="ni-ico">🎬</span><span>Video Library</span><span class="ni-badge ni-badge-green" id="nb-learn">—</span></div>
-    <div class="ni" onclick="nav('quiz',this)"><span class="ni-ico">🧠</span><span>Practice Quiz</span><span class="ni-badge ni-badge-orange" id="nb-quiz">—</span></div>
-    <div class="ni" onclick="nav('flash',this)"><span class="ni-ico">🃏</span><span>Flashcards</span></div>
-    <!-- ===== WP1 SCHEDULING LAB NAV ===== -->
-    <div class="ni" onclick="nav('schedlab',this)"><span class="ni-ico">🕸️</span><span>Sched Lab</span></div>
-    <!-- ===== END WP1 NAV ===== -->
+    <div class="ni active" data-nav="today" onclick="nav('today',this)"><span class="ni-ico">🚀</span><span>Start Here</span></div>
 
-    <div class="nav-zone nav-zone-progress">📊 Progress</div>
-    <div class="ni" onclick="nav('progress',this)"><span class="ni-ico">📊</span><span>My Stats</span><span class="ni-badge ni-badge-accent" id="nb-stats">—</span></div>
-    <div class="ni" onclick="nav('weak',this)"><span class="ni-ico">🎯</span><span>Weak Areas</span><span class="ni-badge ni-badge-red" id="nb-weak" style="display:none">0 ⚠️</span></div>
+    <div class="nav-group nav-group-learn" id="ng-learn">
+      <div class="nav-group-hd" role="button" tabindex="0" aria-expanded="false" aria-controls="ng-learn-items" onclick="toggleNavGroup('learn')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleNavGroup('learn')}">
+        <span>🎓 Learn</span><span class="nav-chev">▾</span>
+      </div>
+      <div class="nav-group-items" id="ng-learn-items">
+        <div class="ni" data-nav="lessons" onclick="nav('lessons',this)"><span class="ni-ico">🎓</span><span>Lessons</span></div>
+        <div class="ni" data-nav="learn" onclick="nav('learn',this)"><span class="ni-ico">🎬</span><span>Video Library</span><span class="ni-badge ni-badge-green" id="nb-learn">—</span></div>
+        <div class="ni" data-nav="plan" onclick="nav('plan',this)"><span class="ni-ico">🗓️</span><span>My Schedule</span><span class="ni-badge ni-badge-green" id="nb-plan">—</span></div>
+        <!-- ===== WP4 PMBOK8 NAV ===== -->
+        <div class="ni" data-nav="pmbok8" onclick="nav('pmbok8',this)"><span class="ni-ico">📖</span><span>PMBOK 8</span></div>
+        <!-- ===== END WP4 PMBOK8 NAV ===== -->
+      </div>
+    </div>
 
-    <div class="nav-zone nav-zone-study">📚 Study</div>
-    <div class="ni" onclick="nav('plan',this)"><span class="ni-ico">🗓️</span><span>My Schedule</span><span class="ni-badge ni-badge-green" id="nb-plan">—</span></div>
-    <div class="ni" onclick="nav('lessons',this)"><span class="ni-ico">🎓</span><span>Lessons</span></div>
-    <div class="ni" onclick="nav('study',this)"><span class="ni-ico">📝</span><span>Drills</span></div>
-    <div class="ni" onclick="nav('group',this)"><span class="ni-ico">🔥</span><span>Hot Topics</span></div>
+    <div class="nav-group nav-group-practice" id="ng-practice">
+      <div class="nav-group-hd" role="button" tabindex="0" aria-expanded="false" aria-controls="ng-practice-items" onclick="toggleNavGroup('practice')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleNavGroup('practice')}">
+        <span>🏋️ Practice</span><span class="nav-chev">▾</span>
+      </div>
+      <div class="nav-group-items" id="ng-practice-items">
+        <div class="ni" data-nav="quiz" onclick="nav('quiz',this)"><span class="ni-ico">🧠</span><span>Practice Quiz</span><span class="ni-badge ni-badge-orange" id="nb-quiz">—</span></div>
+        <div class="ni" data-nav="flash" onclick="nav('flash',this)"><span class="ni-ico">🃏</span><span>Flashcards</span></div>
+        <div class="ni" data-nav="study" onclick="nav('study',this)"><span class="ni-ico">📝</span><span>Drills</span></div>
+        <!-- ===== WP1 SCHEDULING LAB NAV ===== -->
+        <div class="ni" data-nav="schedlab" onclick="nav('schedlab',this)"><span class="ni-ico">🕸️</span><span>Sched Lab</span></div>
+        <!-- ===== END WP1 NAV ===== -->
+        <div class="ni" data-nav="weak" onclick="nav('weak',this)"><span class="ni-ico">🎯</span><span>Weak Areas</span><span class="ni-badge ni-badge-red" id="nb-weak" style="display:none">0 ⚠️</span></div>
+      </div>
+    </div>
 
-    <div class="nav-zone" style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--t3);padding:10px 10px 4px">🗂️ Other</div>
-    <div class="ni" onclick="nav('notes',this)"><span class="ni-ico">✍️</span><span>My Notes</span></div>
-    <div class="ni" onclick="nav('apply',this)"><span class="ni-ico">📋</span><span>PMI Application</span></div>
-    <div class="ni" onclick="nav('ref',this)"><span class="ni-ico">📐</span><span>Reference</span></div>
-    <!-- ===== WP4 PMBOK8 NAV ===== -->
-    <div class="ni" onclick="nav('pmbok8',this)"><span class="ni-ico">📖</span><span>PMBOK 8</span></div>
-    <!-- ===== END WP4 PMBOK8 NAV ===== -->
-    <div class="ni" onclick="nav('files',this)"><span class="ni-ico">📁</span><span>Your Files</span></div>
-    <div class="ni" id="admin-nav-item" onclick="nav('admin',this);loadAdminPanel()" style="display:none"><span class="ni-ico">🛡️</span><span>Admin</span></div>
+    <div class="nav-group nav-group-toolkit" id="ng-toolkit">
+      <div class="nav-group-hd" role="button" tabindex="0" aria-expanded="false" aria-controls="ng-toolkit-items" onclick="toggleNavGroup('toolkit')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleNavGroup('toolkit')}">
+        <span>🧰 Toolkit</span><span class="nav-chev">▾</span>
+      </div>
+      <div class="nav-group-items" id="ng-toolkit-items">
+        <div class="ni" data-nav="progress" onclick="nav('progress',this)"><span class="ni-ico">📊</span><span>My Stats</span><span class="ni-badge ni-badge-accent" id="nb-stats">—</span></div>
+        <div class="ni" data-nav="group" onclick="nav('group',this)"><span class="ni-ico">🔥</span><span>Hot Topics</span></div>
+        <div class="ni" data-nav="notes" onclick="nav('notes',this)"><span class="ni-ico">✍️</span><span>My Notes</span></div>
+        <div class="ni" data-nav="apply" onclick="nav('apply',this)"><span class="ni-ico">📋</span><span>PMI Application</span></div>
+        <div class="ni" data-nav="ref" onclick="nav('ref',this)"><span class="ni-ico">📐</span><span>Reference</span></div>
+        <div class="ni" data-nav="files" onclick="nav('files',this)"><span class="ni-ico">📁</span><span>Your Files</span></div>
+        <div class="ni" data-nav="admin" id="admin-nav-item" onclick="nav('admin',this);loadAdminPanel()" style="display:none"><span class="ni-ico">🛡️</span><span>Admin</span></div>
+      </div>
+    </div>
   </div>
   <div class="sb-streak" id="sb-streak-bar">
     <div>
@@ -4965,11 +4994,59 @@ const APP_STEPS = ["Your Info","Education","Project 1","Project 2","Review & Gen
 // ============================================================
 // NAVIGATION
 // ============================================================
+const NAV_GROUPS = {
+  learn:    ['lessons','learn','plan','pmbok8'],
+  practice: ['quiz','flash','study','schedlab','weak'],
+  toolkit:  ['progress','group','notes','apply','ref','files','admin']
+};
+
+function navGroupOf(id) {
+  return Object.keys(NAV_GROUPS).find(g => NAV_GROUPS[g].includes(id)) || null;
+}
+
+function setNavGroup(g, open, persist) {
+  const grp = document.getElementById('ng-' + g);
+  if (!grp) return;
+  grp.classList.toggle('collapsed', !open);
+  const hd = grp.querySelector('.nav-group-hd');
+  if (hd) hd.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (persist !== false) {
+    try { localStorage.setItem('nav_group_' + g, open ? '1' : '0'); } catch(e){}
+  }
+}
+
+function toggleNavGroup(g) {
+  const grp = document.getElementById('ng-' + g);
+  if (!grp) return;
+  setNavGroup(g, grp.classList.contains('collapsed'));
+}
+
+function initNavGroups() {
+  const activeItem = document.querySelector('.ni.active');
+  const activeId = activeItem ? activeItem.getAttribute('data-nav') : 'today';
+  Object.keys(NAV_GROUPS).forEach(g => {
+    let open;
+    try {
+      const s = localStorage.getItem('nav_group_' + g);
+      open = s !== null ? s === '1' : NAV_GROUPS[g].includes(activeId);
+    } catch(e) {
+      open = NAV_GROUPS[g].includes(activeId);
+    }
+    setNavGroup(g, open, false);
+  });
+}
+
 function nav(id, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.ni').forEach(n => n.classList.remove('active'));
   document.getElementById('p-' + id).classList.add('active');
+  if (!el) el = document.querySelector('.ni[data-nav="' + id + '"]');
   if (el) el.classList.add('active');
+  const g = navGroupOf(id);
+  if (g) {
+    const grp = document.getElementById('ng-' + g);
+    if (grp && grp.classList.contains('collapsed')) setNavGroup(g, true);
+  }
   window.scrollTo(0,0);
   if (id === 'today') buildStartHere();
 }
@@ -5586,8 +5663,7 @@ function buildMyCourses() {
 async function openFromDir(relPath) {
   if (!pmpDirHandle && !oneDriveToken) {
     // Navigate to Files tab and flash the connect button
-    const ni = document.querySelectorAll('.ni');
-    nav('files', ni[ni.length - 1]);
+    nav('files');
     setTimeout(() => {
       const connectBtn = document.querySelector('#files-list button');
       if (connectBtn) {
@@ -5653,8 +5729,7 @@ async function openFromDir(relPath) {
 }
 
 function goToFiles() {
-  const ni = document.querySelectorAll('.ni');
-  nav('files', ni[ni.length - 1]);
+  nav('files');
 }
 
 // BUILD FILES
@@ -9577,6 +9652,7 @@ function closeGithubModal() {
 // INIT
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
+  initNavGroups();
   updateCountdown();
   buildLearn();
   buildFiles();
