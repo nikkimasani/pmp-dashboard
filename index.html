@@ -6932,6 +6932,7 @@ const STUDY_CENTER_TABS = [
   { id:'evexercise', label:'💰 EV Exercises' },
   { id:'mnemonics', label:'🧠 Mnemonics' },
   { id:'mockexam', label:'📝 Mock Exam' },
+  { id:'engagement', label:'🤝 Engagement Drill' }, /* WP3 */
   { id:'weakareas', label:'⚠️ Weak Areas' },
   { id:'resources', label:'📂 Source Files' }
 ];
@@ -6961,6 +6962,7 @@ function renderSCPane(id) {
   else if (id === 'evexercise') el.innerHTML = renderSCEVExercises();
   else if (id === 'mnemonics') el.innerHTML = renderSCMnemonics();
   else if (id === 'mockexam') renderSCMockExam();
+  else if (id === 'engagement') renderSCEngagement(); /* WP3 */
   else if (id === 'weakareas') renderSCWeakAreas();
   else if (id === 'resources') el.innerHTML = renderSCResources();
 }
@@ -7157,6 +7159,9 @@ function startMockExam() {
   _mockState = {
     questions,
     answers: new Array(questions.length).fill(null),
+    flagged: new Set(),          /* WP3: flag-for-review */
+    reviewWrongOnly: true,       /* WP3: review filter default */
+    results: null,               /* WP3: computed on finish */
     current: 0,
     timerSeconds: 80 * 60,
     done: false
@@ -7186,11 +7191,14 @@ function renderMockQuestion() {
   const m = Math.floor(_mockState.timerSeconds / 60);
   const s = _mockState.timerSeconds % 60;
   const domainColor = q.domain === 'People' ? 'var(--accent)' : q.domain === 'Process' ? 'var(--green)' : 'var(--a4)';
+  /* ===== WP3: flag-for-review toggle + question navigator ===== */
+  const isFlagged = _mockState.flagged.has(_mockState.current);
   el.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-      <div style="font-size:12px;color:var(--t2)">Question ${_mockState.current + 1} of ${total} &nbsp;·&nbsp; ${answered} answered</div>
+      <div style="font-size:12px;color:var(--t2)">Question ${_mockState.current + 1} of ${total} &nbsp;·&nbsp; ${answered} answered${_mockState.flagged.size ? ` &nbsp;·&nbsp; <span style="color:var(--a2)">${_mockState.flagged.size} flagged</span>` : ''}</div>
       <div style="display:flex;align-items:center;gap:10px">
         <div id="mock-timer" style="font-size:15px;font-weight:800;color:var(--a2)">${m}:${String(s).padStart(2,'0')}</div>
+        <button class="btn btn-s btn-sm" style="${isFlagged ? 'color:var(--a2);border-color:rgba(255,184,0,.5);background:rgba(255,184,0,.08)' : ''}" onclick="toggleMockFlag()">${isFlagged ? '⚑ Flagged' : '⚐ Flag for review'}</button>
         <button class="btn btn-s btn-sm" onclick="finishMockExam()">Submit →</button>
       </div>
     </div>
@@ -7213,7 +7221,50 @@ function renderMockQuestion() {
     <div style="display:flex;gap:10px;justify-content:space-between">
       <button class="btn btn-s" ${_mockState.current === 0 ? 'disabled style="opacity:.4"' : ''} onclick="mockNav(-1)">← Prev</button>
       <button class="btn btn-p" onclick="mockNav(1)">${_mockState.current === total - 1 ? 'Finish & Submit →' : 'Next →'}</button>
+    </div>
+    ${renderMockNavigator()}`;
+}
+
+/* ===== WP3: question navigator grid (answered / flagged / current) ===== */
+function renderMockNavigator() {
+  if (!_mockState) return '';
+  const sw = (bg, bc) => `<span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${bg};border:1px solid ${bc};vertical-align:-1px;margin-right:4px"></span>`;
+  return `
+    <div style="margin-top:22px;padding-top:16px;border-top:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--t2)">Question Navigator</div>
+        <div style="display:flex;gap:12px;font-size:10px;color:var(--t2);flex-wrap:wrap">
+          <span>${sw('rgba(200,255,0,.18)','rgba(200,255,0,.4)')}Answered</span>
+          <span>${sw('rgba(255,184,0,.15)','rgba(255,184,0,.5)')}Flagged</span>
+          <span>${sw('var(--s2)','var(--accent)')}Current</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:5px">
+        ${_mockState.questions.map((_, i) => {
+          const isCur = i === _mockState.current;
+          const isAns = _mockState.answers[i] !== null;
+          const isFlag = _mockState.flagged.has(i);
+          const bg = isFlag ? 'rgba(255,184,0,.15)' : isAns ? 'rgba(200,255,0,.18)' : 'var(--s2)';
+          const bc = isCur ? 'var(--accent)' : isFlag ? 'rgba(255,184,0,.5)' : isAns ? 'rgba(200,255,0,.4)' : 'var(--border)';
+          const fg = isFlag ? 'var(--a2)' : isAns ? 'var(--accent)' : 'var(--t2)';
+          return `<button onclick="mockJump(${i})" aria-label="Go to question ${i + 1}" style="padding:8px 0;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;border-radius:var(--rs);background:${bg};color:${fg};border:2px solid ${bc};transition:all .12s">${i + 1}${isFlag ? '<span style="font-size:9px">⚑</span>' : ''}</button>`;
+        }).join('')}
+      </div>
     </div>`;
+}
+
+function toggleMockFlag() {
+  if (!_mockState) return;
+  const i = _mockState.current;
+  if (_mockState.flagged.has(i)) _mockState.flagged.delete(i);
+  else _mockState.flagged.add(i);
+  renderMockQuestion();
+}
+
+function mockJump(i) {
+  if (!_mockState || i < 0 || i >= _mockState.questions.length) return;
+  _mockState.current = i;
+  renderMockQuestion();
 }
 
 function selectMockAnswer(i) {
@@ -7259,49 +7310,247 @@ function finishMockExam() {
     byType[q.type].t++; if (ok) byType[q.type].c++;
   });
   const pct = Math.round(correct / qs.length * 100);
-  const pass = pct >= 61;
-  const timeUsed = 90 - Math.floor(_mockState.timerSeconds / 60);
+  /* WP3: exam is 80 minutes (was incorrectly computed against 90) */
+  const timeUsed = 80 - Math.floor(_mockState.timerSeconds / 60);
+  _mockState.results = { correct, byDomain, byType, missed, pct, pass: pct >= 61, timeUsed };
+  renderMockReport();
+}
+
+/* ===== WP3: readiness bands, gauges, and review-mode report ===== */
+function mockBand(p) {
+  if (p >= 75) return { label: 'Above Target', color: 'var(--green)' };
+  if (p >= 60) return { label: 'On Target', color: 'var(--a2)' };
+  return { label: 'Below Target', color: 'var(--red)' };
+}
+
+function renderMockGauge(name, v) {
+  const p = v.t ? Math.round(v.c / v.t * 100) : 0;
+  const band = mockBand(p);
+  return `
+    <div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:11px;margin-bottom:5px;gap:8px;flex-wrap:wrap">
+        <span style="font-weight:700">${name} <span style="color:var(--t3);font-weight:400">${v.c}/${v.t}</span></span>
+        <span style="color:${band.color};font-weight:800">${p}% · ${band.label}</span>
+      </div>
+      <div style="height:8px;background:var(--s3);border-radius:100px;overflow:hidden;position:relative">
+        <div style="position:absolute;left:60%;top:0;bottom:0;width:1px;background:var(--border)"></div>
+        <div style="position:absolute;left:75%;top:0;bottom:0;width:1px;background:var(--border)"></div>
+        <div style="height:100%;width:${p}%;background:${band.color};border-radius:100px;transition:width .4s"></div>
+      </div>
+    </div>`;
+}
+
+function renderMockReviewList() {
+  if (!_mockState || !_mockState.results) return '';
+  const qs = _mockState.questions, ans = _mockState.answers;
+  const wrongOnly = _mockState.reviewWrongOnly;
+  const indices = qs.map((_, i) => i).filter(i => !wrongOnly || ans[i] !== qs[i].ans);
+  if (!indices.length) return `<div style="text-align:center;padding:18px;color:var(--green);font-weight:700">Perfect score — nothing to review here. Outstanding preparation.</div>`;
+  return indices.map(qi => {
+    const q = qs[qi], ua = ans[qi];
+    const ok = ua === q.ans;
+    const wasFlagged = _mockState.flagged.has(qi);
+    return `<div style="background:var(--s2);border:1px solid ${ok ? 'rgba(200,255,0,.15)' : 'rgba(255,71,87,.2)'};border-radius:var(--rs);padding:13px;margin-bottom:7px">
+      <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:7px">
+        <div style="font-size:12px;font-weight:600;line-height:1.5;flex:1"><span style="color:var(--t3)">Q${qi + 1}.</span> ${q.q}</div>
+        <div style="display:flex;gap:4px;align-items:flex-start;white-space:nowrap">
+          ${wasFlagged ? `<span class="bdg bdg-gold">⚑ flagged</span>` : ''}
+          <span class="bdg ${ok ? 'bdg-green' : ''}" style="${ok ? '' : 'background:rgba(255,71,87,.1);color:var(--red);border:1px solid rgba(255,71,87,.2)'}">${ok ? '✓ correct' : '✗ wrong'}</span>
+        </div>
+      </div>
+      <div style="font-size:11px;margin-bottom:3px;color:${ok ? 'var(--green)' : 'var(--red)'}">${ok ? '✓' : '✗'} Your answer: ${ua !== null ? q.opts[ua] : '(skipped)'}</div>
+      ${ok ? '' : `<div style="font-size:11px;margin-bottom:7px;color:var(--green)">✓ Correct: ${q.opts[q.ans]}</div>`}
+      <div style="font-size:11px;color:var(--t2);line-height:1.5;border-top:1px solid var(--border);padding-top:7px;margin-top:${ok ? '7px' : '0'}">${q.exp}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleMockReviewFilter(checked) {
+  if (!_mockState) return;
+  _mockState.reviewWrongOnly = checked;
+  const list = document.getElementById('mock-review-list');
+  if (list) list.innerHTML = renderMockReviewList();
+}
+
+function renderMockReport() {
   const el = document.getElementById('sc-content');
-  if (!el) return;
+  if (!el || !_mockState || !_mockState.results) return;
+  const r = _mockState.results;
+  const qs = _mockState.questions;
+  const domainOrder = ['People', 'Process', 'Business'];
+  const domainGauges = domainOrder.filter(d => r.byDomain[d]).concat(Object.keys(r.byDomain).filter(d => !domainOrder.includes(d)));
   el.innerHTML = `
-    <div style="text-align:center;padding:24px;margin-bottom:20px;background:linear-gradient(135deg,${pass?'rgba(46,213,115,.08)':'rgba(255,71,87,.08)'},rgba(200,255,0,.05));border:1px solid ${pass?'rgba(46,213,115,.3)':'rgba(255,71,87,.3)'};border-radius:var(--r)">
-      <div style="font-size:56px;font-weight:900;color:${pass?'var(--green)':'var(--red)'};line-height:1">${pct}%</div>
-      <div style="font-size:16px;font-weight:700;margin:6px 0">${correct} / ${qs.length} correct</div>
-      <div style="font-size:13px;color:${pass?'var(--green)':'var(--red)'};font-weight:700">${pass ? '✓ PASSING SCORE' : '✗ BELOW PASSING — Keep Studying'}</div>
-      <div style="font-size:11px;color:var(--t2);margin-top:6px">${timeUsed} min used · ${90-timeUsed} min remaining</div>
+    <div style="text-align:center;padding:24px;margin-bottom:20px;background:linear-gradient(135deg,${r.pass?'rgba(46,213,115,.08)':'rgba(255,71,87,.08)'},rgba(200,255,0,.05));border:1px solid ${r.pass?'rgba(46,213,115,.3)':'rgba(255,71,87,.3)'};border-radius:var(--r)">
+      <div style="font-size:56px;font-weight:900;color:${r.pass?'var(--green)':'var(--red)'};line-height:1">${r.pct}%</div>
+      <div style="font-size:16px;font-weight:700;margin:6px 0">${r.correct} / ${qs.length} correct</div>
+      <div style="font-size:13px;color:${r.pass?'var(--green)':'var(--red)'};font-weight:700">${r.pass ? '✓ PASSING SCORE' : '✗ BELOW PASSING — Keep Studying'}</div>
+      <div style="font-size:11px;color:var(--t2);margin-top:6px">${r.timeUsed} min used · ${80 - r.timeUsed} min remaining</div>
     </div>
-    <div class="g3" style="margin-bottom:18px">
-      ${Object.entries(byDomain).map(([d,v]) => `
-        <div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--rs);padding:14px;text-align:center">
-          <div style="font-size:10px;color:var(--t2);margin-bottom:6px;text-transform:uppercase">${d}</div>
-          <div style="font-size:24px;font-weight:800;color:${v.t&&v.c/v.t>=.61?'var(--green)':'var(--red)'}">${v.t?Math.round(v.c/v.t*100):0}%</div>
-          <div style="font-size:11px;color:var(--t3)">${v.c}/${v.t}</div>
-        </div>`).join('')}
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-bottom:14px">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--t2);margin-bottom:12px">Readiness by Domain</div>
+      ${domainGauges.map(d => renderMockGauge(d, r.byDomain[d])).join('')}
+      <div style="font-size:10px;color:var(--t3);margin-top:2px">Bands are a study heuristic (Above ≥75% · On Target ≥60%) — not an official PMI cut score.</div>
     </div>
-    <div style="display:flex;gap:10px;margin-bottom:20px">
-      ${Object.entries(byType).map(([t,v]) => `
-        <div style="flex:1;background:var(--s2);border:1px solid var(--border);border-radius:var(--rs);padding:12px;text-align:center">
-          <div style="font-size:10px;color:var(--t2);margin-bottom:4px;text-transform:uppercase">${t}</div>
-          <div style="font-size:20px;font-weight:800">${v.t?Math.round(v.c/v.t*100):0}%</div>
-          <div style="font-size:11px;color:var(--t3)">${v.c}/${v.t}</div>
-        </div>`).join('')}
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-bottom:20px">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--t2);margin-bottom:12px">Readiness by Approach</div>
+      ${Object.entries(r.byType).map(([t, v]) => renderMockGauge(t, v)).join('')}
     </div>
-    ${missed.length ? `
-    <div style="font-size:13px;font-weight:800;margin-bottom:10px">Missed Questions — Review (showing up to 10)</div>
-    ${missed.slice(0,10).map(qi => {
-      const q = qs[qi], ua = ans[qi];
-      return `<div style="background:var(--s2);border:1px solid rgba(255,71,87,.2);border-radius:var(--rs);padding:13px;margin-bottom:7px">
-        <div style="font-size:12px;font-weight:600;margin-bottom:7px;line-height:1.5">${q.q}</div>
-        <div style="font-size:11px;margin-bottom:3px;color:var(--red)">✗ Your answer: ${ua !== null ? q.opts[ua] : '(skipped)'}</div>
-        <div style="font-size:11px;margin-bottom:7px;color:var(--green)">✓ Correct: ${q.opts[q.ans]}</div>
-        <div style="font-size:11px;color:var(--t2);line-height:1.5;border-top:1px solid var(--border);padding-top:7px">${q.exp}</div>
-      </div>`;
-    }).join('')}
-    ${missed.length > 10 ? `<div style="font-size:11px;color:var(--t2);text-align:center;padding:6px">+ ${missed.length-10} more saved to Weak Areas</div>` : ''}` : `<div style="text-align:center;padding:18px;color:var(--green);font-weight:700">Perfect or near-perfect! Outstanding preparation.</div>`}
-    <div style="display:flex;gap:10px;justify-content:center;margin-top:18px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <div style="font-size:13px;font-weight:800">Review Answers ${r.missed.length ? `<span style="color:var(--red);font-weight:700">(${r.missed.length} wrong)</span>` : ''}</div>
+      <label style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t2);cursor:pointer;user-select:none">
+        <input type="checkbox" ${_mockState.reviewWrongOnly ? 'checked' : ''} onchange="toggleMockReviewFilter(this.checked)" style="accent-color:var(--accent)">
+        Show wrong answers only
+      </label>
+    </div>
+    <div id="mock-review-list">${renderMockReviewList()}</div>
+    ${r.missed.length ? `<div style="font-size:11px;color:var(--t2);text-align:center;padding:6px">All missed questions are saved to Weak Areas for later drilling</div>` : ''}
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap">
       <button class="btn btn-p" onclick="_mockState=null;renderSCMockExam()">Take Another Mock Exam</button>
       <button class="btn btn-s" onclick="setSCTab('weakareas')">Review Weak Areas →</button>
     </div>`;
+}
+
+// ── WP3: STAKEHOLDER ENGAGEMENT MATRIX DRILL ─────────────────
+// Original scenarios; concept (Unaware→Leading current-vs-desired grid) is standard PMI material.
+const ENGAGEMENT_LEVELS = ['Unaware', 'Resistant', 'Neutral', 'Supportive', 'Leading'];
+
+const ENGAGEMENT_SCENARIOS = [
+  { who:'Project Sponsor — VP of Finance',
+    s:'She approved the budget but has skipped every steering meeting and admits she does not know how the new system changes month-end close. Her visible championship is critical for adoption across her division.',
+    current:0, desired:4,
+    exp:'A stakeholder who does not know how the project affects them is <strong>Unaware</strong> — even a sponsor. Because her active championship is required for adoption, the desired state is <strong>Leading</strong>. A gap this large demands a deliberate engagement plan with frequent, tailored communication.' },
+  { who:'Operations Manager',
+    s:'He openly argues against the project in staff meetings because he believes it will cut his team’s headcount. You need him actively contributing process knowledge during design workshops.',
+    current:1, desired:3,
+    exp:'Openly working against the project = <strong>Resistant</strong>. Since you need his active contribution — not just tolerance — the desired level is <strong>Supportive</strong>. PMI’s first move: understand his concerns through direct engagement. Escalating to his boss first is an exam trap.' },
+  { who:'IT Security Lead',
+    s:'She reviews documents when asked and raises no objections, but offers nothing proactively. Compliance sign-off will require her to actively co-design the security controls.',
+    current:2, desired:3,
+    exp:'Aware of the project but neither for nor against it = <strong>Neutral</strong>. Needing her active participation makes <strong>Supportive</strong> the desired state. A one-step gap is usually closed with targeted involvement — invite her into working sessions instead of sending more status reports.' },
+  { who:'End-User Representative',
+    s:'He attends every demo, gives detailed feedback, and tells teammates the new tool will make their jobs easier. That level of engagement is exactly what the project needs from him.',
+    current:3, desired:3,
+    exp:'Actively supporting the work = <strong>Supportive</strong>. Current already equals desired, so there is <strong>no gap</strong> — the correct strategy is to maintain engagement, not increase it. Exam trap: not every stakeholder needs to reach Leading.' },
+  { who:'Union Representative',
+    s:'After hearing rumors that the project automates manual tasks, she is organizing formal opposition. Realistically, the project succeeds if she simply stops opposing it and lets members judge it on the facts.',
+    current:1, desired:2,
+    exp:'Organizing opposition = <strong>Resistant</strong>. The desired state here is only <strong>Neutral</strong> — the matrix targets what the project actually needs, which is not always Supportive. Setting realistic desired levels keeps engagement effort proportional.' },
+  { who:'PMO Director',
+    s:'He mentors your team on the delivery framework, promotes the project to other departments, and removes roadblocks before you even ask.',
+    current:4, desired:4,
+    exp:'Actively driving the project’s success and engaging others on its behalf = <strong>Leading</strong>. Current equals desired: monitor and maintain. Spending heavy engagement effort here would pull attention from stakeholders with real gaps.' },
+  { who:'External Auditor',
+    s:'The annual audit team does not yet know the project exists. They only need to be informed enough to raise no objections when the new controls appear in this year’s audit scope.',
+    current:0, desired:2,
+    exp:'No knowledge of the project = <strong>Unaware</strong>. The project only needs informed non-objection, so <strong>Neutral</strong> is the desired state — a classic move handled with planned, formal communication rather than active involvement.' },
+  { who:'Marketing VP',
+    s:'She speaks positively about the project when asked, but the rollout plan needs her to personally front the communications campaign to all business units.',
+    current:3, desired:4,
+    exp:'Positive when asked = <strong>Supportive</strong>. Personally fronting the campaign means actively engaging others — <strong>Leading</strong>. Moving a stakeholder up one level usually means giving them ownership of visible activities, not just more information.' }
+];
+
+let _engState = null;
+
+function renderSCEngagement() {
+  const el = document.getElementById('sc-content');
+  if (!el) return;
+  if (!_engState) _engState = { idx: 0, pickC: null, pickD: null, revealed: false, score: 0 };
+  const st = _engState;
+  const total = ENGAGEMENT_SCENARIOS.length;
+  if (st.idx >= total) {
+    const max = total * 2;
+    const pct = Math.round(st.score / max * 100);
+    const band = mockBand(pct);
+    el.innerHTML = `
+      <div style="text-align:center;padding:44px 20px">
+        <div style="font-size:52px;margin-bottom:12px">🤝</div>
+        <div style="font-size:22px;font-weight:800;margin-bottom:8px">Drill Complete</div>
+        <div style="font-size:40px;font-weight:900;color:${band.color};line-height:1.2">${st.score} / ${max}</div>
+        <div style="font-size:13px;color:${band.color};font-weight:700;margin-bottom:6px">${pct}% · ${band.label}</div>
+        <div style="font-size:13px;color:var(--t2);max-width:480px;margin:0 auto 24px">Placements scored across ${total} scenarios — one point for each correct Current (C) and Desired (D) engagement level.</div>
+        <button class="btn btn-p" onclick="engRestart()">Run It Again →</button>
+      </div>`;
+    return;
+  }
+  const sc = ENGAGEMENT_SCENARIOS[st.idx];
+  const levelBtn = (row, i) => {
+    const pick = row === 'C' ? st.pickC : st.pickD;
+    const answer = row === 'C' ? sc.current : sc.desired;
+    let style = 'padding:10px 6px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;border-radius:var(--rs);transition:all .15s;background:var(--s2);color:var(--t2);border:2px solid var(--border)';
+    if (st.revealed) {
+      if (i === answer) style += ';border-color:var(--green);background:rgba(46,213,115,.12);color:var(--green)';
+      else if (i === pick) style += ';border-color:var(--red);background:rgba(255,71,87,.08);color:var(--red)';
+      else style += ';opacity:.45';
+    } else if (i === pick) {
+      style += ';border-color:var(--accent);background:rgba(200,255,0,.1);color:var(--accent)';
+    }
+    return `<button style="${style}" onclick="engPick('${row}',${i})">${ENGAGEMENT_LEVELS[i]}</button>`;
+  };
+  const levelRow = (row, title, hint) => `
+    <div style="margin-bottom:14px">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--t2);margin-bottom:7px">${title} <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--t3)">— ${hint}</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:6px">
+        ${ENGAGEMENT_LEVELS.map((_, i) => levelBtn(row, i)).join('')}
+      </div>
+    </div>`;
+  const gap = sc.desired - sc.current;
+  const gapLabel = gap === 0 ? 'No gap — maintain current engagement' : `Gap: move ${gap > 0 ? 'up' : 'down'} ${Math.abs(gap)} level${Math.abs(gap) > 1 ? 's' : ''} (${ENGAGEMENT_LEVELS[sc.current]} → ${ENGAGEMENT_LEVELS[sc.desired]})`;
+  el.innerHTML = `
+    <div class="tip-box" style="margin-bottom:16px">
+      <div class="tip-t">🤝 Stakeholder Engagement Assessment Matrix</div>
+      <div class="tip-b">Read the scenario, then place the stakeholder’s <strong>Current (C)</strong> and <strong>Desired (D)</strong> engagement level on the Unaware → Leading scale. The gap between C and D drives the engagement strategy — a favorite 2026 exam topic.</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <div style="font-size:12px;color:var(--t2)">Scenario ${st.idx + 1} of ${total}</div>
+      <div style="font-size:12px;font-weight:800;color:var(--accent)">Score: ${st.score} / ${(st.revealed ? st.idx + 1 : st.idx) * 2}</div>
+    </div>
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:16px">
+      <div style="margin-bottom:10px"><span class="bdg bdg-accent">${sc.who}</span></div>
+      <div style="font-size:14px;font-weight:600;line-height:1.65">${sc.s}</div>
+    </div>
+    ${levelRow('C', 'Current engagement (C)', 'where they are today')}
+    ${levelRow('D', 'Desired engagement (D)', 'where the project needs them')}
+    ${st.revealed ? `
+      <div style="background:var(--s2);border:1px solid rgba(46,213,115,.25);border-radius:var(--rs);padding:14px;margin-bottom:14px">
+        <div style="font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">${gapLabel}</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.7">${sc.exp}</div>
+      </div>
+      <div style="display:flex;justify-content:flex-end">
+        <button class="btn btn-p" onclick="engNext()">${st.idx === total - 1 ? 'See Results →' : 'Next Scenario →'}</button>
+      </div>` : `
+      <div style="display:flex;justify-content:flex-end">
+        <button class="btn btn-p" ${st.pickC === null || st.pickD === null ? 'disabled style="opacity:.4;cursor:default"' : ''} onclick="engCheck()">Check Placement</button>
+      </div>`}`;
+}
+
+function engPick(row, i) {
+  if (!_engState || _engState.revealed) return;
+  if (row === 'C') _engState.pickC = i;
+  else _engState.pickD = i;
+  renderSCEngagement();
+}
+
+function engCheck() {
+  if (!_engState || _engState.revealed) return;
+  if (_engState.pickC === null || _engState.pickD === null) return;
+  const sc = ENGAGEMENT_SCENARIOS[_engState.idx];
+  _engState.score += (_engState.pickC === sc.current ? 1 : 0) + (_engState.pickD === sc.desired ? 1 : 0);
+  _engState.revealed = true;
+  renderSCEngagement();
+}
+
+function engNext() {
+  if (!_engState) return;
+  _engState.idx++;
+  _engState.pickC = null;
+  _engState.pickD = null;
+  _engState.revealed = false;
+  renderSCEngagement();
+}
+
+function engRestart() {
+  _engState = null;
+  renderSCEngagement();
 }
 
 // ── WEAK AREAS ───────────────────────────────────────────────
