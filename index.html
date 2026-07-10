@@ -1177,6 +1177,9 @@ document.addEventListener('DOMContentLoaded', function(){
     <div class="ni" onclick="nav('notes',this)"><span class="ni-ico">✍️</span><span>My Notes</span></div>
     <div class="ni" onclick="nav('apply',this)"><span class="ni-ico">📋</span><span>PMI Application</span></div>
     <div class="ni" onclick="nav('ref',this)"><span class="ni-ico">📐</span><span>Reference</span></div>
+    <!-- ===== WP4 PMBOK8 NAV ===== -->
+    <div class="ni" onclick="nav('pmbok8',this)"><span class="ni-ico">📖</span><span>PMBOK 8</span></div>
+    <!-- ===== END WP4 PMBOK8 NAV ===== -->
     <div class="ni" onclick="nav('files',this)"><span class="ni-ico">📁</span><span>Your Files</span></div>
     <div class="ni" id="admin-nav-item" onclick="nav('admin',this);loadAdminPanel()" style="display:none"><span class="ni-ico">🛡️</span><span>Admin</span></div>
   </div>
@@ -1803,6 +1806,20 @@ document.addEventListener('DOMContentLoaded', function(){
   </div>
 </div>
 <!-- ===== END WP1 SCHEDULING LAB ===== -->
+
+<!-- ===== WP4 PMBOK 8 LIBRARY ===== -->
+<div class="panel" id="p-pmbok8">
+  <div class="ph"><div class="ph-title">PMBOK 8 Library</div><div class="ph-sub">The 6 principles, 7 performance domains, and core glossary behind the 2026 exam — searchable</div></div>
+  <input class="ref-search" type="text" placeholder="Search principles, domains, and glossary..." id="pmbok8-search" oninput="filterPmbok8()">
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap" id="pmbok8-filter-bar">
+    <button class="quiz-filter sel" onclick="setPmbok8Filter('all',this)">All</button>
+    <button class="quiz-filter" onclick="setPmbok8Filter('principles',this)">Principles</button>
+    <button class="quiz-filter" onclick="setPmbok8Filter('domains',this)">Performance Domains</button>
+    <button class="quiz-filter" onclick="setPmbok8Filter('glossary',this)">Glossary</button>
+  </div>
+  <div id="pmbok8-content"></div>
+</div>
+<!-- ===== END WP4 PMBOK 8 LIBRARY ===== -->
 
 </main>
 
@@ -4811,84 +4828,81 @@ QUIZ_QUESTIONS.push(
   {q:"CASE — Northgate Smart Transit (Q5/5): The transit authority's operations director — whose staff must run the new fare system after handover — has skipped the last three design workshops and tells peers the project is 'an IT vanity effort that will be dumped on operations.' What should the PM do FIRST?",opts:["Proceed with design decisions and send the director the minutes for review","Ask the sponsor to direct the operations director to attend the workshops","Meet the director one-on-one to understand the root cause of the resistance, then tailor the engagement approach to address those concerns","Mark the director as 'resistant' in the stakeholder register and increase reporting frequency"],ans:2,domain:"People",type:"Predictive",exp:"A disengaged operational owner is one of the highest adoption risks a project can carry — the system's benefits die if operations rejects it. PMI's pattern: understand before acting. The PM meets the director directly, listens for the real concerns (workload, staffing, being handed an unsupportable system), and adjusts the engagement strategy accordingly. Working around the director, forcing attendance via the sponsor, or just relabeling the register treats symptoms and deepens the resistance."}
 );
 
-// ============================================================
-// ===== WP2 PMBOK8 DATA (consumed by WP4's PMBOK 8 Library panel) =====
-// Distilled study summaries derived from fakhruldeen/PMOSkills
-// (MIT License, © 2026 Mohamed Fakhruldeen — https://github.com/fakhruldeen/PMOSkills).
-// Paraphrased for exam prep; no verbatim PMBOK® text.
-// Shape: { glossary:[{term,def}], principles:[{id,name,summary,outcomes[]}],
-//          domains:[{id,name,definition,outcomes[],examTips}],
-//          crosswalk:[{oldKA,pmbok8Home,note}] }
-// ============================================================
+// ===== WP4 PMBOK 8 LIBRARY DATA =====
+// Content distilled from the MIT-licensed PMOSkills repository
+// (https://github.com/fakhruldeen/PMOSkills — Copyright (c) 2026 Mohamed (Fouad) Fakhruldeen, MIT License):
+// reference/GLOSSARY.md · reference/principles/pmbok8/P8-01..P8-06.md ·
+// reference/performance-domains/PD8-01..PD8-07.md. Condensed for exam study.
+// The crosswalk field (old Knowledge Areas → PMBOK 8 homes) comes from WP2's data set.
 const PMBOK8_LIB = {
   glossary: [
-    {term:"Acceptance Criteria",def:"The conditions, performance measures, or compliance standards a deliverable must satisfy before the customer formally signs off."},
-    {term:"Activity",def:"A distinct, scheduled unit of work identified within a WBS work package — the basic building block of the project schedule."},
-    {term:"Alternatives Analysis",def:"Evaluating multiple execution strategies, resource levels, schedule paths, or contract types to pick the best project approach."},
-    {term:"Analogous Estimating",def:"Estimating cost or duration using historical values from similar past projects as the starting baseline. Fast but less accurate."},
-    {term:"Assumption",def:"A planning factor treated as true or certain without proof. Captured and tracked in the assumption log."},
-    {term:"Baseline",def:"An approved, change-controlled version of scope, schedule, or cost. Modified only through formal change control."},
-    {term:"Benefits Management Plan",def:"A business document describing how the project's strategic benefits will be created, maximized, and sustained."},
-    {term:"Bottom-Up Estimating",def:"Building a total estimate by aggregating detailed estimates from the lowest WBS levels upward. Slow but accurate."},
-    {term:"Business Case",def:"The strategic value proposition that justifies starting the project — showing returns are worth the investment."},
-    {term:"Change Control Board (CCB)",def:"A formally chartered group that reviews, evaluates, approves, defers, or rejects proposed changes to baselines."},
-    {term:"Change Request",def:"A formal proposal to modify a baseline, subsidiary plan, or process document. Always logged and routed through change control."},
-    {term:"Cost Baseline",def:"The approved time-phased project budget, excluding management reserves, that cost variances are measured against."},
-    {term:"Cost of Quality (CoQ)",def:"Total cost of conformance (prevention + appraisal) plus non-conformance (internal + external failures)."},
-    {term:"Critical Path Method (CPM)",def:"Schedule network analysis that finds the theoretical minimum project duration via the longest chain of dependent activities."},
-    {term:"Decomposition",def:"Subdividing high-level scope and deliverables into smaller, more manageable WBS components and activities."},
-    {term:"Deliverable",def:"Any unique, verifiable product, service, or result produced to satisfy project requirements."},
-    {term:"Duration Estimate",def:"The likely number of work periods needed to complete an activity or work package with the estimated resources."},
-    {term:"Earned Value Analysis (EVA)",def:"Integrates scope, schedule, and cost metrics (PV, EV, AC) to assess performance and forecast completion cost and timing."},
-    {term:"Enterprise Environmental Factors (EEF)",def:"Conditions outside the team's immediate control that influence or constrain the project (e.g., market conditions, regulations)."},
-    {term:"Expert Judgment",def:"Specialized guidance from individuals or groups with domain expertise, applied throughout project processes."},
-    {term:"Facilitation",def:"Guiding workshops, resolving conflicts, aligning expectations, and building consensus among stakeholders."},
-    {term:"Final Project Report",def:"The closing summary of baseline performance, benefits realized, and final transition milestones."},
-    {term:"Governance",def:"The framework of rules, authorities, and metrics that aligns project delivery with organizational strategy and compliance."},
-    {term:"Inspection",def:"Structured physical examination of a deliverable to verify it conforms to quality metrics and requirements."},
-    {term:"Issue Log",def:"A living register that captures, assigns ownership to, and tracks resolution of active project issues and disputes."},
-    {term:"Knowledge Area (legacy)",def:"The organizing unit of PMBOK 6 and earlier (Integration, Scope, Schedule…). Replaced by Performance Domains in PMBOK 7/8 — retained only for cross-edition traceability."},
-    {term:"Lessons Learned Register",def:"A living record of insights, improvements, and failures captured throughout the lifecycle to improve future delivery."},
-    {term:"Make-or-Buy Analysis",def:"Deciding whether a product or service should be produced internally or procured from external sellers."},
-    {term:"Milestone",def:"A significant point or event in the schedule with zero duration — marks decision gates or key achievements."},
-    {term:"Organizational Process Assets (OPA)",def:"Plans, templates, checklists, databases, and lessons-learned owned by the performing organization."},
-    {term:"Parametric Estimating",def:"Using a statistical relationship between historical data and variables (e.g., cost per square foot) to calculate estimates."},
-    {term:"Performance Domain",def:"One of the seven integrated areas of activity in PMBOK 8: Governance, Scope, Schedule, Finance, Stakeholders, Resources, and Risk."},
-    {term:"Performance Measurement Baseline (PMB)",def:"The integrated combination of scope, schedule, and cost baselines used to measure overall execution."},
-    {term:"Project Management Office (PMO)",def:"An organizational structure that standardizes governance, shares resources, guides methodology, and monitors compliance."},
-    {term:"Project Management Plan",def:"The comprehensive document describing how the project is executed, monitored, controlled, and closed — integrating all subsidiary plans and baselines."},
-    {term:"Quality Metrics",def:"The specific parameters defining how deliverable conformance will be measured and controlled (e.g., defect density)."},
-    {term:"Requirements Traceability Matrix (RTM)",def:"A grid linking each requirement from origin to the WBS deliverables and test packages that satisfy it."},
-    {term:"Reserve Analysis",def:"Determining contingency reserves (identified risks) and management reserves (unidentified risks) for budgets and schedules."},
-    {term:"Risk Register",def:"A living register of identified risks with their analysis ratings, assigned owners, and approved response strategies."},
-    {term:"Scope Baseline",def:"The approved scope statement + WBS + WBS dictionary, changed only through formal change control."},
-    {term:"Sourcing Strategy",def:"The plan for acquiring goods, software, or labor from external sellers, including contract types and bid structures."},
-    {term:"Stakeholder",def:"Anyone who may affect, be affected by, or perceive themselves affected by a project decision, activity, or outcome."},
-    {term:"Systems Thinking",def:"Viewing the project as a dynamic, interconnected system nested in a broader organizational and market environment."},
-    {term:"Tailoring",def:"Consciously adapting the development approach, lifecycle, and processes to fit the project's complexity, constraints, and environment."},
-    {term:"Value Delivery Office (VDO)",def:"An agile-adapted PMO focused on removing organizational bottlenecks, coaching iterative teams, and managing value streams."},
-    {term:"Variance Analysis",def:"Identifying and explaining deviations between actual performance and the established baselines."},
-    {term:"Work Breakdown Structure (WBS)",def:"A hierarchical decomposition of total project scope into deliverable-oriented components; the lowest level is the work package."},
-    {term:"Work Performance Data",def:"Raw daily observations and measurements from execution — actual costs, hours worked, start/finish dates."},
-    {term:"Work Performance Information",def:"Performance data analyzed against the baselines to reveal variances and trends (SV, CV, CPI, SPI)."},
-    {term:"Work Performance Reports",def:"Work performance information compiled into dashboards, forecasts, and status reports for stakeholders."}
+    {term:"Acceptance Criteria",def:"Conditions, performance metrics, or compliance standards a deliverable must satisfy before formal customer sign-off."},
+    {term:"Activity",def:"A distinct, scheduled unit of project work identified within a WBS work package — the basic building block of a project schedule."},
+    {term:"Alternatives Analysis",def:"Technique for evaluating multiple execution strategies, resource levels, scheduling paths, or contract types to select the optimal approach."},
+    {term:"Analogous Estimating",def:"Estimation using historical parameters (cost, duration, complexity) from similar past projects as the baseline for the current estimate."},
+    {term:"Assumption",def:"A planning factor considered true, real, or certain without proof. Logged and managed in the Assumption Log."},
+    {term:"Baseline",def:"An approved, change-controlled version of a scope, schedule, or cost model. Modified only through formal change control (CCB)."},
+    {term:"Benefits Management Plan",def:"Business document outlining how the project's strategic benefits will be created, maximized, and sustained."},
+    {term:"Bottom-Up Estimating",def:"Estimating duration or cost by aggregating detailed estimates from the lowest WBS levels up to the project total."},
+    {term:"Business Case",def:"The strategic value proposition and commercial justification for initiating a project — returns must justify the investment."},
+    {term:"Change Control Board (CCB)",def:"Formally constituted group of key stakeholders that reviews, evaluates, approves, delays, or rejects changes to project baselines."},
+    {term:"Change Request",def:"A formal proposal to modify a baseline, subsidiary plan, or process document; logged and routed through change control."},
+    {term:"Cost Baseline",def:"The approved time-phased project budget, excluding management reserves, against which cost variances are measured."},
+    {term:"Cost of Quality (COQ)",def:"Aggregates conformance costs (prevention, appraisal) and non-conformance costs (internal and external failures)."},
+    {term:"Critical Path Method (CPM)",def:"Schedule network analysis that finds the theoretical minimum project duration via the longest sequence of dependent activities."},
+    {term:"Decomposition",def:"Planning technique that subdivides high-level scope and deliverables into smaller, manageable activities and WBS components."},
+    {term:"Deliverable",def:"Any unique, verifiable, tangible product, service, result, or module produced to satisfy project requirements."},
+    {term:"Duration Estimates",def:"Quantitative assessment of the likely work periods needed to complete an activity or work package, given estimated resources."},
+    {term:"Earned Value Analysis (EVA)",def:"Methodology integrating scope, schedule, and cost metrics to assess performance and forecast completion cost and timeline."},
+    {term:"Enterprise Environmental Factors (EEF)",def:"Conditions not under the team's control that influence, restrict, or direct project options (e.g., market conditions)."},
+    {term:"Expert Judgment",def:"Specialized guidance or historical insight from individuals or groups with domain expertise in specific processes."},
+    {term:"Facilitation",def:"Guiding group workshops, resolving conflicts, aligning expectations, and building stakeholder consensus during delivery."},
+    {term:"Final Project Report",def:"Closing document summarizing baseline performance achievements, benefits realized, and final transition milestones."},
+    {term:"Governance",def:"The framework of rules, authorities, templates, and metrics aligning project delivery with organizational strategy and compliance."},
+    {term:"Inspection",def:"Structured physical examination of an output or deliverable to verify conformance to quality metrics and requirements."},
+    {term:"Issue Log",def:"Living register used to capture, track, assign ownership to, and monitor resolution of active issues, bottlenecks, or disputes."},
+    {term:"Knowledge Area (KA)",def:"Legacy PMBOK 6 organizing unit (e.g., Scope, Schedule Management). PMBOK 7 replaced KAs with performance domains; PMBOK 8 refined the seven domains. Retained for cross-edition traceability only."},
+    {term:"Lessons Learned Register",def:"Living register of historical insights, process improvements, and execution failures captured to optimize future delivery."},
+    {term:"Make-or-Buy Analysis",def:"Evaluating whether a product or service can be produced efficiently by the team or must be procured from external sellers."},
+    {term:"Milestone",def:"A significant point or event in the schedule baseline. Zero duration; marks a critical decision gate or achievement."},
+    {term:"Organizational Process Assets (OPA)",def:"Plans, templates, guidelines, checklists, databases, and lessons-learned registers owned by the performing organization."},
+    {term:"Parametric Estimating",def:"Estimating via a statistical relationship between historical data and other variables (e.g., cost per square foot)."},
+    {term:"Performance Domain",def:"One of seven integrated areas of activity critical to delivery per PMBOK 8 §2: Governance, Scope, Schedule, Finance, Stakeholders, Resources, Risk."},
+    {term:"Performance Measurement Baseline (PMB)",def:"Integrated baseline combining the scope, schedule, and cost baselines, used to measure holistic project execution."},
+    {term:"Project Management Office (PMO)",def:"Organizational structure that standardizes governance, shares resources, guides methodology, and monitors portfolio compliance."},
+    {term:"Project Management Plan",def:"Comprehensive document describing how the project will be executed, monitored, controlled, and closed; integrates subsidiary plans and baselines."},
+    {term:"Quality Metrics",def:"Operational parameters defining how deliverable conformance will be measured and controlled (e.g., defect density rate)."},
+    {term:"Requirements Traceability Matrix (RTM)",def:"Grid linking product requirements from origin to the WBS deliverables and test packages that satisfy them."},
+    {term:"Reserve Analysis",def:"Determines contingency reserves (identified risks) and management reserves (unidentified risks) for budgets and schedules."},
+    {term:"Risk Register",def:"Living register of identified risks with qualitative/quantitative ratings, assigned owners, and approved response strategies."},
+    {term:"Scope Baseline",def:"Approved, change-controlled scope model: Project Scope Statement + WBS + WBS Dictionary."},
+    {term:"Sourcing Strategy",def:"Delivery plan detailing how the project acquires goods, software, or labor externally, including contract types and bid structures."},
+    {term:"Stakeholder",def:"Individual, team, or organization that may affect, be affected by, or perceive itself affected by a project decision, activity, or outcome."},
+    {term:"Systems Thinking",def:"Viewing the project as a dynamic, interconnected system nested within a broader corporate and market environment."},
+    {term:"Tailoring",def:"Conscious adaptation of the development approach, lifecycles, and processes to fit a project's complexity, constraints, and environment."},
+    {term:"Value Delivery Office (VDO)",def:"Agile-adapted PMO focused on removing organizational bottlenecks, coaching iterative teams, and managing value stream delivery."},
+    {term:"Variance Analysis",def:"Identifying and explaining deviations between actual performance metrics and established baselines."},
+    {term:"Work Breakdown Structure (WBS)",def:"Hierarchical decomposition of the total scope of work required to accomplish objectives and create deliverables."},
+    {term:"Work Performance Data",def:"Raw daily observations and measurements from execution (actual cost spent, hours worked, start/end dates)."},
+    {term:"Work Performance Information",def:"Analyzed performance data compared against baselines to identify variances and trends (e.g., SV, CV, CPI)."},
+    {term:"Work Performance Reports",def:"Work performance information compiled into dashboards, forecasts, and status reports for distribution."}
   ],
   principles: [
-    {id:"P8-01",name:"Adopt a Holistic View",summary:"Manage the project as one interconnected system inside a larger organizational and environmental context — not as isolated parts or static snapshots.",outcomes:["Systems thinking: understand how elements of the project and its environment interconnect","Find root causes of challenges instead of treating surface symptoms","Keep decisions and outputs aligned with organizational strategy","Anticipate cascading effects of risks across all domains"]},
-    {id:"P8-02",name:"Focus on Value",summary:"Value — measurable or qualitative net benefit — is the ultimate success indicator, superseding simple baseline compliance. Continuously re-check that the project is still worth the investment.",outcomes:["Measure outcomes (changes in state or behavior), not just outputs delivered","Ground every project in a business case and keep it current","Reassess viability continuously; adapt or terminate when alignment is lost","Eliminate waste, unnecessary rework, and low-value work"]},
-    {id:"P8-03",name:"Embed Quality Into Processes and Deliverables",summary:"Quality is designed and built in — to both workflows and outputs — using acceptance criteria, Definition of Done, and continuous improvement. Prevention beats inspection.",outcomes:["Shift left: prevent defects early rather than inspecting at the end","Ensure deliverables are fit for purpose and meet regulatory and stakeholder needs","Improve processes continuously to cut waste and rework","Quality spans performance, reliability, satisfaction, sustainability, and compliance"]},
-    {id:"P8-04",name:"Be an Accountable Leader",summary:"Take ownership of objectives, decisions, and actions with integrity and transparency. Leadership is shared and situational — anyone on the project can and should demonstrate it.",outcomes:["Match authority with responsibility and own the outcomes","Model integrity, honesty, fairness, and humility — especially under pressure","Practice servant leadership: support the team and remove obstacles","Foster psychological safety so issues and risks surface early"]},
-    {id:"P8-05",name:"Integrate Sustainability Within All Project Areas",summary:"Balance social equity, environmental stewardship, and economic prosperity (people, planet, profit) across every phase — meeting present needs without compromising future generations.",outcomes:["Apply the triple bottom line to project decisions","Prefer avoiding negative impacts over minimizing, restoring, or compensating for them","Consider lifecycle costs and impacts beyond project closure","Adopt technology, AI, and data responsibly — privacy, ethics, and security included"]},
-    {id:"P8-06",name:"Build an Empowered Culture",summary:"Create a collaborative environment of mutual trust, clear roles, and team agreements so team members and stakeholders contribute ideas freely and handle conflict proactively.",outcomes:["Establish team charters with working norms and communication protocols","Promote trust and psychological safety as the basis of collaboration","Harness diverse skills and perspectives to improve decisions","Keep communication open and transparent as needs evolve"]}
+    {id:"P8-01",name:"Adopt a Holistic View",summary:"Understand and manage the project by considering all components and their interdependencies as part of a larger system (systems thinking) — a unified, dynamic entity within its organizational and environmental context, not isolated parts.",outcomes:["Systems thinking: see the interconnectedness of project elements and their environment","Complexity management: find root causes of challenges, not surface symptoms","Strategic alignment: keep decisions and outputs tied to organizational strategy and goals","Proactive risk management: anticipate cascading effects of risks across all domains","Inclusive engagement: integrate diverse stakeholder perspectives for sustainable solutions"]},
+    {id:"P8-02",name:"Focus on Value",summary:"Value — measurable or qualitative net benefit — is the ultimate success indicator and driver of projects. Teams continually evaluate and adjust alignment to business objectives, intended benefits, and stakeholder value throughout the life cycle.",outcomes:["Value per unit of investment is the primary success measure, superseding simple baseline compliance","Outcome-oriented: focus on changes in state or behavior, not merely producing deliverables","Grounded in the business case — objectives must stay worth more than what is invested","Continuous alignment: reassess viability via feedback loops and quality gates; adapt or terminate when alignment is lost","Eliminate waste: optimize workflows and minimize unnecessary rework and resource consumption"]},
+    {id:"P8-03",name:"Embed Quality Into Processes and Deliverables",summary:"Meet or exceed target objectives by designing and building quality into both processes (workflows) and deliverables (outputs), using acceptance criteria, definition of done, and continuous improvement to minimize waste and rework.",outcomes:["Fit for purpose: meet product, regulatory, and stakeholder requirements","Dual focus: correct deliverables AND effective, efficient processes","Continuous improvement mindset — lean workflows, waste elimination","Quality spans performance, conformity, reliability, resilience, satisfaction, efficiency, sustainability, compliance","Shift-left: prevent defects as early in the life cycle as possible to avoid late rework"]},
+    {id:"P8-04",name:"Be an Accountable Leader",summary:"Demonstrate leadership behaviors and take ownership of the project's business objectives, decisions, and actions. Leadership is non-exclusive, shared, and situational — anyone on the project can and should lead, with integrity, honesty, and transparency.",outcomes:["Accountability: own outcomes and decisions; match authority with responsibility","Core values: integrity, honesty, fairness, self-awareness, humility — especially under stress","Shared and situational leadership: not exclusive to a specific role","Servant leadership: support the team, remove obstacles, listen actively, build trust","Psychological safety: an environment where people speak honestly and escalate risks early"]},
+    {id:"P8-05",name:"Integrate Sustainability Within All Project Areas",summary:"Consistently integrate sustainability across all project areas and phases — meeting present needs without compromising future generations — balancing social equity, environmental stewardship, and economic prosperity (people, planet, profit).",outcomes:["Triple bottom line: social, environmental, and economic impact in every decision","Sustainability pyramid: compensate → restore → minimize → avoid negative outcomes","Broadened time horizon: life-cycle costs, benefits realization, and post-closure impacts","Responsible technology adoption: mitigate adverse impacts on data privacy, AI ethics, security","Visibility at tactical (resource use), operational (waste), and strategic (business case) levels"]},
+    {id:"P8-06",name:"Build an Empowered Culture",summary:"Develop a collaborative environment of mutual trust, proactive collaboration, and unity in shared objectives. Clear roles, responsibilities, team agreements, and guiding processes let team members and stakeholders contribute freely and manage conflict proactively.",outcomes:["Mutual trust and psychological safety as the foundation for collaboration","Proactive collaboration: stakeholders and team contribute ideas and feedback freely","Team agreements (team charter): working norms and communication protocols set at inception","Diversity and inclusion: harness varied skills and perspectives to enrich decisions","Open communication channels aligning scope, schedule, and quality with evolving needs"]}
   ],
   domains: [
-    {id:"PD8-01",name:"Governance",definition:"The framework, functions, and processes that guide decisions and activities to optimize value delivery — strategic alignment, decision-making, change control, and success criteria, coordinated as one integrated system.",outcomes:["Strategic alignment of the project with organizational goals and portfolio priorities","Decision-making frameworks tailored to project complexity","Robust change control that weighs impacts against the value proposition","Success criteria defined, measured, and validated throughout","Sourcing strategies aligned with the delivery approach and policy"],examTips:"Governance absorbs much of the old Integration KA. Expect scenarios on routing changes through the right authority, stage gates, and keeping the project tied to strategy — a heavily expanded 2026 theme."},
-    {id:"PD8-02",name:"Scope",definition:"Defining, managing, and controlling project and product scope — eliciting requirements, setting boundaries, decomposing work, and validating deliverables to prevent scope creep.",outcomes:["A clear, shared understanding of project and product scope","Systematic identification and management of requirements","Well-defined boundaries that control scope creep","Work decomposition that gives a clear basis for planning","Formal acceptance and validation of completed deliverables"],examTips:"Know scope creep vs. gold plating, and who formally accepts deliverables. Acceptance criteria and Definition of Done questions map here."},
-    {id:"PD8-03",name:"Schedule",definition:"The activities and processes that get the project done on time. The schedule communicates how and when scope will be delivered and anchors expectations and performance reporting.",outcomes:["Scheduling approach consistent with predictive, adaptive, or hybrid delivery","A lifecycle of phases connecting value delivery start to finish","Complete schedule documentation: dependencies, durations, resources, milestones","Timely identification of delays enabling proactive correction"],examTips:"CPM, float, and compression math is guaranteed exam content — and know which scheduling technique fits which delivery approach (iterations and cadence for agile, network diagrams for predictive)."},
-    {id:"PD8-04",name:"Finance",definition:"Planning, estimating, budgeting, and controlling costs to finish within the approved budget and maximize return on investment — aligning money with priorities, baselining, tracking variances, and forecasting.",outcomes:["Financial plans aligned with the development approach and deliverables","Accurate estimates covering direct, indirect, capital, and operating costs","Completion within or below the approved budget","Visibility through monitoring, variance analysis, and forecasting","Optimized ROI tracked against the business case"],examTips:"The old Cost KA, renamed and broadened. EVM questions live here — and 2026 adds an explicit 'plan and manage finance' task: funding, reserves, and investment return, not just cost control."},
-    {id:"PD8-05",name:"Stakeholders",definition:"Engagement and communication across the lifecycle — identifying stakeholders, understanding interest and influence, planning and managing engagement, and monitoring communications for alignment and satisfaction.",outcomes:["Productive, trusting working relationships with stakeholders","Stakeholder agreement on objectives and the definition of value","Beneficiaries satisfied that deliverables meet their needs","Proactive management of conflicting interests","The right message reaching the right stakeholder at the right time"],examTips:"Stakeholder + Communications KAs merged. Expect engagement-level scenarios (unaware → resistant → neutral → supportive → leading) and tailor-the-communication questions."},
-    {id:"PD8-06",name:"Resources",definition:"Planning and using resources effectively — both the human team and physical, virtual, or digital resources (equipment, materials, software, facilities, licenses, information).",outcomes:["Shared ownership: the team understands the vision and owns deliverables","A high-performing team built on trust, collaboration, and resilience","Actual vs. planned resource utilization actively managed","Acceptable downtime for physical, virtual, or digital resources","Minimal waste, scrap, and resource conflicts"],examTips:"Covers people AND things. Team development (Tuckman, motivation, conflict) and resource utilization scenarios both map here."},
-    {id:"PD8-07",name:"Risk",definition:"Handling risk and uncertainty — including ambiguity, complexity, and volatility — through systematic identification, analysis, and response, minimizing threats and exploiting opportunities.",outcomes:["Systematic identification of threats and opportunities throughout","Qualitative and quantitative analysis of probability, impact, and urgency","Cost-effective, agreed-upon, owned response strategies","Proactive response implementation that captures upside","Continuous monitoring with registers and reserves adapted to change"],examTips:"Remember risks include OPPORTUNITIES — know both threat responses (avoid/transfer/mitigate/accept) and opportunity responses (exploit/share/enhance/accept), plus escalate for either."}
+    {id:"PD8-01",name:"Governance",definition:"The framework, functions, and processes that guide project management decisions and activities to optimize value delivery — strategic alignment, decision-making, change control, and success criteria, coordinated as one integrated system.",outcomes:["Strategic alignment of the project or phase with organizational goals and portfolio priorities","Decision-making frameworks tailored to project complexity","Robust change control that evaluates impacts against the value proposition","Success criteria defined, measured, and validated throughout the life cycle","Sourcing strategies aligned with the delivery approach and policies"],examTips:"Largest domain — 9 processes from Initiate Project/Phase through Close Project/Phase. Expect questions on routing changes through change control, keeping decisions tied to the business case, and knowing the escalation path."},
+    {id:"PD8-02",name:"Scope",definition:"Defining, managing, and controlling project scope — eliciting requirements, setting scope boundaries, decomposing work, and validating deliverables to prevent scope creep and ensure stakeholder satisfaction.",outcomes:["A clear, shared understanding of project and product scope","Systematic identification and management of requirements","Well-defined boundaries that prevent unauthorized changes and scope creep","A decomposition of work (WBS or backlog) as the basis for planning and execution","Formal acceptance and validation of completed deliverables"],examTips:"6 processes: Plan Scope Management → Elicit and Analyze Requirements → Define Scope → Develop Scope Structure → Monitor and Control Scope → Validate Scope. Know Validate Scope = formal acceptance by stakeholders, versus Control Scope = managing changes."},
+    {id:"PD8-03",name:"Schedule",definition:"Activities and processes required to oversee timely completion. The schedule communicates how and when the project delivers the scope, manages expectations, and provides the basis for performance reporting.",outcomes:["Scheduling approach consistent with the development approach (predictive, adaptive, hybrid)","A life cycle of phases connecting value delivery from beginning to end","A holistic delivery approach with no gaps or misalignment","Complete schedule documentation: dependencies, durations, resources, milestones","Timely identification of delays and risks enabling proactive correction"],examTips:"Only 3 processes: Plan Schedule Management, Develop Schedule, Monitor and Control Schedule. Critical path, float, and compression (crash vs fast-track) questions live here — pair this domain with the CPM/PERT formulas in Reference."},
+    {id:"PD8-04",name:"Finance",definition:"Planning, estimating, budgeting, and controlling costs so the project completes within the approved budget and maximizes investment returns — cost baselines, variance tracking, and forecasting aligned to project priorities.",outcomes:["Financial plans and budgets aligned with the development approach and deliverables","Accurate cost estimation covering direct, indirect, capital, and operating expenses","Completion within or below approved budget, minimizing unauthorized increases","Financial visibility through regular monitoring, variance analysis, and forecasting","Optimized ROI tracked against the business case"],examTips:"4 processes: Plan Financial Management, Estimate Costs, Develop Budget, Monitor and Control Finances. 'Finance' replaces the old Cost KA and is broader — expect EVM (CV, CPI, EAC, TCPI) plus business-value metrics like ROI, NPV, and payback."},
+    {id:"PD8-05",name:"Stakeholders",definition:"Stakeholder engagement and communication throughout the life cycle — identifying stakeholders, understanding interest and influence, planning and managing engagement, and managing communications to keep stakeholders aligned and satisfied.",outcomes:["Productive working relationships, trust, and collaboration with stakeholders","Stakeholder agreement and alignment on objectives and definition of value","Satisfied beneficiaries who find deliverables responsive to their needs","Proactive identification and management of conflicting stakeholder interests","The right message reaching the right stakeholder at the right time"],examTips:"7 processes covering both stakeholder engagement AND communications management (identify, plan, manage, monitor for each). Classic exam pattern: analyze power/interest and engagement gaps FIRST, then tailor the engagement approach — never ignore or work around a resistant stakeholder."},
+    {id:"PD8-06",name:"Resources",definition:"How effectively the team plans for and utilizes available resources — both human (the project team) and physical/virtual/digital (equipment, materials, software, facilities, licenses) — covering availability, utilization, and maintenance.",outcomes:["Shared ownership: the team understands the vision and owns deliverables","A high-performing team built on mutual trust, collaboration, and resilience","Actual versus planned resource utilization actively managed","Acceptable downtime for physical, virtual, or digital resources","Minimal material waste, scrap, and resource conflicts"],examTips:"5 processes: Plan Resource Management, Estimate Resources, Acquire Resources, Lead the Team, Monitor and Control Resourcing. Covers BOTH people and physical resources — team development, motivation, and conflict questions score under this domain."},
+    {id:"PD8-07",name:"Risk",definition:"Addressing risk and uncertainty (ambiguity, complexity, volatility) through systematic identification, analysis, and response across the life cycle — minimizing threats to objectives while exploiting opportunities to enhance value.",outcomes:["Systematic identification of threats AND opportunities throughout the life cycle","Qualitative and quantitative analysis of probability, impact, and urgency","Cost-effective, agreed-upon, owned risk response strategies","Proactive response implementation minimizing negatives and capturing benefits","Continuous monitoring: registers and reserve levels adapt to changing conditions"],examTips:"6 processes: Plan Risk Management, Identify Risks, Perform Risk Analysis (qualitative + quantitative combined in PMBOK 8), Plan Risk Responses, Implement Risk Responses, Monitor Risks. Remember opportunities are risks too — strategies: exploit, share, enhance, accept."}
   ],
   crosswalk: [
     {oldKA:"Integration Management",pmbok8Home:"Governance domain",note:"Change control, strategic alignment, and integrated planning now live under Governance."},
@@ -4903,7 +4917,7 @@ const PMBOK8_LIB = {
     {oldKA:"Stakeholder Management",pmbok8Home:"Stakeholders domain",note:"Direct carry-over, now combined with communications."}
   ]
 };
-// ===== /WP2 PMBOK8 DATA =====
+// ===== END WP4 PMBOK 8 LIBRARY DATA =====
 
 const TERMS = [
   {term:"Agile",def:"An iterative, incremental approach emphasizing flexibility, collaboration, and customer feedback over rigid planning."},
@@ -9860,6 +9874,95 @@ function buildHeatmap() {
     </div>
   </div>`;
 }
+
+// ============================================================
+// ===== WP4 PMBOK 8 LIBRARY UI =====
+// Renders the PMBOK 8 Library panel (p-pmbok8) from PMBOK8_LIB.
+// ============================================================
+let _pmbok8Filter = 'all';
+const _pmbok8Open = {};
+
+function setPmbok8Filter(f, el) {
+  _pmbok8Filter = f;
+  document.querySelectorAll('#pmbok8-filter-bar .quiz-filter').forEach(b => b.classList.remove('sel'));
+  if (el) el.classList.add('sel');
+  renderPmbok8();
+}
+
+function filterPmbok8() { renderPmbok8(); }
+
+function togglePmbok8(key) {
+  _pmbok8Open[key] = !_pmbok8Open[key];
+  renderPmbok8();
+}
+
+function _pmbok8Matches(q, item) {
+  if (!q) return true;
+  const hay = [item.id, item.term, item.name, item.summary, item.definition, item.def, item.examTips]
+    .concat(item.outcomes || []).filter(Boolean).join(' ').toLowerCase();
+  return hay.includes(q);
+}
+
+function _pmbok8AccCard(item, key, q, kind) {
+  const isOpen = !!_pmbok8Open[key] || (!!q && _pmbok8Matches(q, item));
+  const body = kind === 'principle'
+    ? `<div style="font-size:13px;color:var(--t2);line-height:1.65;margin-bottom:12px">${item.summary}</div>
+       <div class="ct">Key Characteristics</div>
+       <ul style="margin:0;padding-left:18px;display:grid;gap:6px;font-size:12px;color:var(--t2);line-height:1.55">${item.outcomes.map(o => `<li>${o}</li>`).join('')}</ul>`
+    : `<div style="font-size:13px;color:var(--t2);line-height:1.65;margin-bottom:12px">${item.definition}</div>
+       <div class="ct">Desired Outcomes</div>
+       <ul style="margin:0 0 12px;padding-left:18px;display:grid;gap:6px;font-size:12px;color:var(--t2);line-height:1.55">${item.outcomes.map(o => `<li>${o}</li>`).join('')}</ul>
+       <div style="background:rgba(200,255,0,.06);border:1px solid rgba(200,255,0,.18);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--t2);line-height:1.55"><strong style="color:var(--accent);font-size:10px;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px">Exam Tip</strong>${item.examTips}</div>`;
+  return `<div class="card" style="padding:0;margin-bottom:10px;overflow:hidden">
+    <button onclick="togglePmbok8('${key}')" style="display:flex;width:100%;align-items:center;gap:12px;padding:14px 18px;background:none;border:none;cursor:pointer;font-family:inherit;text-align:left" aria-expanded="${isOpen}">
+      <span style="font-size:10px;font-weight:800;color:var(--accent);background:rgba(200,255,0,.1);border:1px solid rgba(200,255,0,.22);border-radius:5px;padding:3px 8px;letter-spacing:.5px;flex-shrink:0">${item.id}</span>
+      <span style="flex:1;font-size:14px;font-weight:700;color:var(--text);line-height:1.35">${item.name}</span>
+      <span style="color:var(--t3);font-size:12px;flex-shrink:0">${isOpen ? '▾' : '▸'}</span>
+    </button>
+    ${isOpen ? `<div style="padding:0 18px 16px">${body}</div>` : ''}
+  </div>`;
+}
+
+function renderPmbok8() {
+  const target = document.getElementById('pmbok8-content');
+  if (!target || typeof PMBOK8_LIB === 'undefined') return;
+  const searchEl = document.getElementById('pmbok8-search');
+  const q = searchEl ? searchEl.value.toLowerCase().trim() : '';
+  const f = _pmbok8Filter;
+  let html = '';
+
+  if (f === 'all' || f === 'principles') {
+    const items = PMBOK8_LIB.principles.filter(p => _pmbok8Matches(q, p));
+    if (items.length) {
+      html += `<div class="sh">The 6 Principles — PMBOK 8 Standard §3${q ? ` (${items.length} match${items.length === 1 ? '' : 'es'})` : ''}</div>`;
+      html += items.map(p => _pmbok8AccCard(p, 'pr-' + p.id, q, 'principle')).join('');
+    }
+  }
+  if (f === 'all' || f === 'domains') {
+    const items = PMBOK8_LIB.domains.filter(d => _pmbok8Matches(q, d));
+    if (items.length) {
+      html += `<div class="sh">The 7 Performance Domains — PMBOK 8 Guide §2${q ? ` (${items.length} match${items.length === 1 ? '' : 'es'})` : ''}</div>`;
+      html += items.map(d => _pmbok8AccCard(d, 'pd-' + d.id, q, 'domain')).join('');
+    }
+  }
+  if (f === 'all' || f === 'glossary') {
+    const items = PMBOK8_LIB.glossary.filter(g => _pmbok8Matches(q, g));
+    if (items.length) {
+      html += `<div class="sh">Glossary — ${items.length}${q ? ' matching' : ''} term${items.length === 1 ? '' : 's'}</div>`;
+      html += `<div class="ga">${items.map(g =>
+        `<div class="term-card"><div class="term-n">${g.term}</div><div class="term-d">${g.def}</div></div>`
+      ).join('')}</div>`;
+    }
+  }
+  if (!html) {
+    const safeQ = q.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    html = `<div class="card" style="text-align:center;color:var(--t3);font-size:13px">No matches for "${safeQ}" — try a different search.</div>`;
+  }
+  target.innerHTML = html;
+}
+
+document.addEventListener('DOMContentLoaded', renderPmbok8);
+// ===== END WP4 PMBOK 8 LIBRARY UI =====
 </script>
 <!-- WIN TOAST -->
 <div id="win-toast" class="win-toast">
