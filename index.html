@@ -992,6 +992,53 @@ body>.sb{z-index:10}
   .sh-hero::before{width:100%;left:0;transform:none}
   #site-footer{left:0}
 }
+
+/* ===== WP1 SCHEDULING LAB ===== */
+.sl-tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:22px;overflow-x:auto}
+.sl-tab{padding:9px 18px;font-size:13px;font-weight:700;color:var(--t2);cursor:pointer;border:none;border-bottom:2px solid transparent;white-space:nowrap;background:none;transition:all .15s;font-family:'Bricolage Grotesque',sans-serif}
+.sl-tab:hover{color:var(--text)}
+.sl-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.sl-sec{display:none}
+.sl-sec.active{display:block;animation:panelIn .3s cubic-bezier(.16,1,.3,1) both}
+.sl-lbl{display:block;font-size:10px;font-weight:800;color:var(--t3);margin-bottom:5px;text-transform:uppercase;letter-spacing:1px}
+.sl-tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--rs);background:var(--s2)}
+.sl-tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:430px}
+.sl-tbl th{text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--t3);padding:9px 10px;border-bottom:1px solid var(--border)}
+.sl-tbl td{padding:5px 6px;border-bottom:1px solid var(--border)}
+.sl-tbl tr:last-child td{border-bottom:none}
+.sl-tbl input{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:7px 9px;font-size:12px;outline:none;transition:border-color .15s;font-family:'Bricolage Grotesque',sans-serif}
+.sl-tbl input:focus{border-color:var(--accent)}
+.sl-del{background:none;border:none;color:var(--t3);font-size:13px;cursor:pointer;padding:4px 7px;border-radius:6px;transition:all .15s}
+.sl-del:hover{color:var(--red);background:rgba(255,59,59,.08)}
+.sl-err{display:none;margin-top:12px;font-size:12px;color:var(--red);background:rgba(255,59,59,.07);border:1px solid rgba(255,59,59,.25);border-radius:var(--rs);padding:10px 14px;line-height:1.6}
+.sl-err.show{display:block}
+.sl-diagram-wrap{overflow-x:auto;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:12px}
+.sl-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--t2);margin:0 0 16px}
+.sl-legend span{display:inline-flex;align-items:center;gap:6px}
+.sl-key{display:inline-block;width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.sl-chip{display:inline-block;font-size:11px;font-weight:700;padding:4px 11px;border-radius:100px;margin:2px 6px 2px 0;line-height:1.4}
+.sl-chip-ok{background:rgba(200,255,0,.1);color:var(--accent);border:1px solid rgba(200,255,0,.3)}
+.sl-chip-bad{background:rgba(255,59,59,.1);color:var(--red);border:1px solid rgba(255,59,59,.3)}
+.sl-res-tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:480px}
+.sl-res-tbl th{text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--t3);padding:8px 10px;border-bottom:1px solid var(--border)}
+.sl-res-tbl td{padding:8px 10px;border-bottom:1px solid var(--border);font-family:monospace;color:var(--t2)}
+.sl-res-tbl tr:last-child td{border-bottom:none}
+.sl-res-tbl tr.sl-crit td{color:var(--text);background:rgba(255,59,59,.05)}
+.sl-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.sl-stat{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;box-shadow:var(--shadow-sm)}
+.sl-stat-v{font-size:20px;font-weight:900;letter-spacing:-.4px}
+.sl-stat-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-top:2px}
+.sl-steps{list-style:none;font-size:12px;color:var(--t2)}
+.sl-steps li{padding:8px 12px;border-left:3px solid var(--border);margin-bottom:6px;background:var(--s2);border-radius:0 var(--rs) var(--rs) 0;line-height:1.55}
+.sl-steps li.sl-step-crash{border-left-color:var(--a2)}
+.sl-steps li.sl-step-done{border-left-color:var(--accent)}
+@media (max-width:768px){
+  .sl-tbl{min-width:400px}
+  .sl-res-tbl{min-width:430px}
+  .sl-stat-v{font-size:17px}
+  .sl-tab{padding:8px 13px;font-size:12px}
+}
+/* ===== END WP1 ===== */
 </style>
 </head>
 <body>
@@ -1112,6 +1159,9 @@ document.addEventListener('DOMContentLoaded', function(){
     <div class="ni" onclick="nav('learn',this)"><span class="ni-ico">🎬</span><span>Video Library</span><span class="ni-badge ni-badge-green" id="nb-learn">—</span></div>
     <div class="ni" onclick="nav('quiz',this)"><span class="ni-ico">🧠</span><span>Practice Quiz</span><span class="ni-badge ni-badge-orange" id="nb-quiz">—</span></div>
     <div class="ni" onclick="nav('flash',this)"><span class="ni-ico">🃏</span><span>Flashcards</span></div>
+    <!-- ===== WP1 SCHEDULING LAB NAV ===== -->
+    <div class="ni" onclick="nav('schedlab',this)"><span class="ni-ico">🕸️</span><span>Sched Lab</span></div>
+    <!-- ===== END WP1 NAV ===== -->
 
     <div class="nav-zone nav-zone-progress">📊 Progress</div>
     <div class="ni" onclick="nav('progress',this)"><span class="ni-ico">📊</span><span>My Stats</span><span class="ni-badge ni-badge-accent" id="nb-stats">—</span></div>
@@ -1628,6 +1678,116 @@ document.addEventListener('DOMContentLoaded', function(){
   <div class="ph"><div class="ph-title">Weak Areas</div><div class="ph-sub">Based on your quiz history — focus here to improve your score</div></div>
   <div id="weak-area"></div>
 </div>
+
+<!-- ===== WP1 SCHEDULING LAB ===== -->
+<div class="panel" id="p-schedlab">
+  <div class="ph"><div class="ph-title">Scheduling Lab</div><div class="ph-sub">Interactive CPM practice — build a network, run the forward &amp; backward passes, find the critical path and float, estimate with PERT, and crash the schedule</div></div>
+
+  <div class="sl-tabs">
+    <button class="sl-tab active" id="sl-tab-cpm" onclick="slShowTab('cpm')">🕸️ CPM Network</button>
+    <button class="sl-tab" id="sl-tab-pert" onclick="slShowTab('pert')">📈 PERT</button>
+    <button class="sl-tab" id="sl-tab-crash" onclick="slShowTab('crash')">⚡ Crash Solver</button>
+    <button class="sl-tab" id="sl-tab-ref" onclick="slShowTab('ref')">📖 Methods</button>
+  </div>
+
+  <!-- CPM SECTION -->
+  <div class="sl-sec active" id="sl-sec-cpm">
+    <div class="card" style="margin-bottom:16px">
+      <div class="ct">Build Your Network</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:12px">Enter activities with durations and predecessors (comma-separated IDs, blank = start activity), or load a practice network. Try predicting the project duration and critical path <em>before</em> solving — the lab grades your answer.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <button class="btn btn-s btn-sm" onclick="slLoadPreset(0)">📋 Practice Net 1 · Easy</button>
+        <button class="btn btn-s btn-sm" onclick="slLoadPreset(1)">📋 Practice Net 2 · Medium</button>
+        <button class="btn btn-s btn-sm" onclick="slLoadPreset(2)">📋 Practice Net 3 · Hard</button>
+        <button class="btn btn-s btn-sm" onclick="slClearCpm()">🗑 Clear</button>
+      </div>
+      <div class="sl-tbl-wrap" style="margin-bottom:10px">
+        <table class="sl-tbl">
+          <thead><tr><th style="width:90px">ID</th><th style="width:110px">Duration</th><th>Predecessors</th><th style="width:40px"></th></tr></thead>
+          <tbody id="sl-cpm-rows"></tbody>
+        </table>
+      </div>
+      <div style="margin-bottom:16px"><button class="btn btn-s btn-sm" onclick="slAddCpmRow()">＋ Add Activity</button></div>
+      <div class="g2" style="margin-bottom:14px">
+        <div><label class="sl-lbl" for="sl-predict-dur">Your predicted duration (optional)</label><input class="fi" id="sl-predict-dur" type="number" min="0" inputmode="numeric" placeholder="e.g. 13"></div>
+        <div><label class="sl-lbl" for="sl-predict-path">Your predicted critical path (optional)</label><input class="fi" id="sl-predict-path" type="text" placeholder="e.g. A-B-D-G"></div>
+      </div>
+      <button class="btn btn-p" onclick="slSolveNetwork()">🕸️ Solve Network</button>
+      <div class="sl-err" id="sl-cpm-err"></div>
+    </div>
+    <div id="sl-cpm-results"></div>
+  </div>
+
+  <!-- PERT SECTION -->
+  <div class="sl-sec" id="sl-sec-pert">
+    <div class="g2">
+      <div class="card">
+        <div class="ct">Three-Point Estimator</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:14px">Enter the Optimistic, Most Likely, and Pessimistic estimates. Results update live.</div>
+        <div class="g3" style="margin-bottom:14px">
+          <div><label class="sl-lbl" for="sl-pert-o">Optimistic (O)</label><input class="fi" id="sl-pert-o" type="number" min="0" step="any" inputmode="decimal" placeholder="4" oninput="slPertCalc()"></div>
+          <div><label class="sl-lbl" for="sl-pert-m">Most Likely (M)</label><input class="fi" id="sl-pert-m" type="number" min="0" step="any" inputmode="decimal" placeholder="6" oninput="slPertCalc()"></div>
+          <div><label class="sl-lbl" for="sl-pert-p">Pessimistic (P)</label><input class="fi" id="sl-pert-p" type="number" min="0" step="any" inputmode="decimal" placeholder="10" oninput="slPertCalc()"></div>
+        </div>
+        <div id="sl-pert-out"><div style="font-size:12px;color:var(--t3);padding:10px 0">Enter all three estimates to see the PERT math.</div></div>
+      </div>
+      <div class="card">
+        <div class="ct">How PERT Is Tested</div>
+        <div class="f-block"><div class="f-name">Beta (PERT) Estimate — the default</div><code class="f-eq">tE = (O + 4M + P) ÷ 6</code><div class="f-note">Weights Most Likely 4×. Use this unless the question explicitly says "simple average" or "triangular".</div></div>
+        <div class="f-block"><div class="f-name">Triangular Estimate</div><code class="f-eq">tE = (O + M + P) ÷ 3</code><div class="f-note">Simple average of the three points — all weighted equally.</div></div>
+        <div class="f-block"><div class="f-name">Standard Deviation &amp; Ranges</div><code class="f-eq">σ = (P − O) ÷ 6</code><div class="f-note">≈68% of outcomes fall within ±1σ of the estimate, ≈95% within ±2σ. Exam questions often ask for the range, not the estimate.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRASH SECTION -->
+  <div class="sl-sec" id="sl-sec-crash">
+    <div class="card" style="margin-bottom:16px">
+      <div class="ct">Schedule Compression — Crash Solver</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:12px">Crashing shortens <em>critical</em> activities by adding cost. The solver crashes the cheapest cost-per-period critical activity one period at a time, re-running CPM after every step — exactly the method the exam expects you to reason through.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <button class="btn btn-s btn-sm" onclick="slLoadCrashExample()">📋 Load Example</button>
+        <button class="btn btn-s btn-sm" onclick="slClearCrash()">🗑 Clear</button>
+      </div>
+      <div class="sl-tbl-wrap" style="margin-bottom:10px">
+        <table class="sl-tbl" style="min-width:520px">
+          <thead><tr><th style="width:80px">ID</th><th>Predecessors</th><th style="width:100px">Normal Dur</th><th style="width:100px">Crash Limit</th><th style="width:110px">Cost / Period</th><th style="width:40px"></th></tr></thead>
+          <tbody id="sl-crash-rows"></tbody>
+        </table>
+      </div>
+      <div style="margin-bottom:16px"><button class="btn btn-s btn-sm" onclick="slAddCrashRow()">＋ Add Activity</button></div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-bottom:4px">
+        <div style="min-width:170px"><label class="sl-lbl" for="sl-crash-target">Target duration</label><input class="fi" id="sl-crash-target" type="number" min="0" step="any" inputmode="decimal" placeholder="e.g. 13"></div>
+        <button class="btn btn-p" onclick="slCrashSolve()">⚡ Solve Crash</button>
+      </div>
+      <div class="sl-err" id="sl-crash-err"></div>
+    </div>
+    <div id="sl-crash-results"></div>
+  </div>
+
+  <!-- METHODS REFERENCE SECTION -->
+  <div class="sl-sec" id="sl-sec-ref">
+    <div class="g2">
+      <div>
+        <div class="sh">Critical Path Method</div>
+        <div class="f-block"><div class="f-name">Forward Pass — earliest dates</div><code class="f-eq">ES = max(EF of predecessors)</code><code class="f-eq">EF = ES + Duration</code><div class="f-note">Start activities begin at 0. The largest EF in the network is the project duration.</div></div>
+        <div class="f-block"><div class="f-name">Backward Pass — latest dates</div><code class="f-eq">LF = min(LS of successors)</code><code class="f-eq">LS = LF − Duration</code><div class="f-note">End activities take LF = project duration, then work backwards.</div></div>
+        <div class="f-block"><div class="f-name">Total Float (Slack)</div><code class="f-eq">Float = LS − ES = LF − EF</code><div class="f-note">How long an activity can slip without delaying the project. Zero float = critical.</div></div>
+        <div class="f-block"><div class="f-name">Critical Path</div><code class="f-eq">Longest path = minimum project duration</code><div class="f-note">The chain of zero-float activities. A network can have more than one critical path — crashing often creates a second one.</div></div>
+        <div class="f-block"><div class="f-name">Day-0 vs Day-1 convention</div><code class="f-eq">This lab: ES of start activities = 0</code><div class="f-note">Some courses start at day 1 (ES=1, EF=ES+Dur−1). Durations and floats are identical either way — on the exam, follow the convention the question uses.</div></div>
+      </div>
+      <div>
+        <div class="sh">Node Notation Used Here</div>
+        <div class="f-block"><div class="f-name">Diagram node layout</div><code class="f-eq">ES | Dur | EF</code><code class="f-eq">Activity ID</code><code class="f-eq">LS | Float | LF</code><div class="f-note">Top row comes from the forward pass, bottom row from the backward pass. Red outline = on the critical path.</div></div>
+        <div class="sh">Schedule Compression</div>
+        <div class="f-block"><div class="f-name">Crashing</div><code class="f-eq">Crash cheapest critical activity first</code><div class="f-note">Adds cost (overtime, extra resources) to shorten duration. Only crashing <em>critical</em> activities shortens the project — re-identify the critical path after every crash.</div></div>
+        <div class="f-block"><div class="f-name">Fast-Tracking</div><code class="f-eq">Overlap activities normally done in sequence</code><div class="f-note">No direct cost, but increases risk and rework. Exam tip: fast-track first when budget is the constraint; crash when risk appetite is low and funds exist.</div></div>
+        <div class="f-block"><div class="f-name">PERT recap</div><code class="f-eq">tE = (O + 4M + P) ÷ 6 · σ = (P − O) ÷ 6</code><div class="f-note">Path standard deviation uses variances: σpath = √(Σσ²) — the exam occasionally tests summing variances, never summing σ directly.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ===== END WP1 SCHEDULING LAB ===== -->
 
 </main>
 
@@ -9521,6 +9681,407 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
     });
   }).catch(() => {});
 }
+
+// ============================================================
+// ===== WP1 SCHEDULING LAB =====
+// Clean-room CPM / PERT / crash implementation using standard
+// PMI schedule math (forward/backward pass, total float, beta
+// & triangular three-point estimates, min-cost crashing).
+// ============================================================
+const SL_PRESETS = [
+  { name:'Practice Net 1', rows:[
+    {id:'A',dur:3,preds:''},{id:'B',dur:2,preds:'A'},{id:'C',dur:4,preds:'A'},
+    {id:'D',dur:3,preds:'B,C'},{id:'E',dur:2,preds:'D'} ] },
+  { name:'Practice Net 2', rows:[
+    {id:'A',dur:2,preds:''},{id:'B',dur:4,preds:'A'},{id:'C',dur:3,preds:'A'},
+    {id:'D',dur:5,preds:'B'},{id:'E',dur:2,preds:'B,C'},{id:'F',dur:3,preds:'C'},
+    {id:'G',dur:2,preds:'D,E,F'} ] },
+  { name:'Practice Net 3', rows:[
+    {id:'A',dur:3,preds:''},{id:'B',dur:5,preds:''},{id:'C',dur:2,preds:'A'},
+    {id:'D',dur:4,preds:'A,B'},{id:'E',dur:6,preds:'B'},{id:'F',dur:2,preds:'C,D'},
+    {id:'G',dur:4,preds:'E'},{id:'H',dur:3,preds:'F,G'},{id:'I',dur:2,preds:'H'} ] }
+];
+const SL_CRASH_EXAMPLE = {
+  target:13,
+  rows:[
+    {id:'A',preds:'',normal:4,crash:2,cost:300},
+    {id:'B',preds:'A',normal:6,crash:4,cost:200},
+    {id:'C',preds:'A',normal:3,crash:2,cost:500},
+    {id:'D',preds:'B',normal:5,crash:3,cost:150},
+    {id:'E',preds:'C',normal:4,crash:3,cost:400},
+    {id:'F',preds:'D,E',normal:2,crash:2,cost:0}
+  ]
+};
+
+function slEsc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function slN(v){ return String(Math.round(v * 100) / 100); }
+function slShowErr(id, msgs){
+  const el = document.getElementById(id);
+  el.innerHTML = msgs.map(m => '• ' + m).join('<br>');
+  el.classList.add('show');
+}
+function slHideErr(id){
+  const el = document.getElementById(id);
+  el.innerHTML = '';
+  el.classList.remove('show');
+}
+function slShowTab(id){
+  ['cpm','pert','crash','ref'].forEach(t => {
+    document.getElementById('sl-sec-' + t).classList.toggle('active', t === id);
+    document.getElementById('sl-tab-' + t).classList.toggle('active', t === id);
+  });
+}
+
+// ---------- editable tables ----------
+function slCpmRowHtml(r){
+  return '<tr>'
+    + '<td><input maxlength="6" value="' + slEsc(r.id == null ? '' : r.id) + '" placeholder="A" aria-label="Activity ID"></td>'
+    + '<td><input type="number" min="0" step="any" inputmode="decimal" value="' + slEsc(r.dur == null ? '' : r.dur) + '" placeholder="3" aria-label="Duration"></td>'
+    + '<td><input value="' + slEsc(r.preds == null ? '' : r.preds) + '" placeholder="A,B (blank = start)" aria-label="Predecessors"></td>'
+    + '<td><button class="sl-del" onclick="slDelRow(this)" title="Remove activity" aria-label="Remove activity">✕</button></td></tr>';
+}
+function slCrashRowHtml(r){
+  return '<tr>'
+    + '<td><input maxlength="6" value="' + slEsc(r.id == null ? '' : r.id) + '" placeholder="A" aria-label="Activity ID"></td>'
+    + '<td><input value="' + slEsc(r.preds == null ? '' : r.preds) + '" placeholder="A,B" aria-label="Predecessors"></td>'
+    + '<td><input type="number" min="0" step="any" inputmode="decimal" value="' + slEsc(r.normal == null ? '' : r.normal) + '" placeholder="5" aria-label="Normal duration"></td>'
+    + '<td><input type="number" min="0" step="any" inputmode="decimal" value="' + slEsc(r.crash == null ? '' : r.crash) + '" placeholder="3" aria-label="Crash limit"></td>'
+    + '<td><input type="number" min="0" step="any" inputmode="decimal" value="' + slEsc(r.cost == null ? '' : r.cost) + '" placeholder="150" aria-label="Crash cost per period"></td>'
+    + '<td><button class="sl-del" onclick="slDelRow(this)" title="Remove activity" aria-label="Remove activity">✕</button></td></tr>';
+}
+function slDelRow(btn){ const tr = btn.closest('tr'); if (tr) tr.remove(); }
+function slAddCpmRow(){ document.getElementById('sl-cpm-rows').insertAdjacentHTML('beforeend', slCpmRowHtml({})); }
+function slAddCrashRow(){ document.getElementById('sl-crash-rows').insertAdjacentHTML('beforeend', slCrashRowHtml({})); }
+function slLoadPreset(i){
+  const p = SL_PRESETS[i];
+  if (!p) return;
+  document.getElementById('sl-cpm-rows').innerHTML = p.rows.map(slCpmRowHtml).join('');
+  document.getElementById('sl-cpm-results').innerHTML = '';
+  document.getElementById('sl-predict-dur').value = '';
+  document.getElementById('sl-predict-path').value = '';
+  slHideErr('sl-cpm-err');
+}
+function slClearCpm(){
+  document.getElementById('sl-cpm-rows').innerHTML = [{},{},{}].map(slCpmRowHtml).join('');
+  document.getElementById('sl-cpm-results').innerHTML = '';
+  slHideErr('sl-cpm-err');
+}
+function slLoadCrashExample(){
+  document.getElementById('sl-crash-rows').innerHTML = SL_CRASH_EXAMPLE.rows.map(slCrashRowHtml).join('');
+  document.getElementById('sl-crash-target').value = SL_CRASH_EXAMPLE.target;
+  document.getElementById('sl-crash-results').innerHTML = '';
+  slHideErr('sl-crash-err');
+}
+function slClearCrash(){
+  document.getElementById('sl-crash-rows').innerHTML = [{},{},{}].map(slCrashRowHtml).join('');
+  document.getElementById('sl-crash-target').value = '';
+  document.getElementById('sl-crash-results').innerHTML = '';
+  slHideErr('sl-crash-err');
+}
+
+// ---------- input readers with validation ----------
+function slParsePreds(raw){
+  return raw ? raw.toUpperCase().split(/[^A-Z0-9]+/).filter(Boolean).filter((p,i,a) => a.indexOf(p) === i) : [];
+}
+function slValidateId(id, seen, errs){
+  if (!/^[A-Z0-9]{1,6}$/.test(id)) { errs.push('Activity "' + slEsc(id) + '": IDs must be 1–6 letters/numbers.'); return false; }
+  if (seen[id]) { errs.push('Duplicate activity ID "' + slEsc(id) + '".'); return false; }
+  return true;
+}
+function slCheckPreds(acts, seen, errs){
+  acts.forEach(a => a.preds.forEach(p => {
+    if (p === a.id) errs.push('Activity "' + slEsc(a.id) + '" cannot depend on itself.');
+    else if (!seen[p]) errs.push('Activity "' + slEsc(a.id) + '": predecessor "' + slEsc(p) + '" does not exist.');
+  }));
+}
+function slReadCpm(){
+  const errs = [], acts = [], seen = {};
+  document.querySelectorAll('#sl-cpm-rows tr').forEach(tr => {
+    const ins = tr.querySelectorAll('input');
+    const id = ins[0].value.trim().toUpperCase();
+    const durRaw = ins[1].value.trim();
+    const predsRaw = ins[2].value.trim();
+    if (!id && !durRaw && !predsRaw) return;
+    if (!id) { errs.push('Every activity needs an ID.'); return; }
+    if (!slValidateId(id, seen, errs)) return;
+    seen[id] = true;
+    const dur = Number(durRaw);
+    if (durRaw === '' || !isFinite(dur) || dur <= 0) { errs.push('Activity "' + slEsc(id) + '" needs a duration greater than 0.'); return; }
+    acts.push({ id: id, dur: dur, preds: slParsePreds(predsRaw) });
+  });
+  slCheckPreds(acts, seen, errs);
+  if (!errs.length && acts.length < 2) errs.push('Add at least two activities to build a network.');
+  return { acts: acts, errs: errs };
+}
+function slReadCrash(){
+  const errs = [], acts = [], seen = {};
+  document.querySelectorAll('#sl-crash-rows tr').forEach(tr => {
+    const ins = tr.querySelectorAll('input');
+    const id = ins[0].value.trim().toUpperCase();
+    const predsRaw = ins[1].value.trim();
+    const nRaw = ins[2].value.trim(), cRaw = ins[3].value.trim(), costRaw = ins[4].value.trim();
+    if (!id && !predsRaw && !nRaw && !cRaw && !costRaw) return;
+    if (!id) { errs.push('Every activity needs an ID.'); return; }
+    if (!slValidateId(id, seen, errs)) return;
+    seen[id] = true;
+    const normal = Number(nRaw);
+    if (nRaw === '' || !isFinite(normal) || normal <= 0) { errs.push('Activity "' + slEsc(id) + '" needs a normal duration greater than 0.'); return; }
+    const crash = cRaw === '' ? normal : Number(cRaw);
+    if (!isFinite(crash) || crash <= 0 || crash > normal) { errs.push('Activity "' + slEsc(id) + '": crash limit must be greater than 0 and no more than the normal duration.'); return; }
+    const cost = costRaw === '' ? 0 : Number(costRaw);
+    if (!isFinite(cost) || cost < 0) { errs.push('Activity "' + slEsc(id) + '": crash cost must be 0 or more.'); return; }
+    acts.push({ id: id, preds: slParsePreds(predsRaw), normal: normal, crash: crash, cost: cost });
+  });
+  slCheckPreds(acts, seen, errs);
+  if (!errs.length && acts.length < 2) errs.push('Add at least two activities to build a network.');
+  return { acts: acts, errs: errs };
+}
+
+// ---------- CPM core (Kahn topo sort + forward/backward pass) ----------
+function slSolveCpm(acts){
+  const byId = {}, succs = {}, indeg = {};
+  acts.forEach(a => { byId[a.id] = a; succs[a.id] = []; indeg[a.id] = 0; });
+  acts.forEach(a => a.preds.forEach(p => { succs[p].push(a.id); indeg[a.id]++; }));
+  const queue = acts.filter(a => indeg[a.id] === 0).map(a => a.id);
+  const deg = Object.assign({}, indeg);
+  const order = [];
+  while (queue.length){
+    const id = queue.shift();
+    order.push(id);
+    succs[id].forEach(s => { deg[s]--; if (deg[s] === 0) queue.push(s); });
+  }
+  if (order.length !== acts.length){
+    const stuck = acts.map(a => a.id).filter(id => order.indexOf(id) === -1);
+    return { error: 'Dependency cycle detected involving: ' + stuck.map(slEsc).join(', ') + '. Fix the predecessor loop and re-solve.' };
+  }
+  const es = {}, ef = {}, ls = {}, lf = {}, fl = {};
+  order.forEach(id => {
+    const a = byId[id];
+    es[id] = a.preds.length ? Math.max.apply(null, a.preds.map(p => ef[p])) : 0;
+    ef[id] = es[id] + a.dur;
+  });
+  const duration = Math.max.apply(null, order.map(id => ef[id]));
+  order.slice().reverse().forEach(id => {
+    lf[id] = succs[id].length ? Math.min.apply(null, succs[id].map(s => ls[s])) : duration;
+    ls[id] = lf[id] - byId[id].dur;
+    fl[id] = ls[id] - es[id];
+  });
+  const isCrit = id => Math.abs(fl[id]) < 1e-9;
+  const critical = order.filter(isCrit);
+  const critNext = id => succs[id].filter(s => isCrit(s) && Math.abs(ef[id] - es[s]) < 1e-9);
+  const critStarts = critical.filter(id => !byId[id].preds.some(p => isCrit(p) && Math.abs(ef[p] - es[id]) < 1e-9));
+  const paths = [];
+  const stack = critStarts.map(id => [id]);
+  while (stack.length && paths.length < 6){
+    const path = stack.pop();
+    const nxt = critNext(path[path.length - 1]);
+    if (!nxt.length) paths.push(path);
+    else nxt.forEach(n => stack.push(path.concat(n)));
+  }
+  return { byId: byId, succs: succs, order: order, es: es, ef: ef, ls: ls, lf: lf, fl: fl, duration: duration, critical: critical, paths: paths };
+}
+
+// ---------- SVG network diagram ----------
+function slDiagramSvg(res, acts){
+  const NW = 118, NH = 58, GX = 56, GY = 20, PAD = 16;
+  const lvl = {};
+  res.order.forEach(id => {
+    const a = res.byId[id];
+    lvl[id] = a.preds.length ? Math.max.apply(null, a.preds.map(p => lvl[p])) + 1 : 0;
+  });
+  const cols = [];
+  res.order.forEach(id => { (cols[lvl[id]] = cols[lvl[id]] || []).push(id); });
+  const maxRows = Math.max.apply(null, cols.map(c => c.length));
+  const W = PAD * 2 + cols.length * NW + (cols.length - 1) * GX;
+  const H = PAD * 2 + maxRows * NH + (maxRows - 1) * GY;
+  const pos = {};
+  cols.forEach((col, ci) => {
+    const colH = col.length * NH + (col.length - 1) * GY;
+    const y0 = PAD + (H - PAD * 2 - colH) / 2;
+    col.forEach((id, ri) => { pos[id] = { x: PAD + ci * (NW + GX), y: y0 + ri * (NH + GY) }; });
+  });
+  const crit = {};
+  res.critical.forEach(id => { crit[id] = true; });
+  let edges = '';
+  acts.forEach(a => a.preds.forEach(p => {
+    const f = pos[p], t = pos[a.id];
+    const isC = crit[p] && crit[a.id] && Math.abs(res.ef[p] - res.es[a.id]) < 1e-9;
+    edges += '<line x1="' + (f.x + NW) + '" y1="' + (f.y + NH / 2) + '" x2="' + (t.x - 5) + '" y2="' + (t.y + NH / 2) + '" stroke="' + (isC ? 'var(--red)' : 'var(--t3)') + '" stroke-width="' + (isC ? 2.4 : 1.4) + '" marker-end="url(#sl-arr' + (isC ? 'c' : '') + ')"/>';
+  }));
+  let nodes = '';
+  res.order.forEach(id => {
+    const p = pos[id], a = res.byId[id], isC = crit[id];
+    const mid = p.x + NW / 2;
+    nodes += '<g>'
+      + '<rect x="' + p.x + '" y="' + p.y + '" width="' + NW + '" height="' + NH + '" rx="8" fill="var(--s2)" stroke="' + (isC ? 'var(--red)' : 'var(--border)') + '" stroke-width="' + (isC ? 2 : 1) + '"/>'
+      + '<line x1="' + p.x + '" y1="' + (p.y + 19) + '" x2="' + (p.x + NW) + '" y2="' + (p.y + 19) + '" stroke="var(--border)"/>'
+      + '<line x1="' + p.x + '" y1="' + (p.y + 39) + '" x2="' + (p.x + NW) + '" y2="' + (p.y + 39) + '" stroke="var(--border)"/>'
+      + '<text x="' + (p.x + 14) + '" y="' + (p.y + 14) + '" font-size="9" fill="var(--t2)" text-anchor="middle">' + slN(res.es[id]) + '</text>'
+      + '<text x="' + mid + '" y="' + (p.y + 14) + '" font-size="9" fill="var(--t2)" text-anchor="middle">' + slN(a.dur) + '</text>'
+      + '<text x="' + (p.x + NW - 14) + '" y="' + (p.y + 14) + '" font-size="9" fill="var(--t2)" text-anchor="middle">' + slN(res.ef[id]) + '</text>'
+      + '<text x="' + mid + '" y="' + (p.y + 34) + '" font-size="12" font-weight="800" fill="' + (isC ? 'var(--red)' : 'var(--text)') + '" text-anchor="middle">' + slEsc(id) + '</text>'
+      + '<text x="' + (p.x + 14) + '" y="' + (p.y + 52) + '" font-size="9" fill="var(--t2)" text-anchor="middle">' + slN(res.ls[id]) + '</text>'
+      + '<text x="' + mid + '" y="' + (p.y + 52) + '" font-size="9" fill="' + (isC ? 'var(--red)' : 'var(--t2)') + '" text-anchor="middle">' + slN(res.fl[id]) + '</text>'
+      + '<text x="' + (p.x + NW - 14) + '" y="' + (p.y + 52) + '" font-size="9" fill="var(--t2)" text-anchor="middle">' + slN(res.lf[id]) + '</text>'
+      + '</g>';
+  });
+  return '<div class="sl-diagram-wrap"><svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CPM network diagram">'
+    + '<defs>'
+    + '<marker id="sl-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--t3)"/></marker>'
+    + '<marker id="sl-arrc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--red)"/></marker>'
+    + '</defs>' + edges + nodes + '</svg></div>'
+    + '<div class="sl-legend">'
+    + '<span><span class="sl-key" style="background:var(--red)"></span>Critical path (zero float)</span>'
+    + '<span>Node top row: ES · Dur · EF</span>'
+    + '<span>Node bottom row: LS · Float · LF</span>'
+    + '</div>';
+}
+
+// ---------- CPM results rendering ----------
+function slResultsTable(res){
+  let rows = '';
+  res.order.forEach(id => {
+    const isC = Math.abs(res.fl[id]) < 1e-9;
+    rows += '<tr' + (isC ? ' class="sl-crit"' : '') + '><td>' + slEsc(id) + '</td><td>' + slN(res.byId[id].dur) + '</td><td>' + slN(res.es[id]) + '</td><td>' + slN(res.ef[id]) + '</td><td>' + slN(res.ls[id]) + '</td><td>' + slN(res.lf[id]) + '</td><td>' + slN(res.fl[id]) + '</td><td>' + (isC ? '<span class="sl-chip sl-chip-bad">CRITICAL</span>' : '') + '</td></tr>';
+  });
+  return '<div class="sl-tbl-wrap"><table class="sl-res-tbl"><thead><tr><th>Activity</th><th>Dur</th><th>ES</th><th>EF</th><th>LS</th><th>LF</th><th>Float</th><th></th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+}
+function slGradePrediction(res){
+  let html = '';
+  const pd = document.getElementById('sl-predict-dur').value.trim();
+  const pp = document.getElementById('sl-predict-path').value.trim();
+  if (pd !== ''){
+    const ok = Math.abs(Number(pd) - res.duration) < 1e-9;
+    html += '<span class="sl-chip ' + (ok ? 'sl-chip-ok">✓ Duration correct — ' + slN(res.duration) : 'sl-chip-bad">✗ Duration: you said ' + slEsc(pd) + ', actual is ' + slN(res.duration)) + '</span>';
+  }
+  if (pp !== ''){
+    const guess = pp.toUpperCase().split(/[^A-Z0-9]+/).filter(Boolean).join('→');
+    const ok = res.paths.some(path => path.join('→') === guess);
+    html += '<span class="sl-chip ' + (ok ? 'sl-chip-ok">✓ Critical path correct' : 'sl-chip-bad">✗ Critical path is ' + res.paths.map(p => p.map(slEsc).join('→')).join(' and ')) + '</span>';
+  }
+  return html ? '<div class="card-s" style="margin-bottom:14px"><div class="ct">Your Prediction</div>' + html + '</div>' : '';
+}
+function slStatCards(res){
+  return '<div class="sl-stat-grid">'
+    + '<div class="sl-stat"><div class="sl-stat-v" style="color:var(--accent)">' + slN(res.duration) + '</div><div class="sl-stat-l">Project duration</div></div>'
+    + '<div class="sl-stat"><div class="sl-stat-v" style="color:var(--red);font-size:15px;line-height:1.5">' + res.paths.map(p => p.map(slEsc).join('→')).join('<br>') + '</div><div class="sl-stat-l">Critical path' + (res.paths.length > 1 ? 's' : '') + '</div></div>'
+    + '<div class="sl-stat"><div class="sl-stat-v">' + res.order.length + '</div><div class="sl-stat-l">Activities</div></div>'
+    + '<div class="sl-stat"><div class="sl-stat-v">' + res.critical.length + '</div><div class="sl-stat-l">Critical activities</div></div>'
+    + '</div>';
+}
+function slSolveNetwork(){
+  slHideErr('sl-cpm-err');
+  const out = document.getElementById('sl-cpm-results');
+  const read = slReadCpm();
+  if (read.errs.length){ slShowErr('sl-cpm-err', read.errs); out.innerHTML = ''; return; }
+  const res = slSolveCpm(read.acts);
+  if (res.error){ slShowErr('sl-cpm-err', [res.error]); out.innerHTML = ''; return; }
+  out.innerHTML = slGradePrediction(res)
+    + '<div class="card"><div class="ct">Solved Network</div>'
+    + slStatCards(res)
+    + slDiagramSvg(res, read.acts)
+    + slResultsTable(res)
+    + '</div>';
+}
+
+// ---------- PERT ----------
+function slPertCalc(){
+  const out = document.getElementById('sl-pert-out');
+  const oRaw = document.getElementById('sl-pert-o').value.trim();
+  const mRaw = document.getElementById('sl-pert-m').value.trim();
+  const pRaw = document.getElementById('sl-pert-p').value.trim();
+  if (oRaw === '' || mRaw === '' || pRaw === ''){
+    out.innerHTML = '<div style="font-size:12px;color:var(--t3);padding:10px 0">Enter all three estimates to see the PERT math.</div>';
+    return;
+  }
+  const o = Number(oRaw), m = Number(mRaw), p = Number(pRaw);
+  if (!isFinite(o) || !isFinite(m) || !isFinite(p) || o < 0){
+    out.innerHTML = '<div class="sl-err show" style="margin-top:0">Estimates must be valid non-negative numbers.</div>';
+    return;
+  }
+  const warn = (o <= m && m <= p) ? '' : '<div class="sl-err show" style="margin:0 0 10px">Check your inputs — expected O ≤ M ≤ P.</div>';
+  const beta = (o + 4 * m + p) / 6;
+  const tri = (o + m + p) / 3;
+  const sd = (p - o) / 6;
+  const row = (name, val, note) => '<div class="f-block"><div class="f-name">' + name + '</div><code class="f-eq">' + val + '</code>' + (note ? '<div class="f-note">' + note + '</div>' : '') + '</div>';
+  out.innerHTML = warn
+    + row('Beta (PERT) estimate', '(O + 4M + P) ÷ 6 = ' + slN(beta), 'The exam default when it says "PERT" or "weighted average".')
+    + row('Triangular estimate', '(O + M + P) ÷ 3 = ' + slN(tri), 'Only when the question says simple/triangular average.')
+    + row('Standard deviation', 'σ = (P − O) ÷ 6 = ' + slN(sd), 'Variance σ² = ' + slN(sd * sd))
+    + row('≈68% confidence range (±1σ)', slN(beta - sd) + ' to ' + slN(beta + sd), '')
+    + row('≈95% confidence range (±2σ)', slN(beta - 2 * sd) + ' to ' + slN(beta + 2 * sd), '');
+}
+
+// ---------- crash solver (greedy min cost-per-period, CPM re-run each step) ----------
+function slCrashSolve(){
+  slHideErr('sl-crash-err');
+  const out = document.getElementById('sl-crash-results');
+  const read = slReadCrash();
+  const targetRaw = document.getElementById('sl-crash-target').value.trim();
+  const target = Number(targetRaw);
+  if (targetRaw === '' || !isFinite(target) || target <= 0) read.errs.push('Enter a target duration greater than 0.');
+  if (read.errs.length){ slShowErr('sl-crash-err', read.errs); out.innerHTML = ''; return; }
+  const cur = {};
+  read.acts.forEach(a => { cur[a.id] = a.normal; });
+  const mkActs = () => read.acts.map(a => ({ id: a.id, dur: cur[a.id], preds: a.preds }));
+  let res = slSolveCpm(mkActs());
+  if (res.error){ slShowErr('sl-crash-err', [res.error]); out.innerHTML = ''; return; }
+  const startDur = res.duration;
+  const steps = [];
+  let totalCost = 0, guard = 0;
+  let reached = res.duration <= target + 1e-9;
+  if (reached) steps.push({ txt: 'Normal-duration schedule (' + slN(res.duration) + ') already meets the target — no crashing needed.', cls: 'sl-step-done' });
+  while (!reached && guard++ < 500){
+    const cands = res.critical
+      .map(id => read.acts.find(a => a.id === id))
+      .filter(a => cur[a.id] > a.crash + 1e-9)
+      .sort((x, y) => x.cost - y.cost);
+    let done = false;
+    for (const c of cands){
+      cur[c.id] -= 1;
+      const t = slSolveCpm(mkActs());
+      if (t.duration < res.duration - 1e-9){
+        totalCost += c.cost;
+        steps.push({ txt: 'Crash <strong>' + slEsc(c.id) + '</strong> by 1 period at $' + slN(c.cost) + ' (cheapest critical option) → project now ' + slN(t.duration), cls: 'sl-step-crash' });
+        res = t;
+        done = true;
+        break;
+      }
+      cur[c.id] += 1;
+    }
+    if (!done){
+      steps.push({ txt: cands.length
+        ? 'Stopping: no single-activity crash shortens the project — parallel critical paths (' + res.paths.map(p => p.map(slEsc).join('→')).join(' and ') + ') would need to be crashed together.'
+        : 'Stopping: every critical activity is already at its crash limit.', cls: '' });
+      break;
+    }
+    if (res.duration <= target + 1e-9){
+      reached = true;
+      steps.push({ txt: 'Target of ' + slN(target) + ' reached at total crash cost <strong>$' + slN(totalCost) + '</strong>.', cls: 'sl-step-done' });
+    }
+  }
+  out.innerHTML = '<div class="card">'
+    + '<div class="ct">Crash Result</div>'
+    + '<div class="sl-stat-grid">'
+    + '<div class="sl-stat"><div class="sl-stat-v">' + slN(startDur) + '</div><div class="sl-stat-l">Normal duration</div></div>'
+    + '<div class="sl-stat"><div class="sl-stat-v" style="color:var(--accent)">' + slN(res.duration) + '</div><div class="sl-stat-l">Crashed duration</div></div>'
+    + '<div class="sl-stat"><div class="sl-stat-v">' + slN(target) + '</div><div class="sl-stat-l">Target</div></div>'
+    + '<div class="sl-stat"><div class="sl-stat-v" style="color:var(--a2)">$' + slN(totalCost) + '</div><div class="sl-stat-l">Total crash cost</div></div>'
+    + '</div>'
+    + (reached ? '<span class="sl-chip sl-chip-ok">✓ Target met</span>' : '<span class="sl-chip sl-chip-bad">✗ Target not reachable — best achievable is ' + slN(res.duration) + '</span>')
+    + '<div class="sh">Crash Steps</div><ol class="sl-steps">' + steps.map(s => '<li class="' + s.cls + '">' + s.txt + '</li>').join('') + '</ol>'
+    + '<div class="sh">Crashed Network</div>'
+    + slDiagramSvg(res, mkActs())
+    + slResultsTable(res)
+    + '</div>';
+}
+
+// ---------- init ----------
+if (document.getElementById('p-schedlab')){
+  slLoadPreset(0);
+  slLoadCrashExample();
+}
+// ===== END WP1 =====
 </script>
 
 <div id="site-footer">Designed by Nikki Masani</div>
