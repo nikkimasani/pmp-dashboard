@@ -1411,6 +1411,21 @@ document.addEventListener('DOMContentLoaded', function(){
 <div class="panel" id="p-ref">
   <div class="ph"><div class="ph-title">Reference Guide</div><div class="ph-sub">Formulas, domains, and searchable key terms</div></div>
 
+  <!-- ===== WP2 EVM CALCULATOR ===== -->
+  <div class="sh">Interactive EVM Calculator</div>
+  <div class="card" style="margin-bottom:22px">
+    <div style="font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:14px">Type any numbers and every earned-value metric recalculates live with a plain-English reading. Add BAC to unlock the forecast rows (EAC, ETC, VAC, TCPI).</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px">
+      <div><label class="fl" for="evm-pv" style="font-size:11px">PV — Planned Value</label><input class="fi" type="number" inputmode="decimal" id="evm-pv" placeholder="e.g. 100000" oninput="computeEvmCalc()"></div>
+      <div><label class="fl" for="evm-ev" style="font-size:11px">EV — Earned Value</label><input class="fi" type="number" inputmode="decimal" id="evm-ev" placeholder="e.g. 90000" oninput="computeEvmCalc()"></div>
+      <div><label class="fl" for="evm-ac" style="font-size:11px">AC — Actual Cost</label><input class="fi" type="number" inputmode="decimal" id="evm-ac" placeholder="e.g. 95000" oninput="computeEvmCalc()"></div>
+      <div><label class="fl" for="evm-bac" style="font-size:11px">BAC — Budget at Completion</label><input class="fi" type="number" inputmode="decimal" id="evm-bac" placeholder="e.g. 500000" oninput="computeEvmCalc()"></div>
+    </div>
+    <label style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--t2);cursor:pointer;margin-bottom:14px;line-height:1.5"><input type="checkbox" id="evm-atypical" onchange="computeEvmCalc()" style="margin-top:2px;accent-color:var(--accent)"> Variance is <strong style="color:var(--text)">atypical</strong> — a one-off event; remaining work runs at the planned rate (uses EAC = AC + (BAC − EV) for forecasts)</label>
+    <div id="evm-results"></div>
+  </div>
+  <!-- ===== /WP2 EVM CALCULATOR ===== -->
+
   <div class="g2" style="margin-bottom:20px">
     <div>
       <div class="sh">EVM Formulas</div>
@@ -4796,6 +4811,100 @@ QUIZ_QUESTIONS.push(
   {q:"CASE — Northgate Smart Transit (Q5/5): The transit authority's operations director — whose staff must run the new fare system after handover — has skipped the last three design workshops and tells peers the project is 'an IT vanity effort that will be dumped on operations.' What should the PM do FIRST?",opts:["Proceed with design decisions and send the director the minutes for review","Ask the sponsor to direct the operations director to attend the workshops","Meet the director one-on-one to understand the root cause of the resistance, then tailor the engagement approach to address those concerns","Mark the director as 'resistant' in the stakeholder register and increase reporting frequency"],ans:2,domain:"People",type:"Predictive",exp:"A disengaged operational owner is one of the highest adoption risks a project can carry — the system's benefits die if operations rejects it. PMI's pattern: understand before acting. The PM meets the director directly, listens for the real concerns (workload, staffing, being handed an unsupportable system), and adjusts the engagement strategy accordingly. Working around the director, forcing attendance via the sponsor, or just relabeling the register treats symptoms and deepens the resistance."}
 );
 
+// ============================================================
+// ===== WP2 PMBOK8 DATA (consumed by WP4's PMBOK 8 Library panel) =====
+// Distilled study summaries derived from fakhruldeen/PMOSkills
+// (MIT License, © 2026 Mohamed Fakhruldeen — https://github.com/fakhruldeen/PMOSkills).
+// Paraphrased for exam prep; no verbatim PMBOK® text.
+// Shape: { glossary:[{term,def}], principles:[{id,name,summary,outcomes[]}],
+//          domains:[{id,name,definition,outcomes[],examTips}],
+//          crosswalk:[{oldKA,pmbok8Home,note}] }
+// ============================================================
+const PMBOK8_LIB = {
+  glossary: [
+    {term:"Acceptance Criteria",def:"The conditions, performance measures, or compliance standards a deliverable must satisfy before the customer formally signs off."},
+    {term:"Activity",def:"A distinct, scheduled unit of work identified within a WBS work package — the basic building block of the project schedule."},
+    {term:"Alternatives Analysis",def:"Evaluating multiple execution strategies, resource levels, schedule paths, or contract types to pick the best project approach."},
+    {term:"Analogous Estimating",def:"Estimating cost or duration using historical values from similar past projects as the starting baseline. Fast but less accurate."},
+    {term:"Assumption",def:"A planning factor treated as true or certain without proof. Captured and tracked in the assumption log."},
+    {term:"Baseline",def:"An approved, change-controlled version of scope, schedule, or cost. Modified only through formal change control."},
+    {term:"Benefits Management Plan",def:"A business document describing how the project's strategic benefits will be created, maximized, and sustained."},
+    {term:"Bottom-Up Estimating",def:"Building a total estimate by aggregating detailed estimates from the lowest WBS levels upward. Slow but accurate."},
+    {term:"Business Case",def:"The strategic value proposition that justifies starting the project — showing returns are worth the investment."},
+    {term:"Change Control Board (CCB)",def:"A formally chartered group that reviews, evaluates, approves, defers, or rejects proposed changes to baselines."},
+    {term:"Change Request",def:"A formal proposal to modify a baseline, subsidiary plan, or process document. Always logged and routed through change control."},
+    {term:"Cost Baseline",def:"The approved time-phased project budget, excluding management reserves, that cost variances are measured against."},
+    {term:"Cost of Quality (CoQ)",def:"Total cost of conformance (prevention + appraisal) plus non-conformance (internal + external failures)."},
+    {term:"Critical Path Method (CPM)",def:"Schedule network analysis that finds the theoretical minimum project duration via the longest chain of dependent activities."},
+    {term:"Decomposition",def:"Subdividing high-level scope and deliverables into smaller, more manageable WBS components and activities."},
+    {term:"Deliverable",def:"Any unique, verifiable product, service, or result produced to satisfy project requirements."},
+    {term:"Duration Estimate",def:"The likely number of work periods needed to complete an activity or work package with the estimated resources."},
+    {term:"Earned Value Analysis (EVA)",def:"Integrates scope, schedule, and cost metrics (PV, EV, AC) to assess performance and forecast completion cost and timing."},
+    {term:"Enterprise Environmental Factors (EEF)",def:"Conditions outside the team's immediate control that influence or constrain the project (e.g., market conditions, regulations)."},
+    {term:"Expert Judgment",def:"Specialized guidance from individuals or groups with domain expertise, applied throughout project processes."},
+    {term:"Facilitation",def:"Guiding workshops, resolving conflicts, aligning expectations, and building consensus among stakeholders."},
+    {term:"Final Project Report",def:"The closing summary of baseline performance, benefits realized, and final transition milestones."},
+    {term:"Governance",def:"The framework of rules, authorities, and metrics that aligns project delivery with organizational strategy and compliance."},
+    {term:"Inspection",def:"Structured physical examination of a deliverable to verify it conforms to quality metrics and requirements."},
+    {term:"Issue Log",def:"A living register that captures, assigns ownership to, and tracks resolution of active project issues and disputes."},
+    {term:"Knowledge Area (legacy)",def:"The organizing unit of PMBOK 6 and earlier (Integration, Scope, Schedule…). Replaced by Performance Domains in PMBOK 7/8 — retained only for cross-edition traceability."},
+    {term:"Lessons Learned Register",def:"A living record of insights, improvements, and failures captured throughout the lifecycle to improve future delivery."},
+    {term:"Make-or-Buy Analysis",def:"Deciding whether a product or service should be produced internally or procured from external sellers."},
+    {term:"Milestone",def:"A significant point or event in the schedule with zero duration — marks decision gates or key achievements."},
+    {term:"Organizational Process Assets (OPA)",def:"Plans, templates, checklists, databases, and lessons-learned owned by the performing organization."},
+    {term:"Parametric Estimating",def:"Using a statistical relationship between historical data and variables (e.g., cost per square foot) to calculate estimates."},
+    {term:"Performance Domain",def:"One of the seven integrated areas of activity in PMBOK 8: Governance, Scope, Schedule, Finance, Stakeholders, Resources, and Risk."},
+    {term:"Performance Measurement Baseline (PMB)",def:"The integrated combination of scope, schedule, and cost baselines used to measure overall execution."},
+    {term:"Project Management Office (PMO)",def:"An organizational structure that standardizes governance, shares resources, guides methodology, and monitors compliance."},
+    {term:"Project Management Plan",def:"The comprehensive document describing how the project is executed, monitored, controlled, and closed — integrating all subsidiary plans and baselines."},
+    {term:"Quality Metrics",def:"The specific parameters defining how deliverable conformance will be measured and controlled (e.g., defect density)."},
+    {term:"Requirements Traceability Matrix (RTM)",def:"A grid linking each requirement from origin to the WBS deliverables and test packages that satisfy it."},
+    {term:"Reserve Analysis",def:"Determining contingency reserves (identified risks) and management reserves (unidentified risks) for budgets and schedules."},
+    {term:"Risk Register",def:"A living register of identified risks with their analysis ratings, assigned owners, and approved response strategies."},
+    {term:"Scope Baseline",def:"The approved scope statement + WBS + WBS dictionary, changed only through formal change control."},
+    {term:"Sourcing Strategy",def:"The plan for acquiring goods, software, or labor from external sellers, including contract types and bid structures."},
+    {term:"Stakeholder",def:"Anyone who may affect, be affected by, or perceive themselves affected by a project decision, activity, or outcome."},
+    {term:"Systems Thinking",def:"Viewing the project as a dynamic, interconnected system nested in a broader organizational and market environment."},
+    {term:"Tailoring",def:"Consciously adapting the development approach, lifecycle, and processes to fit the project's complexity, constraints, and environment."},
+    {term:"Value Delivery Office (VDO)",def:"An agile-adapted PMO focused on removing organizational bottlenecks, coaching iterative teams, and managing value streams."},
+    {term:"Variance Analysis",def:"Identifying and explaining deviations between actual performance and the established baselines."},
+    {term:"Work Breakdown Structure (WBS)",def:"A hierarchical decomposition of total project scope into deliverable-oriented components; the lowest level is the work package."},
+    {term:"Work Performance Data",def:"Raw daily observations and measurements from execution — actual costs, hours worked, start/finish dates."},
+    {term:"Work Performance Information",def:"Performance data analyzed against the baselines to reveal variances and trends (SV, CV, CPI, SPI)."},
+    {term:"Work Performance Reports",def:"Work performance information compiled into dashboards, forecasts, and status reports for stakeholders."}
+  ],
+  principles: [
+    {id:"P8-01",name:"Adopt a Holistic View",summary:"Manage the project as one interconnected system inside a larger organizational and environmental context — not as isolated parts or static snapshots.",outcomes:["Systems thinking: understand how elements of the project and its environment interconnect","Find root causes of challenges instead of treating surface symptoms","Keep decisions and outputs aligned with organizational strategy","Anticipate cascading effects of risks across all domains"]},
+    {id:"P8-02",name:"Focus on Value",summary:"Value — measurable or qualitative net benefit — is the ultimate success indicator, superseding simple baseline compliance. Continuously re-check that the project is still worth the investment.",outcomes:["Measure outcomes (changes in state or behavior), not just outputs delivered","Ground every project in a business case and keep it current","Reassess viability continuously; adapt or terminate when alignment is lost","Eliminate waste, unnecessary rework, and low-value work"]},
+    {id:"P8-03",name:"Embed Quality Into Processes and Deliverables",summary:"Quality is designed and built in — to both workflows and outputs — using acceptance criteria, Definition of Done, and continuous improvement. Prevention beats inspection.",outcomes:["Shift left: prevent defects early rather than inspecting at the end","Ensure deliverables are fit for purpose and meet regulatory and stakeholder needs","Improve processes continuously to cut waste and rework","Quality spans performance, reliability, satisfaction, sustainability, and compliance"]},
+    {id:"P8-04",name:"Be an Accountable Leader",summary:"Take ownership of objectives, decisions, and actions with integrity and transparency. Leadership is shared and situational — anyone on the project can and should demonstrate it.",outcomes:["Match authority with responsibility and own the outcomes","Model integrity, honesty, fairness, and humility — especially under pressure","Practice servant leadership: support the team and remove obstacles","Foster psychological safety so issues and risks surface early"]},
+    {id:"P8-05",name:"Integrate Sustainability Within All Project Areas",summary:"Balance social equity, environmental stewardship, and economic prosperity (people, planet, profit) across every phase — meeting present needs without compromising future generations.",outcomes:["Apply the triple bottom line to project decisions","Prefer avoiding negative impacts over minimizing, restoring, or compensating for them","Consider lifecycle costs and impacts beyond project closure","Adopt technology, AI, and data responsibly — privacy, ethics, and security included"]},
+    {id:"P8-06",name:"Build an Empowered Culture",summary:"Create a collaborative environment of mutual trust, clear roles, and team agreements so team members and stakeholders contribute ideas freely and handle conflict proactively.",outcomes:["Establish team charters with working norms and communication protocols","Promote trust and psychological safety as the basis of collaboration","Harness diverse skills and perspectives to improve decisions","Keep communication open and transparent as needs evolve"]}
+  ],
+  domains: [
+    {id:"PD8-01",name:"Governance",definition:"The framework, functions, and processes that guide decisions and activities to optimize value delivery — strategic alignment, decision-making, change control, and success criteria, coordinated as one integrated system.",outcomes:["Strategic alignment of the project with organizational goals and portfolio priorities","Decision-making frameworks tailored to project complexity","Robust change control that weighs impacts against the value proposition","Success criteria defined, measured, and validated throughout","Sourcing strategies aligned with the delivery approach and policy"],examTips:"Governance absorbs much of the old Integration KA. Expect scenarios on routing changes through the right authority, stage gates, and keeping the project tied to strategy — a heavily expanded 2026 theme."},
+    {id:"PD8-02",name:"Scope",definition:"Defining, managing, and controlling project and product scope — eliciting requirements, setting boundaries, decomposing work, and validating deliverables to prevent scope creep.",outcomes:["A clear, shared understanding of project and product scope","Systematic identification and management of requirements","Well-defined boundaries that control scope creep","Work decomposition that gives a clear basis for planning","Formal acceptance and validation of completed deliverables"],examTips:"Know scope creep vs. gold plating, and who formally accepts deliverables. Acceptance criteria and Definition of Done questions map here."},
+    {id:"PD8-03",name:"Schedule",definition:"The activities and processes that get the project done on time. The schedule communicates how and when scope will be delivered and anchors expectations and performance reporting.",outcomes:["Scheduling approach consistent with predictive, adaptive, or hybrid delivery","A lifecycle of phases connecting value delivery start to finish","Complete schedule documentation: dependencies, durations, resources, milestones","Timely identification of delays enabling proactive correction"],examTips:"CPM, float, and compression math is guaranteed exam content — and know which scheduling technique fits which delivery approach (iterations and cadence for agile, network diagrams for predictive)."},
+    {id:"PD8-04",name:"Finance",definition:"Planning, estimating, budgeting, and controlling costs to finish within the approved budget and maximize return on investment — aligning money with priorities, baselining, tracking variances, and forecasting.",outcomes:["Financial plans aligned with the development approach and deliverables","Accurate estimates covering direct, indirect, capital, and operating costs","Completion within or below the approved budget","Visibility through monitoring, variance analysis, and forecasting","Optimized ROI tracked against the business case"],examTips:"The old Cost KA, renamed and broadened. EVM questions live here — and 2026 adds an explicit 'plan and manage finance' task: funding, reserves, and investment return, not just cost control."},
+    {id:"PD8-05",name:"Stakeholders",definition:"Engagement and communication across the lifecycle — identifying stakeholders, understanding interest and influence, planning and managing engagement, and monitoring communications for alignment and satisfaction.",outcomes:["Productive, trusting working relationships with stakeholders","Stakeholder agreement on objectives and the definition of value","Beneficiaries satisfied that deliverables meet their needs","Proactive management of conflicting interests","The right message reaching the right stakeholder at the right time"],examTips:"Stakeholder + Communications KAs merged. Expect engagement-level scenarios (unaware → resistant → neutral → supportive → leading) and tailor-the-communication questions."},
+    {id:"PD8-06",name:"Resources",definition:"Planning and using resources effectively — both the human team and physical, virtual, or digital resources (equipment, materials, software, facilities, licenses, information).",outcomes:["Shared ownership: the team understands the vision and owns deliverables","A high-performing team built on trust, collaboration, and resilience","Actual vs. planned resource utilization actively managed","Acceptable downtime for physical, virtual, or digital resources","Minimal waste, scrap, and resource conflicts"],examTips:"Covers people AND things. Team development (Tuckman, motivation, conflict) and resource utilization scenarios both map here."},
+    {id:"PD8-07",name:"Risk",definition:"Handling risk and uncertainty — including ambiguity, complexity, and volatility — through systematic identification, analysis, and response, minimizing threats and exploiting opportunities.",outcomes:["Systematic identification of threats and opportunities throughout","Qualitative and quantitative analysis of probability, impact, and urgency","Cost-effective, agreed-upon, owned response strategies","Proactive response implementation that captures upside","Continuous monitoring with registers and reserves adapted to change"],examTips:"Remember risks include OPPORTUNITIES — know both threat responses (avoid/transfer/mitigate/accept) and opportunity responses (exploit/share/enhance/accept), plus escalate for either."}
+  ],
+  crosswalk: [
+    {oldKA:"Integration Management",pmbok8Home:"Governance domain",note:"Change control, strategic alignment, and integrated planning now live under Governance."},
+    {oldKA:"Scope Management",pmbok8Home:"Scope domain",note:"Direct carry-over, with stronger emphasis on backlogs and acceptance criteria across delivery approaches."},
+    {oldKA:"Schedule Management",pmbok8Home:"Schedule domain",note:"Direct carry-over; the scheduling approach must match predictive, adaptive, or hybrid delivery."},
+    {oldKA:"Cost Management",pmbok8Home:"Finance domain",note:"Renamed and broadened: budgeting plus funding, reserves, and investment return (ties to the new 2026 'plan and manage finance' task)."},
+    {oldKA:"Quality Management",pmbok8Home:"Principle P8-03 + Scope domain",note:"No standalone domain — quality is embedded as a principle across all processes; acceptance criteria and DoD sit with Scope."},
+    {oldKA:"Resource Management",pmbok8Home:"Resources domain",note:"Direct carry-over, covering the team plus physical, virtual, and digital resources."},
+    {oldKA:"Communications Management",pmbok8Home:"Stakeholders domain",note:"Merged into Stakeholders: engagement and information flow are managed together."},
+    {oldKA:"Risk Management",pmbok8Home:"Risk domain",note:"Direct carry-over; explicitly includes opportunities and broader uncertainty (ambiguity, complexity, volatility)."},
+    {oldKA:"Procurement Management",pmbok8Home:"Governance domain",note:"Sourcing strategy and contracting decisions route through Governance."},
+    {oldKA:"Stakeholder Management",pmbok8Home:"Stakeholders domain",note:"Direct carry-over, now combined with communications."}
+  ]
+};
+// ===== /WP2 PMBOK8 DATA =====
+
 const TERMS = [
   {term:"Agile",def:"An iterative, incremental approach emphasizing flexibility, collaboration, and customer feedback over rigid planning."},
   {term:"BAC",def:"Budget at Completion — the total approved budget. Used as the baseline in all EVM calculations."},
@@ -6459,6 +6568,109 @@ function filterTerms() {
   const q = document.getElementById('term-search').value.toLowerCase();
   renderTerms(q ? TERMS.filter(t => t.term.toLowerCase().includes(q) || t.def.toLowerCase().includes(q)) : TERMS);
 }
+
+// ============================================================
+// ===== WP2 EVM CALCULATOR (Reference tab) =====
+// ============================================================
+function evmVal(id) {
+  const el = document.getElementById(id);
+  if (!el) return NaN;
+  const v = el.value.trim();
+  if (v === '') return NaN;
+  const n = Number(v);
+  return isFinite(n) ? n : NaN;
+}
+function evmDiv(a, b) {
+  return (isFinite(a) && isFinite(b) && b !== 0) ? a / b : NaN;
+}
+function evmFmt(n) {
+  if (!isFinite(n)) return '—';
+  const r = Math.round(n * 1000) / 1000;
+  if (Math.abs(r) >= 1000) return r.toLocaleString('en-US', {maximumFractionDigits: 2});
+  return String(parseFloat(r.toFixed(3)));
+}
+function evmChip(txt, tone) {
+  const tones = {
+    good: 'background:rgba(46,213,115,.12);color:#2ed573;border:1px solid rgba(46,213,115,.25)',
+    bad:  'background:rgba(255,59,59,.12);color:#ff6b6b;border:1px solid rgba(255,59,59,.25)',
+    flat: 'background:var(--s3);color:var(--t2);border:1px solid var(--border)'
+  };
+  return `<span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;letter-spacing:.3px;${tones[tone] || tones.flat}">${txt}</span>`;
+}
+function evmSign(v, posTxt, negTxt, zeroTxt) {
+  if (!isFinite(v)) return evmChip('needs inputs above', 'flat');
+  if (v > 0) return evmChip(posTxt, 'good');
+  if (v < 0) return evmChip(negTxt, 'bad');
+  return evmChip(zeroTxt, 'flat');
+}
+function evmIndex(v, aboveTxt, belowTxt, oneTxt) {
+  if (!isFinite(v)) return evmChip('needs inputs above', 'flat');
+  if (v > 1) return evmChip(aboveTxt, 'good');
+  if (v < 1) return evmChip(belowTxt, 'bad');
+  return evmChip(oneTxt, 'flat');
+}
+function evmRow(name, eq, value, chip, highlight) {
+  const border = highlight ? 'border:1px solid rgba(200,255,0,.45);box-shadow:var(--accent-glow)' : 'border:1px solid var(--border)';
+  const badge = highlight ? '<span style="font-size:9px;font-weight:800;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-left:6px">used for forecast</span>' : '';
+  return `<div style="background:var(--s2);${border};border-radius:var(--r);padding:12px 14px;box-shadow:var(--shadow-sm)">
+    <div style="font-size:11px;font-weight:800;color:var(--a2);margin-bottom:3px">${name}${badge}</div>
+    <div style="font-family:monospace;font-size:11px;color:var(--t2);margin-bottom:6px">${eq}</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+      <span style="font-family:monospace;font-size:16px;font-weight:700">${value}</span>${chip}
+    </div>
+  </div>`;
+}
+function computeEvmCalc() {
+  const out = document.getElementById('evm-results');
+  if (!out) return;
+  const pv = evmVal('evm-pv'), ev = evmVal('evm-ev'), ac = evmVal('evm-ac'), bac = evmVal('evm-bac');
+  const atypical = document.getElementById('evm-atypical').checked;
+  if (!isFinite(pv) && !isFinite(ev) && !isFinite(ac) && !isFinite(bac)) {
+    out.innerHTML = '<div style="font-size:12px;color:var(--t3);text-align:center;padding:14px 0">Enter PV, EV, and AC to see performance metrics — add BAC for forecasts.</div>';
+    return;
+  }
+  const sv = (isFinite(ev) && isFinite(pv)) ? ev - pv : NaN;
+  const cv = (isFinite(ev) && isFinite(ac)) ? ev - ac : NaN;
+  const spi = evmDiv(ev, pv);
+  const cpi = evmDiv(ev, ac);
+  const rows = [
+    evmRow('SV — Schedule Variance', 'SV = EV − PV', evmFmt(sv), evmSign(sv, 'ahead of schedule', 'behind schedule', 'exactly on schedule'), false),
+    evmRow('CV — Cost Variance', 'CV = EV − AC', evmFmt(cv), evmSign(cv, 'under budget', 'over budget', 'exactly on budget'), false),
+    evmRow('SPI — Schedule Performance Index', 'SPI = EV ÷ PV', evmFmt(spi), evmIndex(spi, 'ahead of schedule', 'behind schedule', 'exactly on schedule'), false),
+    evmRow('CPI — Cost Performance Index', 'CPI = EV ÷ AC', evmFmt(cpi), evmIndex(cpi, 'under budget', 'over budget', 'exactly on budget'), false)
+  ];
+  let note = '';
+  if (isFinite(bac)) {
+    const eac1 = evmDiv(bac, cpi);
+    const eac2 = (isFinite(ac) && isFinite(ev)) ? ac + (bac - ev) : NaN;
+    const eac3 = (isFinite(ac) && isFinite(ev) && isFinite(cpi) && cpi !== 0) ? ac + (bac - ev) / cpi : NaN;
+    const eac4 = (isFinite(ac) && isFinite(ev) && isFinite(cpi) && isFinite(spi) && cpi * spi !== 0) ? ac + (bac - ev) / (cpi * spi) : NaN;
+    const eacSel = atypical ? eac2 : eac1;
+    const etc = (isFinite(eacSel) && isFinite(ac)) ? eacSel - ac : NaN;
+    const vac = isFinite(eacSel) ? bac - eacSel : NaN;
+    const tcpiBac = (isFinite(ev) && isFinite(ac) && bac - ac !== 0) ? (bac - ev) / (bac - ac) : NaN;
+    const tcpiEac = (isFinite(ev) && isFinite(ac) && isFinite(eacSel) && eacSel - ac !== 0) ? (bac - ev) / (eacSel - ac) : NaN;
+    const tcpiChip = v => !isFinite(v) ? evmChip('needs inputs above', 'flat')
+      : v > 1 ? evmChip('must work MORE efficiently', 'bad')
+      : v < 1 ? evmChip('can work less efficiently', 'good')
+      : evmChip('keep current efficiency', 'flat');
+    rows.push(
+      evmRow('EAC — typical variance', 'EAC = BAC ÷ CPI', evmFmt(eac1), evmChip('current cost performance continues', 'flat'), !atypical),
+      evmRow('EAC — atypical variance', 'EAC = AC + (BAC − EV)', evmFmt(eac2), evmChip('remaining work at planned rate', 'flat'), atypical),
+      evmRow('EAC — remaining at current CPI', 'EAC = AC + (BAC − EV) ÷ CPI', evmFmt(eac3), evmChip('equals BAC ÷ CPI — same forecast', 'flat'), false),
+      evmRow('EAC — cost AND schedule drive the rest', 'EAC = AC + (BAC − EV) ÷ (CPI × SPI)', evmFmt(eac4), evmChip('most pessimistic variant', 'flat'), false),
+      evmRow('ETC — Estimate to Complete', 'ETC = EAC − AC', evmFmt(etc), evmChip('money still needed from today', 'flat'), false),
+      evmRow('VAC — Variance at Completion', 'VAC = BAC − EAC', evmFmt(vac), evmSign(vac, 'finishing under budget', 'finishing over budget', 'finishing exactly on budget'), false),
+      evmRow('TCPI — to hit BAC', 'TCPI = (BAC − EV) ÷ (BAC − AC)', evmFmt(tcpiBac), tcpiChip(tcpiBac), false),
+      evmRow('TCPI — to hit EAC', 'TCPI = (BAC − EV) ÷ (EAC − AC)', evmFmt(tcpiEac), tcpiChip(tcpiEac), false)
+    );
+  } else {
+    note = '<div style="font-size:11px;color:var(--t3);margin-top:10px">Add BAC above to unlock EAC, ETC, VAC, and TCPI forecasts.</div>';
+  }
+  out.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px">' + rows.join('') + '</div>' + note;
+}
+computeEvmCalc();
+// ===== /WP2 EVM CALCULATOR =====
 
 // ============================================================
 // PROGRESS
