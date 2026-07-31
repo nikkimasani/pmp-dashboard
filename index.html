@@ -7583,10 +7583,128 @@ function changeOneNoteUrl() {
   openOneNote();
 }
 
+const PMP_SHARED_BRIDGE_ORIGIN = 'https://toolbox-nine-eta.vercel.app';
+const PMP_SHARED_NAMESPACE = 'pmp-dashboard';
+const PMP_SHARED_KEYS = new Set(['examDate', 'general_notes', 'onenote_url', 'gist_token', 'gist_id', 'gist_last_sync']);
+const PMP_SHARED_PREFIXES = ['pmp_', 'module_notes_', 'mock_wrong_'];
+let _pmpSharedFramePromise = null;
+let _pmpSharedPending = new Map();
+let _pmpSharedPatched = false;
+
+function shouldSyncPmpSharedKey(key) {
+  if (!key) return false;
+  if (PMP_SHARED_KEYS.has(key)) return true;
+  return PMP_SHARED_PREFIXES.some(prefix => key.startsWith(prefix));
+}
+
+function collectPmpSharedEntries() {
+  const entries = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!shouldSyncPmpSharedKey(key)) continue;
+    entries[key] = localStorage.getItem(key);
+  }
+  return entries;
+}
+
+function ensurePmpSharedFrame() {
+  if (_pmpSharedFramePromise) return _pmpSharedFramePromise;
+  _pmpSharedFramePromise = new Promise((resolve, reject) => {
+    const frame = document.createElement('iframe');
+    frame.src = PMP_SHARED_BRIDGE_ORIGIN + '/bridge.html';
+    frame.style.display = 'none';
+    frame.onload = () => resolve(frame);
+    frame.onerror = () => reject(new Error('Shared settings bridge failed to load'));
+    document.body.appendChild(frame);
+  });
+  return _pmpSharedFramePromise;
+}
+
+window.addEventListener('message', event => {
+  if (event.origin !== PMP_SHARED_BRIDGE_ORIGIN) return;
+  const data = event.data;
+  if (!data || data.source !== 'nikki-shared-settings-bridge' || !data.requestId) return;
+  const pending = _pmpSharedPending.get(data.requestId);
+  if (!pending) return;
+  _pmpSharedPending.delete(data.requestId);
+  if (data.ok) pending.resolve(data.payload || {});
+  else pending.reject(new Error(data.error || 'Shared settings request failed'));
+});
+
+async function requestPmpShared(action, payload = {}) {
+  const frame = await ensurePmpSharedFrame();
+  return new Promise((resolve, reject) => {
+    const requestId = 'pmp-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+    _pmpSharedPending.set(requestId, { resolve, reject });
+    frame.contentWindow.postMessage({
+      source: 'nikki-shared-settings-client',
+      requestId,
+      namespace: PMP_SHARED_NAMESPACE,
+      action,
+      payload,
+    }, PMP_SHARED_BRIDGE_ORIGIN);
+    setTimeout(() => {
+      if (!_pmpSharedPending.has(requestId)) return;
+      _pmpSharedPending.delete(requestId);
+      reject(new Error('Shared settings bridge timeout'));
+    }, 4000);
+  });
+}
+
+async function syncPmpSharedSettingsOnBoot() {
+  try {
+    const remote = (await requestPmpShared('getNamespace')).entries || {};
+    const local = collectPmpSharedEntries();
+    for (const [key, value] of Object.entries(remote)) {
+      if (!shouldSyncPmpSharedKey(key)) continue;
+      if (localStorage.getItem(key) === null && value !== null) localStorage.setItem(key, value);
+    }
+    const missingRemote = {};
+    for (const [key, value] of Object.entries(local)) {
+      if (!(key in remote)) missingRemote[key] = value;
+    }
+    if (Object.keys(missingRemote).length) {
+      requestPmpShared('mergeNamespace', { entries: missingRemote }).catch(() => {});
+    }
+  } catch {}
+}
+
+function installPmpSharedStoragePatch() {
+  if (_pmpSharedPatched) return;
+  _pmpSharedPatched = true;
+  const originalSetItem = Storage.prototype.setItem;
+  const originalRemoveItem = Storage.prototype.removeItem;
+  const originalClear = Storage.prototype.clear;
+
+  Storage.prototype.setItem = function(key, value) {
+    originalSetItem.call(this, key, value);
+    if (this === localStorage && shouldSyncPmpSharedKey(String(key))) {
+      requestPmpShared('mergeNamespace', { entries: { [key]: String(value) } }).catch(() => {});
+    }
+  };
+
+  Storage.prototype.removeItem = function(key) {
+    originalRemoveItem.call(this, key);
+    if (this === localStorage && shouldSyncPmpSharedKey(String(key))) {
+      requestPmpShared('removeNamespaceKeys', { keys: [String(key)] }).catch(() => {});
+    }
+  };
+
+  Storage.prototype.clear = function() {
+    const keysToRemove = this === localStorage ? Object.keys(collectPmpSharedEntries()) : [];
+    originalClear.call(this);
+    if (this === localStorage && keysToRemove.length) {
+      requestPmpShared('removeNamespaceKeys', { keys: keysToRemove }).catch(() => {});
+    }
+  };
+}
+
 // ============================================================
 // INIT
 // ============================================================
 document.addEventListener('DOMContentLoaded', async () => {
+  await syncPmpSharedSettingsOnBoot();
+  installPmpSharedStoragePatch();
   updateCountdown();
   await restorePMPFolderHandle();
   buildLearn();
