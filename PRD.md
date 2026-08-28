@@ -6,7 +6,7 @@ A personal, all-in-one study companion for the PMP exam. Replaces scattered note
 
 ## Users
 
-- **Primary:** Nikki Masani (admin) — `nikkimasani@gmail.com` / `nikki.masani@quorumsoftware.com`
+- **Primary:** Nikki Masani (admin) — `nikkimasani@gmail.com`
 - **Secondary:** Study group members who register via the login screen
 - Authentication is required — the app does not load without a valid Supabase session
 
@@ -26,7 +26,7 @@ A personal, all-in-one study companion for the PMP exam. Replaces scattered note
 - Supabase Auth (email/password)
 - Login/register overlay on first load; session persisted via Supabase JS SDK
 - Profile setup modal on first login (name + exam date)
-- Admin emails hardcoded in `ADMIN_EMAILS` array: `nikki.masani@quorumsoftware.com`, `nikkimasani@gmail.com`
+- Admin access granted via the `role` column on `pmp_profiles` (set manually per user) — no emails hardcoded in code
 - Supabase project: `bazjlrualnmbanmhiuau.supabase.co`
 
 ## Database Schema (Supabase)

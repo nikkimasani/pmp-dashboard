@@ -36,7 +36,7 @@ Primary store is browser `localStorage`. Stats are also synced to Supabase every
 
 - **Project URL:** `https://bazjlrualnmbanmhiuau.supabase.co`
 - **Anon key:** in `SB_KEY` constant at top of auth section
-- **Admin emails:** `ADMIN_EMAILS` array — `nikki.masani@quorumsoftware.com`, `nikkimasani@gmail.com`
+- **Admin access:** granted via the `role` column on `pmp_profiles` (set manually per user) — no emails hardcoded in code
 - Login/register overlay shown on load if no session; profile setup modal on first login
 - `onAuthReady(user)` — called after sign-in; fetches profile, shows admin nav, populates sidebar user pill, syncs exam date to localStorage
 
