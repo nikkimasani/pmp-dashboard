@@ -27,7 +27,7 @@ A personal, all-in-one study companion for the PMP exam. Replaces scattered note
 - Login/register overlay on first load; session persisted via Supabase JS SDK
 - Profile setup modal on first login (name + exam date)
 - Admin emails hardcoded in `ADMIN_EMAILS` array: `nikki.masani@quorumsoftware.com`, `nikkimasani@gmail.com`
-- Supabase project: `sajwrezhnzqlhskkbgwc.supabase.co`
+- Supabase project: `bazjlrualnmbanmhiuau.supabase.co`
 
 ## Database Schema (Supabase)
 
