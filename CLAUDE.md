@@ -34,7 +34,7 @@ Primary store is browser `localStorage`. Stats are also synced to Supabase every
 
 ## Authentication (Supabase)
 
-- **Project URL:** `https://sajwrezhnzqlhskkbgwc.supabase.co`
+- **Project URL:** `https://bazjlrualnmbanmhiuau.supabase.co`
 - **Anon key:** in `SB_KEY` constant at top of auth section
 - **Admin emails:** `ADMIN_EMAILS` array — `nikki.masani@quorumsoftware.com`, `nikkimasani@gmail.com`
 - Login/register overlay shown on load if no session; profile setup modal on first login
