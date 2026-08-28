@@ -9988,9 +9988,8 @@ document.addEventListener('DOMContentLoaded', renderPmbok8);
 
 <script>
 // ===== SUPABASE AUTH =====
-const SB_URL = 'https://sajwrezhnzqlhskkbgwc.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhandyZXpobnpxbGhza2tiZ3djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5OTMyODAsImV4cCI6MjA5MDU2OTI4MH0.uqvU6vZsB3rI3QGYe8GYAoDbdcmubLwJBCRH2ECMyCM';
-const ADMIN_EMAILS = ['nikki.masani@quorumsoftware.com', 'nikkimasani@gmail.com'];
+const SB_URL = 'https://bazjlrualnmbanmhiuau.supabase.co';
+const SB_KEY = 'sb_publishable_ez3TVctnbFIUHqr_dMOUeQ_5WpsYEHs';
 let sbClient = null, currentUser = null;
 
 async function initAuth() {
@@ -10043,13 +10042,10 @@ async function doSignUp() {
   if (password.length < 6) { err.textContent = 'Password must be at least 6 characters.'; return; }
   const btn = document.querySelector('#auth-register-view .auth-btn');
   btn.textContent = 'Creating...'; btn.disabled = true;
-  const { data, error } = await sbClient.auth.signUp({ email, password });
+  const { data, error } = await sbClient.auth.signUp({ email, password, options: { data: { name } } });
   btn.textContent = 'Create Account →'; btn.disabled = false;
   if (error) { err.textContent = error.message; return; }
-  if (data.user) {
-    const role = ADMIN_EMAILS.includes(email) ? 'admin' : 'user';
-    await sbClient.from('pmp_profiles').insert({ id: data.user.id, name, role });
-  }
+  if (data.user && !data.session) err.textContent = 'Check your email to confirm your account, then sign in.';
 }
 
 async function doSignOut() {
@@ -10064,7 +10060,7 @@ async function onAuthReady(user) {
   if (!profile) { document.getElementById('profile-setup').style.display = 'flex'; return; }
   window._profileName = profile.name;
   if (profile.exam_date && !load('examDate')) save('examDate', profile.exam_date);
-  if (ADMIN_EMAILS.includes(user.email) || profile.role === 'admin') {
+  if (profile.role === 'admin') {
     const el = document.getElementById('admin-nav-item');
     if (el) el.style.display = 'flex';
   }
@@ -10088,8 +10084,7 @@ async function saveProfile() {
   const examDate = document.getElementById('setup-exam-date').value;
   const err = document.getElementById('setup-error');
   if (!name) { err.textContent = 'Name is required.'; return; }
-  const role = ADMIN_EMAILS.includes(currentUser.email) ? 'admin' : 'user';
-  const { error } = await sbClient.from('pmp_profiles').upsert({ id: currentUser.id, name, role, exam_date: examDate || null });
+  const { error } = await sbClient.from('pmp_profiles').update({ name, exam_date: examDate || null, updated_at: new Date().toISOString() }).eq('id', currentUser.id);
   if (error) { err.textContent = error.message; return; }
   if (examDate) save('examDate', examDate);
   document.getElementById('profile-setup').style.display = 'none';
