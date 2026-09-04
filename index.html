@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
 <script src="msal-browser.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.115.0/dist/umd/supabase.min.js"></script>
 <style>
 :root{
   --bg:#111111;--s1:#181818;--s2:#1E1E1E;--s3:#242424;--border:#2A2A2A;
@@ -9992,9 +9992,42 @@ const SB_URL = 'https://bazjlrualnmbanmhiuau.supabase.co';
 const SB_KEY = 'sb_publishable_ez3TVctnbFIUHqr_dMOUeQ_5WpsYEHs';
 let sbClient = null, currentUser = null;
 
+function isEmbeddedApp() {
+  try { return window.self !== window.top; }
+  catch (_) { return true; }
+}
+
+function proxiedSupabaseUrl(originalUrl) {
+  const upstream = new URL(typeof originalUrl === 'string' ? originalUrl : originalUrl.url);
+  if (upstream.origin !== SB_URL) return null;
+  const proxy = new URL('/api/supabase-proxy', window.location.origin);
+  proxy.searchParams.set('path', upstream.pathname + upstream.search);
+  return proxy.toString();
+}
+
+async function pmpSupabaseFetch(input, init) {
+  const proxyUrl = proxiedSupabaseUrl(input);
+  if (!proxyUrl) return fetch(input, init);
+
+  // iOS embedded webviews can reject the cross-site Supabase response with
+  // "Load failed". Use the app's same-origin Vercel proxy when embedded.
+  if (isEmbeddedApp()) return fetch(proxyUrl, init);
+
+  try {
+    return await fetch(input, init);
+  } catch (directError) {
+    console.warn('Direct Supabase request failed; retrying through the app proxy.', directError);
+    return fetch(proxyUrl, init);
+  }
+}
+
 async function initAuth() {
   try {
-    sbClient = window.supabase.createClient(SB_URL, SB_KEY);
+    if (!window.supabase) throw new Error('The secure sign-in library did not load.');
+    sbClient = window.supabase.createClient(SB_URL, SB_KEY, {
+      global: { fetch: pmpSupabaseFetch },
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+    });
     const { data: { session } } = await sbClient.auth.getSession();
     if (session) { currentUser = session.user; await onAuthReady(session.user); }
     else { showAuthOverlay(); }
@@ -10002,7 +10035,12 @@ async function initAuth() {
       if (event === 'SIGNED_IN') { currentUser = session.user; await onAuthReady(session.user); }
       else if (event === 'SIGNED_OUT') { currentUser = null; showAuthOverlay(); }
     });
-  } catch(e) { console.warn('Auth init failed, running offline', e); }
+  } catch(e) {
+    console.warn('Auth init failed', e);
+    showAuthOverlay();
+    const err = document.getElementById('auth-error');
+    if (err) err.textContent = 'Sign-in could not start. Refresh the app and try again.';
+  }
 }
 
 function showAuthOverlay() {
@@ -10027,9 +10065,16 @@ async function doSignIn() {
   err.textContent = '';
   const btn = document.querySelector('#auth-login-view .auth-btn');
   btn.textContent = 'Signing in...'; btn.disabled = true;
-  const { error } = await sbClient.auth.signInWithPassword({ email, password });
-  btn.textContent = 'Sign In →'; btn.disabled = false;
-  if (error) err.textContent = error.message;
+  try {
+    if (!sbClient) throw new Error('Sign-in is still loading. Refresh the app and try again.');
+    const { error } = await sbClient.auth.signInWithPassword({ email, password });
+    if (error) err.textContent = error.message;
+  } catch (e) {
+    console.error('Sign-in request failed', e);
+    err.textContent = 'Could not reach secure sign-in. Check your connection, then tap Sign In again.';
+  } finally {
+    btn.textContent = 'Sign In →'; btn.disabled = false;
+  }
 }
 
 async function doSignUp() {
